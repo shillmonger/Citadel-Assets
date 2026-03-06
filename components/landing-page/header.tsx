@@ -21,7 +21,7 @@ const Header: React.FC = () => {
       <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white px-4 lg:px-6 py-4">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* Logo Logic: Swaps based on screen size */}
-          <div className="flex-shrink-0 cursor-pointer">
+          <Link href="/" className="flex-shrink-0">
             {/* Desktop Logo */}
             <img
               src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2022/12/CitSec-Logo.png"
@@ -34,7 +34,7 @@ const Header: React.FC = () => {
               alt="Citadel Logo"
               className="block md:hidden h-6 w-auto object-contain"
             />
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -81,11 +81,13 @@ const Header: React.FC = () => {
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-90">
-            <img
-              src="https://i.postimg.cc/fTn5RHNM/mobile-logo.png"
-              className="h-5"
-              alt="Logo"
-            />
+            <Link href="/">
+              <img
+                src="https://i.postimg.cc/fTn5RHNM/mobile-logo.png"
+                className="h-5"
+                alt="Logo"
+              />
+            </Link>
             <button
               onClick={() => setMenuOpen(false)}
               className="p-2 cursor-pointer text-[#00205B]"

@@ -16,11 +16,13 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between mb-20">
           <div className="mb-10 md:mb-0">
             {/* Using the logo - filtered to white via CSS for that look */}
-            <img 
-              src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2022/09/citadel-securities-logo-1@2x.png" 
-              alt="Citadel Securities" 
-              className="h-6 brightness-0 invert" 
-            />
+            <Link href="/">
+              <img 
+                src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2022/09/citadel-securities-logo-1@2x.png" 
+                alt="Citadel Securities" 
+                className="h-6 brightness-0 invert" 
+              />
+            </Link>
 
           </div>
 
