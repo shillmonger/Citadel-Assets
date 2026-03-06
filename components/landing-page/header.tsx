@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
+import Link from 'next/link';
 
 const navLinks = [
-  { name: "Who We Are", href: "#who-we-are" },
-  { name: "What We Do", href: "#what-we-do" },
-  { name: "News & Insights", href: "#news-insights" },
-  { name: "Careers", href: "#careers" },
+  { name: "Who We Are", href: "/landing-page/who-we-are" },
+  { name: "What We Do", href: "/landing-page/what-we-do" },
+  { name: "News & Insights", href: "/landing-page/news-insights" },
+  { name: "Careers", href: "/landing-page/careers" },
 ];
 
 const Header: React.FC = () => {
@@ -36,13 +37,13 @@ const Header: React.FC = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className="text-[15px] font-bold cursor-pointer text-[#00205B] transition-colors hover:text-blue-700"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -91,14 +92,14 @@ const Header: React.FC = () => {
           {/* Mobile Links */}
           <nav className="flex flex-col space-y-8 p-8 mt-4">
             {navLinks.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className="text-lg font-bold text-[#00205B] cursor-pointer transition-transform active:scale-95"
                 onClick={() => setMenuOpen(false)}
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
 

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Linkedin, Instagram, Youtube } from 'lucide-react';
+import Link from 'next/link';
 import Translate from "@/components/landing-page/translate";
 
 const Footer: React.FC = () => {
@@ -28,10 +29,15 @@ const Footer: React.FC = () => {
               <a href="#" className="hover:text-blue-400 transition-colors text-[15px]">Counterparty Login</a>
             </div>
             <nav className="flex flex-col gap-4">
-              {['Who We Are', 'What We Do', 'News & Insights', 'Careers'].map((link) => (
-                <a key={link} href="#" className="hover:text-blue-400 transition-colors text-[15px]">
-                  {link}
-                </a>
+              {[
+                { name: 'Who We Are', href: '/landing-page/who-we-are' },
+                { name: 'What We Do', href: '/landing-page/what-we-do' },
+                { name: 'News & Insights', href: '/landing-page/news-insights' },
+                { name: 'Careers', href: '/landing-page/careers' }
+              ].map((link) => (
+                <Link key={link.name} href={link.href} className="hover:text-blue-400 transition-colors text-[15px]">
+                  {link.name}
+                </Link>
               ))}
             </nav>
           </div>
@@ -39,7 +45,7 @@ const Footer: React.FC = () => {
 
         {/* Middle Section: Legal and Socials */}
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex flex-col gap-6 text-[13px] text-gray-300">
+          <div className="flex flex-wrap gap-6 text-[13px] text-gray-300">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
             <a href="#" className="hover:text-white transition-colors">Notices</a>
