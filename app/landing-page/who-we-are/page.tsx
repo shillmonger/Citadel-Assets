@@ -154,10 +154,86 @@ export default function Home() {
       </section>
 
 
-
-
-
       {/* Section 3 */}
+<section className="w-full">
+  {/* Top Grey Transition Bar (Optional, matches screenshot 5) */}
+  <div className="py-24 px-6 md:px-12 lg:px-24">
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-start gap-8">
+      <div className="md:max-w-xl">
+        <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1]">
+          Two Firms: Citadel and <br /> Citadel Securities
+        </h2>
+      </div>
+      <div className="md:max-w-md pt-2">
+        <p className="mb-6 text-lg text-zinc-700 leading-relaxed">
+          Citadel and Citadel Securities are two separate and distinct financial firms, each focused on a different aspect of today's markets.
+        </p>
+        <p className="mb-6 text-lg text-zinc-700 leading-relaxed">
+          Citadel is a multi-strategy alternative investment manager, striving to generate superior long-term returns for the world's preeminent public and private institutions.
+        </p>
+              <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
+          Explore Citadel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* Main Blue Content Section */}
+  <div className="bg-[#1D429A] py-15 px-6 md:px-12 lg:px-24 text-white">
+    <div className="max-w-7xl mx-auto flex flex-col">
+      
+      {/* Inspired by Leadership Block */}
+      <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24">
+        <div className="w-full md:w-1/2">
+          <div className="aspect-square overflow-hidden rounded-4xl">
+            <img 
+              src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/leadership.jpg" 
+              alt="Leadership" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col items-start">
+          <h2 className="text-5xl md:text-5xl font-normal mb-8 leading-[1.1]">
+            Inspired by <br /> Our Leadership
+          </h2>
+          <p className="text-lg opacity-90 mb-10 max-w-md leading-relaxed">
+            Many of our leaders have built their careers here. They are committed to developing other ambitious talent in pursuit of our shared goals.
+          </p>
+          <button className="bg-[#76EAD7] text-[#1D429A] cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#5fdec9] transition-all">
+            View Leadership Team
+          </button>
+        </div>
+      </div>
+
+      {/* Committed to Communities Block (Reversed) */}
+      <div className="flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-24">
+        <div className="w-full md:w-1/2">
+          <div className="aspect-square overflow-hidden rounded-4xl">
+            <img 
+              src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2024/02/Pocket-City_RTF22016_252-1024x683.jpg" 
+              alt="Community" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col items-start">
+          <h2 className="text-5xl md:text-5xl font-normal mb-8 leading-[1.1]">
+            Committed to <br /> Our Communities
+          </h2>
+          <p className="text-lg opacity-90 mb-10 max-w-md leading-relaxed">
+            Our extraordinary colleagues apply their talents to drive impact outside of the workplace. Our civic leadership focuses on expanding access to education and invigorating our communities.
+          </p>
+          <button className="bg-[#76EAD7] text-[#1D429A] cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#5fdec9] transition-all">
+            Learn About Our Civic Leadership
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 
       {/* Sextion 4 */}
 
