@@ -5,7 +5,6 @@ import Footer from "@/components/landing-page/footer";
 import React, { useState, useRef } from "react";
 
 export default function Home() {
-  
   return (
     <div className="flex flex-col min-h-screen font-sans bg-white dark:bg-black">
       <Header />
@@ -35,6 +34,56 @@ export default function Home() {
       </main>
 
       {/* Section 1*/}
+      <section className="pt-24 pb-24 px-6 md:px-12 lg:px-24 bg-white">
+        <div className="max-w-7xl mx-auto flex flex-col gap-20">
+          {/* Part 1: Transformation */}
+          <div className="flex flex-col md:flex-row md:justify-between items-start gap-12">
+            <div className="md:max-w-xl">
+              <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.05]">
+                A Force for <br /> Transformation
+              </h2>
+            </div>
+
+            <div className="flex flex-col gap-6 md:max-w-xl pt-2">
+              <p className="text-xl md:text-2xl text-zinc-900 leading-relaxed font-normal">
+                We are the next-generation capital markets firm, operating at
+                extraordinary pace and vast scale.
+              </p>
+              <p className="text-lg text-zinc-700 leading-relaxed">
+                Our people—and the systems we build—are at the center of global
+                markets. Engineers, traders and researchers harness leading-edge
+                quantitative research and the accelerating power of compute,
+                machine learning and AI to power our analytics and tackle the
+                market’s most critical challenges.
+              </p>
+              <p className="text-lg text-zinc-700 leading-relaxed">
+                Our scale creates a powerful network effect that continuously
+                enhances the liquidity solutions we deliver for our clients.
+              </p>
+            </div>
+          </div>
+
+          {/* Part 2: Culture */}
+          <div className="flex flex-col md:flex-row md:justify-between items-start gap-12">
+            <div className="md:max-w-xl">
+              <h2 className="text-5xl md:text-4xl font-normal tracking-tight text-zinc-900 leading-[1.05]">
+                Empowered by Our Culture
+              </h2>
+            </div>
+
+            <div className="flex flex-col items-start gap-10 md:max-w-xl pt-2">
+              <p className="text-xl text-zinc-800 leading-relaxed">
+                Our culture is one of a kind—shaping the way we work, socialize
+                and support our communities.
+              </p>
+
+              <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
+                Discover Our Culture
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Section 2*/}
 
