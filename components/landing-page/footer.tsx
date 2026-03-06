@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
           <div className="mb-10 md:mb-0">
             {/* Using the logo - filtered to white via CSS for that look */}
             <img 
-              src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2022/12/CitSec-Logo.png" 
+              src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2022/09/citadel-securities-logo-1@2x.png" 
               alt="Citadel Securities" 
               className="h-8 brightness-0 invert" 
             />
