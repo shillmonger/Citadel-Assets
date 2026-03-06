@@ -1,8 +1,16 @@
 "use client";
 import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 import React, { useState, useRef } from "react";
+
 
 export default function Home() {
   return (
@@ -86,6 +94,68 @@ export default function Home() {
       </section>
 
       {/* Section 2*/}
+      <section className="px-6 md:px-12 lg:px-24 bg-white">
+        <div className="max-w-7xl mx-auto">
+
+          {/* MOBILE VIEW: Shadcn Carousel */}
+          <div className="block md:hidden">
+            <Carousel className="w-full">
+              <CarouselContent>
+                {["https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/425-Park-_12-fl_241216_340.jpg", "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/BeachCleanup_231112_172.jpg", "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/NYFireworkViewingCelebration_250704_1357.jpg", "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/RTF22016_234.jpg", "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/CitSecTownHall_240424_1484-1350x900.jpg"].map((src, index) => (
+                  <CarouselItem key={index}>
+                    <div className="aspect-[4/3] overflow-hidden rounded-sm">
+                      <img src={src} alt="Culture" className="w-full h-full object-cover" />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="flex justify-end gap-2 mt-4">
+                <CarouselPrevious className="static translate-y-0" />
+                <CarouselNext className="static translate-y-0" />
+              </div>
+            </Carousel>
+          </div>
+
+          {/* DESKTOP VIEW: Mosaic Grid */}
+          <div className="hidden md:grid grid-cols-12 gap-4 h-[600px]">
+            {/* Left Column: Two stacked images */}
+            <div className="col-span-3 flex flex-col gap-4">
+              <div className="flex-1 overflow-hidden rounded-sm">
+                <img src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/425-Park-_12-fl_241216_340.jpg" className="w-full h-full object-cover" alt="Team" />
+              </div>
+              <div className="flex-1 overflow-hidden rounded-sm">
+                <img src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/RTF22016_234.jpg" className="w-full h-full object-cover" alt="Volunteering" />
+              </div>
+            </div>
+
+            {/* Center Column: Large focus image */}
+            <div className="col-span-6 overflow-hidden rounded-sm">
+              <img src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/BeachCleanup_231112_172.jpg" className="w-full h-full object-cover" alt="Community" />
+            </div>
+
+            {/* Right Column: Two stacked images */}
+            <div className="col-span-3 flex flex-col gap-4">
+              <div className="flex-1 overflow-hidden rounded-sm">
+                <img src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/NYFireworkViewingCelebration_250704_1357.jpg" className="w-full h-full object-cover" alt="Celebration" />
+              </div>
+              <div className="flex-1 overflow-hidden rounded-sm">
+                <img src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/03/CitSecTownHall_240424_1484-1350x900.jpg" className="w-full h-full object-cover" alt="Perspective" />
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+         <div className="mt-5 md:hidden">
+  <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-12 rounded-full hover:bg-[#16357a] transition-all w-full">
+    Discover Our Culture
+  </button>
+</div>
+        </div>
+      </section>
+
+
+
+
 
       {/* Section 3 */}
 
