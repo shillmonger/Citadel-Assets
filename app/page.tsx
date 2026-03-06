@@ -130,7 +130,7 @@ export default function Home() {
       {/* Section 2*/}
       <section className="relative w-full">
         {/* Blue Header Background */}
-        <div className="bg-[#1D429A] pt-20 pb-40 px-6 md:px-12 lg:px-24">
+        <div className="bg-[#1D429A] pb-40 px-6 md:px-12 lg:px-24">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-start gap-8 md:gap-12 py-16">
             <h2 className="text-5xl md:text-5xl text-white font-normal tracking-tight leading-[1.1] md:max-w-xl">
               More Than 20 Years
@@ -145,7 +145,7 @@ export default function Home() {
         </div>
 
         {/* Video Player Container - Overlaps with matching max-width */}
-        <div className="relative -mt-32 px-6 md:px-12 lg:px-24">
+        <div className="relative -mt-40 px-6 md:px-12 lg:px-24">
           <div className="max-w-7xl mx-auto">
             <div className="relative group cursor-pointer overflow-hidden rounded-sm shadow-2xl bg-black">
               <video
@@ -231,6 +231,169 @@ export default function Home() {
                   Countries represented <sup className="text-[10px]">4</sup>
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3 */}
+      <section className="relative w-full">
+        {/* Blue Header Background */}
+        <div className="bg-[#1D429A] pb-40 px-6 md:px-12 lg:px-24">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-start gap-8 md:gap-12 py-16">
+            <h2 className="text-5xl md:text-5xl text-white font-normal tracking-tight leading-[1.1] md:max-w-xl">
+              Where Careers
+              <br />
+              Accelerate
+            </h2>
+
+            <div className="flex flex-col gap-4">
+              <p className="text-white text-lg md:text-xl md:max-w-md pt-2 leading-relaxed opacity-90">
+                Together, we’ve imagined, innovated and created a
+                next-generation platform that operates at global scale.
+              </p>
+
+              <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
+                Explore Career Possibilities
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Image Container - Overlaps with matching max-width */}
+        <div className="relative -mt-40 px-6 md:px-12 lg:px-24">
+          <div className="max-w-7xl mx-auto">
+            <div className="relative overflow-hidden rounded-sm shadow-2xl">
+              <img
+                src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2022/07/Elledge_220225_3545_CITSEC__2788_CLEAN_V2-1.png"
+                alt="Careers Accelerate"
+                className="w-full aspect-video object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sextion 4 */}
+      <section className="bg-[#F4F4F4] py-24 px-6 md:px-12 lg:px-24">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
+          {/* Left Side: Heading and Description */}
+          <div className="lg:w-1/3">
+            <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1] mb-8">
+              Featured News <br /> & Perspectives
+            </h2>
+            <p className="text-lg text-zinc-700 leading-relaxed max-w-sm">
+              Explore articles and other coverage about our firm, including
+              perspectives on joining and working at Citadel Securities.
+            </p>
+          </div>
+
+          {/* Right Side: News List */}
+          <div className="lg:w-2/3">
+            <div className="flex flex-col">
+              {/* News Item 1 */}
+              <a
+                href="#"
+                className="group border-t border-zinc-300 py-10 flex justify-between items-center transition-all"
+              >
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3 text-sm text-zinc-500">
+                    <span>February 24, 2026</span>
+                    <span className="w-[1px] h-3 bg-zinc-300"></span>
+                    <span className="font-medium">Bloomberg</span>
+                  </div>
+                  <h3 className="text-2xl md:text-2xl font-normal text-zinc-900 group-hover:text-[#1D429A] transition-colors">
+                    Citadel Securities Rebuts Citrini 'Intelligence Crisis'
+                    Scenario
+                  </h3>
+                </div>
+                <div className="ml-4 w-12 h-12 flex-shrink-0 border border-zinc-400 rounded-full flex items-center justify-center group-hover:bg-[#1D429A] group-hover:border-[#1D429A] transition-all">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 text-[#1D429A] group-hover:text-white fill-none stroke-current stroke-2"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+
+              {/* News Item 2 */}
+              <a
+                href="#"
+                className="group border-t border-zinc-300 py-10 flex justify-between items-center transition-all"
+              >
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3 text-sm text-zinc-500">
+                    <span>February 18, 2026</span>
+                    <span className="w-[1px] h-3 bg-zinc-300"></span>
+                    <span className="font-medium">Bloomberg</span>
+                  </div>
+                  <h3 className="text-2xl md:text-2xl font-normal text-zinc-900 group-hover:text-[#1D429A] transition-colors">
+                    Rubner Says Retail Traders Bought Software Dip at Record
+                    Pace
+                  </h3>
+                </div>
+                <div className="ml-4 w-12 h-12 flex-shrink-0 border border-zinc-400 rounded-full flex items-center justify-center group-hover:bg-[#1D429A] group-hover:border-[#1D429A] transition-all">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 text-[#1D429A] group-hover:text-white fill-none stroke-current stroke-2"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+
+              {/* News Item 3 */}
+              <a
+                href="#"
+                className="group border-t border-zinc-300 py-10 flex justify-between items-center transition-all"
+              >
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3 text-sm text-zinc-500">
+                    <span>February 3, 2026</span>
+                    <span className="w-[1px] h-3 bg-zinc-300"></span>
+                    <span className="font-medium">Bloomberg</span>
+                  </div>
+                  <h3 className="text-2xl md:text-2xl font-normal text-zinc-900 group-hover:text-[#1D429A] transition-colors">
+                    Stocks Rally at Risk as Retail Fervor Fades, Says Citadel
+                    Securities' Rubner
+                  </h3>
+                </div>
+                <div className="ml-4 w-12 h-12 flex-shrink-0 border border-zinc-400 rounded-full flex items-center justify-center group-hover:bg-[#1D429A] group-hover:border-[#1D429A] transition-all">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 text-[#1D429A] group-hover:text-white fill-none stroke-current stroke-2"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+
+              {/* News Item 4 */}
+              <a
+                href="#"
+                className="group border-t border-b border-zinc-300 py-10 flex justify-between items-center transition-all"
+              >
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3 text-sm text-zinc-500">
+                    <span>January 23, 2026</span>
+                    <span className="w-[1px] h-3 bg-zinc-300"></span>
+                    <span className="font-medium">Bloomberg</span>
+                  </div>
+                  <h3 className="text-2xl md:text-2xl font-normal text-zinc-900 group-hover:text-[#1D429A] transition-colors">
+                    Citadel Founder and CEO Ken Griffin Speaks at 2026 World
+                    Economic Forum
+                  </h3>
+                </div>
+                <div className="ml-4 w-12 h-12 flex-shrink-0 border border-zinc-400 rounded-full flex items-center justify-center group-hover:bg-[#1D429A] group-hover:border-[#1D429A] transition-all">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 text-[#1D429A] group-hover:text-white fill-none stroke-current stroke-2"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
             </div>
           </div>
         </div>

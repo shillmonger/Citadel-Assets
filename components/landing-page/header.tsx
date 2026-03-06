@@ -34,13 +34,12 @@ const Header: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-10">
+          <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="text-[15px] font-medium cursor-pointer text-[#00205B] transition-colors hover:text-blue-700"
-                style={{ fontFamily: "serif" }}
+                className="text-[15px] font-bold cursor-pointer text-[#00205B] transition-colors hover:text-blue-700"
               >
                 {item.name}
               </a>
@@ -75,7 +74,7 @@ const Header: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-50">
+          <div className="flex items-center justify-between p-4 border-b border-gray-90">
             <img
               src="https://i.postimg.cc/fTn5RHNM/mobile-logo.png"
               className="h-5"
@@ -95,8 +94,7 @@ const Header: React.FC = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-xl font-medium text-[#00205B] cursor-pointer transition-transform active:scale-95"
-                style={{ fontFamily: "serif" }}
+                className="text-lg font-bold text-[#00205B] cursor-pointer transition-transform active:scale-95"
                 onClick={() => setMenuOpen(false)}
               >
                 {item.name}
