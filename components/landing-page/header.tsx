@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { name: "Who We Are", href: "/landing-page/who-we-are" },
@@ -13,6 +14,7 @@ const navLinks = [
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
@@ -40,9 +42,12 @@ const Header: React.FC = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-[15px] font-bold cursor-pointer text-[#00205B] transition-colors hover:text-blue-700"
+                className={`text-[15px] font-bold cursor-pointer text-[#00205B] transition-colors hover:text-blue-700 relative`}
               >
                 {item.name}
+                {pathname === item.href && (
+                  <span className="absolute bottom-[-2px] left-0 right-0 h-[1px] bg-[#00205B]"></span>
+                )}
               </Link>
             ))}
           </nav>
@@ -95,10 +100,13 @@ const Header: React.FC = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-lg font-bold text-[#00205B] cursor-pointer transition-transform active:scale-95"
+                className={`text-lg font-bold text-[#00205B] cursor-pointer transition-transform active:scale-95 relative`}
                 onClick={() => setMenuOpen(false)}
               >
                 {item.name}
+                {pathname === item.href && (
+                  <span className="absolute bottom-[-2px] left-0 right-0 h-[1px] bg-[#00205B]"></span>
+                )}
               </Link>
             ))}
           </nav>
