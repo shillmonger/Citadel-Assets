@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Linkedin, Instagram, Youtube } from 'lucide-react';
+import Translate from "@/components/landing-page/translate";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -17,8 +18,9 @@ const Footer: React.FC = () => {
             <img 
               src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2022/09/citadel-securities-logo-1@2x.png" 
               alt="Citadel Securities" 
-              className="h-8 brightness-0 invert" 
+              className="h-6 brightness-0 invert" 
             />
+
           </div>
 
           <div className="flex flex-col md:flex-row gap-12 md:gap-24">
@@ -37,7 +39,7 @@ const Footer: React.FC = () => {
 
         {/* Middle Section: Legal and Socials */}
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex flex-wrap gap-6 text-[13px] text-gray-300">
+          <div className="flex flex-col gap-6 text-[13px] text-gray-300">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
             <a href="#" className="hover:text-white transition-colors">Notices</a>
@@ -53,7 +55,7 @@ const Footer: React.FC = () => {
               <a 
                 key={index} 
                 href="#" 
-                className="p-2 border border-gray-600 rounded-full hover:bg-gray-700 transition-all"
+                className="p-3 border border-gray-600 rounded-full hover:bg-gray-700 transition-all"
               >
                 <Icon size={18} />
               </a>
@@ -69,7 +71,10 @@ const Footer: React.FC = () => {
         </div>
 
       </div>
+
+      <Translate />
     </footer>
+    
   );
 };
 
