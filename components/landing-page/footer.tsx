@@ -27,8 +27,9 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-12 md:gap-24">
-            <div>
-              <a href="#" className="hover:text-blue-400 transition-colors text-[15px]">Counterparty Login</a>
+            <div className="flex flex-col gap-4">
+              <Link href="/auth-page/login" className="hover:text-blue-400 transition-colors text-[15px]">Counterparty Login</Link>
+              <Link href="/auth-page/register" className="hover:text-blue-400 transition-colors text-[15px]">Counterparty Registration</Link>
             </div>
             <nav className="flex flex-col gap-4">
               {[
