@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
 import { ChevronRight, Play } from "lucide-react";
@@ -201,9 +202,12 @@ export default function Home() {
               Collaborate with the world’s brightest minds to solve the markets’
               most interesting and complicated problems.
             </p>
+
+            <Link href="/auth-page/login">
             <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
-              View Open Roles
+              View Your Account 
             </button>
+            </Link>
           </div>
         </div>
       </main>
@@ -400,10 +404,11 @@ export default function Home() {
                 responsibility. We’ll ensure you have the resources to do great
                 work.
               </p>
-
+            <Link href="/auth-page/register">
               <button className="bg-[#1e40af] hover:bg-[#1a368a] cursor-pointer transition-all text-white px-8 py-4 rounded-full font-medium text-sm flex items-center justify-center group shadow-lg hover:shadow-xl">
-                Explore Our Culture
+                Register For full Access 
               </button>
+              </Link>
             </div>
 
             {/* Right Column: Quote & Image */}
@@ -542,9 +547,11 @@ export default function Home() {
                 </p>
               </div>
 
-              <button className="bg-[#1e40af] hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
-                View Open Roles
+            <Link href="/auth-page/login">
+              <button className="bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
+                Follow Our Top Investors 
               </button>
+            </Link>
             </div>
           </div>
 

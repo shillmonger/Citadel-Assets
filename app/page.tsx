@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
 
@@ -45,9 +46,11 @@ export default function Home() {
               We move markets forward through our trading, research and
               technology.
             </p>
-            <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
-              Explore Who We Are
-            </button>
+            <Link href="/landing-page/who-we-are">
+              <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
+                Explore Who We Are
+              </button>
+            </Link>
           </div>
         </div>
       </main>
@@ -73,10 +76,11 @@ export default function Home() {
                 scale. We leverage our strengths to provide liquidity you depend
                 on.
               </p>
-
-              <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
-                Explore What We Do
-              </button>
+              <Link href="/landing-page/what-we-do">
+                <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
+                  Explore What We Do
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -253,9 +257,11 @@ export default function Home() {
                 next-generation platform that operates at global scale.
               </p>
 
-              <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
-                Explore Career Possibilities
-              </button>
+              <Link href="/landing-page/careers">
+                <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
+                  Explore Career Possibilities
+                </button>
+              </Link>
             </div>
           </div>
         </div>

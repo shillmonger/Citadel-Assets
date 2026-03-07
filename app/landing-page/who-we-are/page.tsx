@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
 import {
@@ -166,9 +167,11 @@ const GlobalCities = () => {
                 and support our communities.
               </p>
 
+<Link href="/auth-page/login">
               <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
                 Discover Our Culture
               </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -284,9 +287,12 @@ const GlobalCities = () => {
                 striving to generate superior long-term returns for the world's
                 preeminent public and private institutions.
               </p>
+
+              <Link href="/auth-page/register">
               <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
                 Explore Citadel
               </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -363,9 +369,11 @@ const GlobalCities = () => {
                 We pursue opportunity wherever it leads. But the cities we call
                 home are among the world's most dynamic places to live and work.
               </p>
+              <Link href="/landing-page/careers">
               <button className="bg-[#1D429A] text-white text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all">
                 Explore Our Offices
               </button>
+              </Link>
             </div>
           </div>
 

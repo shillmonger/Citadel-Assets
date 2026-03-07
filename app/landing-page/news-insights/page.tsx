@@ -82,6 +82,30 @@ export default function Home() {
       image:
         "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/NS-2-17-26-794x450.jpg",
     },
+    {
+      series: "Global Market Intelligence",
+      title: "NS 2-9 Market Analysis",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/NS-2-9-26-794x450.jpg",
+    },
+    {
+      series: "Global Macro Strategy",
+      title: "February Market Overview",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/February-cover-794x494.png",
+    },
+    {
+      series: "Some Macro Thoughts",
+      title: "NS 2-2 Market Report",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/ns-2-2-26-794x450.jpg",
+    },
+    {
+      series: "Global Market Intelligence",
+      title: "Market Intelligence Report",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2021/05/iStock-918508394-794x494.jpg",
+    },
   ];
 
   const mediaInsights = [
@@ -405,12 +429,6 @@ export default function Home() {
           </Carousel>
         </div>
 
-        {/* View All Button */}
-        <div className="mt-12 text-center">
-          <button className="bg-[#1e40af] hover:bg-[#1a368a] cursor-pointer transition-all text-white px-8 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg">
-            View All Market Insights
-          </button>
-        </div>
       </section>
 
       {/* Section 4 */}

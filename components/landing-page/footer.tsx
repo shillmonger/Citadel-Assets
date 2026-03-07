@@ -48,10 +48,10 @@ const Footer: React.FC = () => {
         {/* Middle Section: Legal and Socials */}
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex flex-wrap gap-6 text-[13px] text-gray-300">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
-            <a href="#" className="hover:text-white transition-colors">Notices</a>
-            <a href="#" className="hover:text-white transition-colors">Disclosures</a>
+            <Link href="/landing-page/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/landing-page/terms-of-use" className="hover:text-white transition-colors">Terms of Use</Link>
+            <Link href="/landing-page/notices" className="hover:text-white transition-colors">Notices</Link>
+            <Link href="/landing-page/disclosures" className="hover:text-white transition-colors">Disclosures</Link>
           </div>
 
           <div className="text-[12px] text-gray-400 max-w-md md:text-center">

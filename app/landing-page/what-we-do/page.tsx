@@ -1,8 +1,7 @@
 "use client";
+import Link from "next/link";
 import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
-
-import React, { useState, useRef } from "react";
 
 export default function Home() {
   return (
@@ -270,9 +269,11 @@ export default function Home() {
                   </p>
                 </div>
 
-                <button className="mt-10 bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-colors text-white text-sm font-semibold py-4 px-10 rounded-full">
-                  Market Making Explained
-                </button>
+                <Link href="/auth-page/register">
+                  <button className="mt-10 bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-colors text-white text-sm font-semibold py-4 px-10 rounded-full">
+                    Market Making Explained
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
