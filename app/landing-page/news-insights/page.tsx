@@ -37,42 +37,50 @@ export default function Home() {
     {
       series: "Global Market Intelligence",
       title: "March Macro Checklist",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/March-Macro_cover-image-794x494.jpg",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/March-Macro_cover-image-794x494.jpg",
     },
     {
       series: "Some Macro Thoughts",
       title: "AI Will Displace...The Fed's View of Neutral",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/ns-3-2-26-794x494.jpg",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/ns-3-2-26-794x494.jpg",
     },
     {
       series: "Global Macro Strategy",
       title: "The 2026 Global Intelligence Crisis",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Global-Intelligence-Crisis-Cover-794x494.jpg",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Global-Intelligence-Crisis-Cover-794x494.jpg",
     },
     {
       series: "Some Macro Thoughts",
       title: "Risks...But Not On the Outlook",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/ns-2-23-26-794x450.jpg",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/ns-2-23-26-794x450.jpg",
     },
     {
       series: "Global Market Intelligence",
       title: "18-SR Cover Analysis",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/18-SR_cover-794x494.jpg",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/18-SR_cover-794x494.jpg",
     },
     {
       series: "Some Macro Thoughts",
       title: "From the Desk of Jim Espo",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/07/From-the-Desk-of-Jim-Espo_Cover-2-794x494.png",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/07/From-the-Desk-of-Jim-Espo_Cover-2-794x494.png",
     },
     {
       series: "Global Macro Strategy",
       title: "Frank6 Market Analysis",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Frank6-cover-794x494.jpg",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Frank6-cover-794x494.jpg",
     },
     {
       series: "Some Macro Thoughts",
       title: "NS 2-17 Market Report",
-      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/NS-2-17-26-794x450.jpg",
+      image:
+        "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/NS-2-17-26-794x450.jpg",
     },
   ];
 
@@ -356,7 +364,9 @@ export default function Home() {
                         className="w-full h-full object-cover cursor-pointer"
                       />
                     </div>
-                    <p className="text-sm font-medium text-[#1e40af] mb-2">{insight.series}</p>
+                    <p className="text-sm font-medium text-[#1e40af] mb-2">
+                      {insight.series}
+                    </p>
                     <h3 className="text-xl font-normal text-[#1a1a1a] mb-4 leading-tight">
                       {insight.title}
                     </h3>
@@ -426,7 +436,7 @@ export default function Home() {
                   { id: "otc-eu", label: "OTC Derivatives Reform—Europe" },
                   { id: "otc-apac", label: "OTC Derivatives Reform—APAC" },
                   { id: "treasuries", label: "U.S. Treasuries" },
-                  { id: "futures", label: "Commodity Futures" },
+                  { id: "futures", label: "Commodity Ft" },
                 ].map((tab) => (
                   <TabsTrigger
                     key={tab.id}
