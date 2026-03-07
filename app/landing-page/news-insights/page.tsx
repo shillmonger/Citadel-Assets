@@ -33,6 +33,49 @@ export default function Home() {
     };
   }, [api]);
 
+  const marketInsights = [
+    {
+      series: "Global Market Intelligence",
+      title: "March Macro Checklist",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/March-Macro_cover-image-794x494.jpg",
+    },
+    {
+      series: "Some Macro Thoughts",
+      title: "AI Will Displace...The Fed's View of Neutral",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/ns-3-2-26-794x494.jpg",
+    },
+    {
+      series: "Global Macro Strategy",
+      title: "The 2026 Global Intelligence Crisis",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Global-Intelligence-Crisis-Cover-794x494.jpg",
+    },
+    {
+      series: "Some Macro Thoughts",
+      title: "Risks...But Not On the Outlook",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/ns-2-23-26-794x450.jpg",
+    },
+    {
+      series: "Global Market Intelligence",
+      title: "18-SR Cover Analysis",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/18-SR_cover-794x494.jpg",
+    },
+    {
+      series: "Some Macro Thoughts",
+      title: "From the Desk of Jim Espo",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2025/07/From-the-Desk-of-Jim-Espo_Cover-2-794x494.png",
+    },
+    {
+      series: "Global Macro Strategy",
+      title: "Frank6 Market Analysis",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Frank6-cover-794x494.jpg",
+    },
+    {
+      series: "Some Macro Thoughts",
+      title: "NS 2-17 Market Report",
+      image: "https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/NS-2-17-26-794x450.jpg",
+    },
+  ];
+
   const mediaInsights = [
     {
       date: "February 24, 2026",
@@ -258,7 +301,7 @@ export default function Home() {
       </section>
 
       {/* Section 2*/}
-      <section className="bg-[#1e40af] text-white py-16 px-6 md:px-16 lg:px-24">
+      <section className="bg-[#1e40af] text-white py-30 px-6 md:px-16 lg:px-24">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-baseline gap-6">
           {/* Left Side: Title */}
           <h2 className="text-5xl md:text-5xl font-normal tracking-tight">
@@ -280,7 +323,7 @@ export default function Home() {
       </section>
 
       {/* Section 3 */}
-      <section className="bg-white py-40 px-6 md:px-12 lg:px-24">
+      <section className="bg-white py-20 px-6 md:px-12 lg:px-30">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
           <h2 className="text-5xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
@@ -292,206 +335,47 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Desktop Grid - Different layout */}
-        <div className="hidden lg:grid grid-cols-2 gap-8 mb-8">
-          {/* Top Row - 2 cards */}
-          <div className="space-y-6">
-            <div className="border-l border-gray-200 pl-6 flex flex-col h-full">
-              <div className="aspect-[16/10] overflow-hidden mb-6">
-                <img
-                  src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/March-Macro_cover-image-794x494.jpg"
-                  alt="March Macro Checklist"
-                  className="w-full h-full object-cover cursor-pointer"
-                />
-              </div>
-              <p className="text-sm font-medium text-[#1e40af] mb-2">Global Market Intelligence</p>
-              <h3 className="text-2xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                March Macro Checklist
-              </h3>
-              <a
-                href="#"
-                className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-              >
-                View Article
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <div className="border-l border-gray-200 pl-6 flex flex-col h-full">
-              <div className="aspect-[16/10] overflow-hidden mb-6">
-                <img
-                  src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/ns-3-2-26-794x494.jpg"
-                  alt="AI Will Displace...The Fed's View of Neutral"
-                  className="w-full h-full object-cover cursor-pointer"
-                />
-              </div>
-              <p className="text-sm font-medium text-[#1e40af] mb-2">Some Macro Thoughts</p>
-              <h3 className="text-2xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                AI Will Displace...The Fed's View of Neutral
-              </h3>
-              <a
-                href="#"
-                className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-              >
-                View Article
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
-          </div>
-          {/* Bottom Row - 2 cards */}
-          <div className="space-y-6">
-            <div className="border-l border-gray-200 pl-6 flex flex-col h-full">
-              <div className="aspect-[16/10] overflow-hidden mb-6">
-                <img
-                  src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Global-Intelligence-Crisis-Cover-794x494.jpg"
-                  alt="The 2026 Global Intelligence Crisis"
-                  className="w-full h-full object-cover cursor-pointer"
-                />
-              </div>
-              <p className="text-sm font-medium text-[#1e40af] mb-2">Global Macro Strategy</p>
-              <h3 className="text-2xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                The 2026 Global Intelligence Crisis
-              </h3>
-              <a
-                href="#"
-                className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-              >
-                View Article
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <div className="border-l border-gray-200 pl-6 flex flex-col h-full">
-              <div className="aspect-[16/10] overflow-hidden mb-6">
-                <img
-                  src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/ns-2-23-26-794x450.jpg"
-                  alt="Risks...But Not On the Outlook"
-                  className="w-full h-full object-cover cursor-pointer"
-                />
-              </div>
-              <p className="text-sm font-medium text-[#1e40af] mb-2">Some Macro Thoughts</p>
-              <h3 className="text-2xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                Risks...But Not On the Outlook
-              </h3>
-              <a
-                href="#"
-                className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-              >
-                View Article
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Carousel - Same design as Section 1 */}
-        <div className="lg:hidden">
+        {/* Carousel for both Desktop and Mobile */}
+        <div className="relative">
           <Carousel
             className="w-full"
             opts={{ align: "start", loop: true }}
             setApi={setApi}
           >
             <CarouselContent className="-ml-4">
-              {/* Article 1 */}
-              <CarouselItem className="pl-4 md:basis-1/2">
-                <div className="border-l border-gray-200 pl-6 flex flex-col h-full min-h-[450px]">
-                  <div className="aspect-[16/10] overflow-hidden mb-6">
-                    <img
-                      src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/March-Macro_cover-image-794x494.jpg"
-                      alt="March Macro Checklist"
-                      className="w-full h-full object-cover cursor-pointer"
-                    />
+              {marketInsights.map((insight, index) => (
+                <CarouselItem
+                  key={index}
+                  className="pl-4 md:basis-1/2 lg:basis-1/4"
+                >
+                  <div className="border-l border-gray-200 pl-6 flex flex-col h-full min-h-[450px]">
+                    <div className="aspect-[16/10] overflow-hidden mb-6">
+                      <img
+                        src={insight.image}
+                        alt={insight.title}
+                        className="w-full h-full object-cover cursor-pointer"
+                      />
+                    </div>
+                    <p className="text-sm font-medium text-[#1e40af] mb-2">{insight.series}</p>
+                    <h3 className="text-xl font-normal text-[#1a1a1a] mb-4 leading-tight">
+                      {insight.title}
+                    </h3>
+                    <a
+                      href="#"
+                      className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
+                    >
+                      View Article
+                      <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </a>
                   </div>
-                  <p className="text-sm font-medium text-[#1e40af] mb-2">Global Market Intelligence</p>
-                  <h3 className="text-xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                    March Macro Checklist
-                  </h3>
-                  <a
-                    href="#"
-                    className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-                  >
-                    View Article
-                    <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </a>
-                </div>
-              </CarouselItem>
-              {/* Article 2 */}
-              <CarouselItem className="pl-4 md:basis-1/2">
-                <div className="border-l border-gray-200 pl-6 flex flex-col h-full min-h-[450px]">
-                  <div className="aspect-[16/10] overflow-hidden mb-6">
-                    <img
-                      src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/03/ns-3-2-26-794x494.jpg"
-                      alt="AI Will Displace...The Fed's View of Neutral"
-                      className="w-full h-full object-cover cursor-pointer"
-                    />
-                  </div>
-                  <p className="text-sm font-medium text-[#1e40af] mb-2">Some Macro Thoughts</p>
-                  <h3 className="text-xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                    AI Will Displace...The Fed's View of Neutral
-                  </h3>
-                  <a
-                    href="#"
-                    className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-                  >
-                    View Article
-                    <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </a>
-                </div>
-              </CarouselItem>
-              {/* Article 3 */}
-              <CarouselItem className="pl-4 md:basis-1/2">
-                <div className="border-l border-gray-200 pl-6 flex flex-col h-full min-h-[450px]">
-                  <div className="aspect-[16/10] overflow-hidden mb-6">
-                    <img
-                      src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/Global-Intelligence-Crisis-Cover-794x494.jpg"
-                      alt="The 2026 Global Intelligence Crisis"
-                      className="w-full h-full object-cover cursor-pointer"
-                    />
-                  </div>
-                  <p className="text-sm font-medium text-[#1e40af] mb-2">Global Macro Strategy</p>
-                  <h3 className="text-xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                    The 2026 Global Intelligence Crisis
-                  </h3>
-                  <a
-                    href="#"
-                    className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-                  >
-                    View Article
-                    <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </a>
-                </div>
-              </CarouselItem>
-              {/* Article 4 */}
-              <CarouselItem className="pl-4 md:basis-1/2">
-                <div className="border-l border-gray-200 pl-6 flex flex-col h-full min-h-[450px]">
-                  <div className="aspect-[16/10] overflow-hidden mb-6">
-                    <img
-                      src="https://www.citadelsecurities.com/wp-content/uploads/sites/2/2026/02/ns-2-23-26-794x450.jpg"
-                      alt="Risks...But Not On the Outlook"
-                      className="w-full h-full object-cover cursor-pointer"
-                    />
-                  </div>
-                  <p className="text-sm font-medium text-[#1e40af] mb-2">Some Macro Thoughts</p>
-                  <h3 className="text-xl font-normal text-[#1a1a1a] mb-4 leading-tight">
-                    Risks...But Not On the Outlook
-                  </h3>
-                  <a
-                    href="#"
-                    className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
-                  >
-                    View Article
-                    <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </a>
-                </div>
-              </CarouselItem>
+                </CarouselItem>
+              ))}
             </CarouselContent>
 
-            {/* Navigation Controls (Visible on mobile) */}
+            {/* Navigation Controls */}
             <div className="flex items-center justify-between mt-12">
               <div className="flex gap-2">
-                {[0, 1, 2, 3].map((index) => (
+                {marketInsights.map((_, index) => (
                   <span
                     key={index}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
@@ -503,8 +387,8 @@ export default function Home() {
                 ))}
               </div>
               <div className="flex gap-4">
-                <CarouselPrevious className="static translate-y-0 h-12 w-12 border-blue-800 text-blue-800" />
-                <CarouselNext className="static translate-y-0 h-12 w-12 border-blue-800 text-blue-800" />
+                <CarouselPrevious className="static translate-y-0 cursor-pointer h-12 w-12 border-blue-800 text-blue-800" />
+                <CarouselNext className="static translate-y-0 cursor-pointer h-12 w-12 border-blue-800 text-blue-800" />
               </div>
             </div>
           </Carousel>
