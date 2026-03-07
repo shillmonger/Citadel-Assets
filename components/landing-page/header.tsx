@@ -54,12 +54,12 @@ const Header: React.FC = () => {
 
           {/* Desktop Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="text-[14px] cursor-pointer font-semibold text-[#00205B] hover:opacity-70 transition-opacity px-4 py-2">
+            <Link href="/auth-page/login" className="text-[14px] cursor-pointer font-semibold text-[#00205B] hover:opacity-70 transition-opacity px-4 py-2">
               Sign In
-            </button>
-            <button className="bg-[#00205B] cursor-pointer text-white text-[14px] font-semibold px-6 py-2 rounded-sm hover:bg-blue-900 transition-colors">
+            </Link>
+            <Link href="/auth-page/register" className="bg-[#00205B] cursor-pointer text-white text-[14px] font-semibold px-6 py-2 rounded-sm hover:bg-blue-900 transition-colors">
               Sign Up
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Hamburger */}
@@ -115,13 +115,13 @@ const Header: React.FC = () => {
 
           {/* Mobile Auth Buttons - Pushed to the bottom */}
           <div className="mt-auto p-8 flex flex-col gap-4 bg-gray-50/50">
-            <button className="w-full border-2 border-[#00205B] text-[#00205B] rounded-lg py-3 cursor-pointer font-bold active:bg-gray-100 transition">
+            <Link href="/auth-page/login" className="w-full border-2 border-[#00205B] text-[#00205B] rounded-lg py-3 cursor-pointer font-bold active:bg-gray-100 transition">
               Sign In
-            </button>
+            </Link>
 
-            <button className="w-full bg-[#00205B] text-white py-4 rounded-lg cursor-pointer font-bold active:bg-blue-900 transition shadow-lg">
+            <Link href="/auth-page/register" className="w-full bg-[#00205B] text-white py-4 rounded-lg cursor-pointer font-bold active:bg-blue-900 transition shadow-lg">
               Sign Up
-            </button>
+            </Link>
           </div>
         </div>
       </div>
