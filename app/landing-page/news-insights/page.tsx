@@ -370,6 +370,7 @@ export default function Home() {
                     <h3 className="text-xl font-normal text-[#1a1a1a] mb-4 leading-tight">
                       {insight.title}
                     </h3>
+                    <div className="flex-grow"></div>
                     <a
                       href="#"
                       className="group flex items-center gap-2 text-[#2563eb] text-[15px] font-medium hover:underline"
