@@ -280,6 +280,10 @@ export default function Home() {
       </section>
 
       {/* Section 3 */}
+
+
+
+      {/* Sextion 4 */}
       <section className="bg-[#f8f8f8] py-24 px-6 md:px-12 lg:px-24">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -308,7 +312,7 @@ export default function Home() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="data-[state=active]:border-b-2 data-[state=active]:border-cyan-400 data-[state=active]:text-blue-600 rounded-none bg-transparent px-0 py-3 text-sm font-medium text-gray-600 transition-all hover:text-blue-500 shadow-none border-b-2 border-transparent"
+                    className="data-[state=active]:border-b-2 cursor-pointer data-[state=active]:border-cyan-400 data-[state=active]:text-blue-600 rounded-none bg-transparent px-2 py-5 text-sm font-medium text-gray-600 transition-all hover:text-blue-500 shadow-none border-b-2 border-transparent"
                   >
                     {tab.label}
                   </TabsTrigger>
@@ -553,8 +557,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Sextion 4 */}
 
       <Footer />
     </div>
