@@ -14,6 +14,7 @@ export interface IUser extends Document {
   referralBonus: number;
   totalWithdrawal: number;
   totalDeposit: number;
+  roles: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -91,13 +92,16 @@ const UserSchema: Schema = new Schema({
     type: Number,
     default: 0,
     min: [0, 'Total deposit cannot be negative']
+  },
+  roles: {
+    type: [String],
+    default: ['user'],
+    enum: ['user', 'admin']
   }
 }, {
   timestamps: true
 });
 
-// Index for better performance
-UserSchema.index({ email: 1 });
-UserSchema.index({ username: 1 });
+// unique: true on email and username fields already creates indexes
 
 export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
