@@ -14,7 +14,7 @@ const RegisterPage: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 font-sans">
       {/* Form Container with Box Shadow */}
-      <div className="bg-white p-8 md:p-12 rounded-2xl shadow-2xl w-full max-w-lg border border-gray-100">
+      <div className="bg-white p-8 md:p-10 rounded-2xl shadow-2xl w-full max-w-100 border border-gray-100">
         
         {/* Title */}
         <h1 className="text-3xl font-bold text-center text-[#1e40af] mb-10">
@@ -25,7 +25,7 @@ const RegisterPage: React.FC = () => {
           {/* Username */}
           <div className="text-left">
             <label htmlFor="username" className="block text-sm font-bold text-gray-700 mb-1">
-              Username *
+              Username 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -44,7 +44,7 @@ const RegisterPage: React.FC = () => {
           {/* Full Name */}
           <div className="text-left">
             <label htmlFor="fullname" className="block text-sm font-bold text-gray-700 mb-1">
-              FullName *
+              FullName 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -63,7 +63,7 @@ const RegisterPage: React.FC = () => {
           {/* Email */}
           <div className="text-left">
             <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-1">
-              Your Email *
+              Your Email 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -82,7 +82,7 @@ const RegisterPage: React.FC = () => {
           {/* Password */}
           <div className="text-left">
             <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-1">
-              Password *
+              Password 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -112,7 +112,7 @@ const RegisterPage: React.FC = () => {
           {/* Confirm Password */}
           <div className="text-left">
             <label htmlFor="confirmPassword" className="block text-sm font-bold text-gray-700 mb-1">
-              Confirm Password *
+              Confirm Password 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -142,7 +142,7 @@ const RegisterPage: React.FC = () => {
           {/* Country Selection */}
           <div className="text-left">
             <label htmlFor="country" className="block text-sm font-bold text-gray-700 mb-1">
-              Country *
+              Country 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -169,7 +169,7 @@ const RegisterPage: React.FC = () => {
           {/* Phone Number (Moved after Country) */}
           <div className="text-left">
             <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-1">
-              Phone Number *
+              Phone Number 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

@@ -12,7 +12,7 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 font-sans">
       
       {/* Form Container */}
-      <div className="bg-white p-8 md:p-12 rounded-2xl shadow-2xl w-full max-w-lg border border-gray-100">
+      <div className="bg-white p-8 md:p-10 rounded-2xl shadow-2xl w-full max-w-100 border border-gray-100">
         
         {/* Title */}
         <h1 className="text-3xl font-bold text-center text-[#1e40af] mb-10">
@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
           {/* Email */}
           <div className="text-left">
             <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-1">
-              Your Email *
+              Your Email 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -43,7 +43,7 @@ const LoginPage: React.FC = () => {
           {/* Password */}
           <div className="text-left">
             <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-1">
-              Password *
+              Password 
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

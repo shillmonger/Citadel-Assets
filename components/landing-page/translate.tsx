@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Translate() {
-  useEffect(() => {
-    const existingGTranslate = document.querySelector(
-      'script[src="https://cdn.gtranslate.net/widgets/latest/float.js"]'
-    );
+  const pathname = usePathname();
 
-    if (!existingGTranslate) {
+  useEffect(() => {
+    const loadTranslate = () => {
+      const existingScript = document.querySelector(
+        'script[src="https://cdn.gtranslate.net/widgets/latest/float.js"]'
+      );
+
+      // Settings must exist before script loads
       (window as any).gtranslateSettings = {
         default_language: "en",
         native_language_names: true,
@@ -29,12 +33,27 @@ export default function Translate() {
         alt_flags: { en: "usa" },
       };
 
-      const gScript = document.createElement("script");
-      gScript.src = "https://cdn.gtranslate.net/widgets/latest/float.js";
-      gScript.defer = true;
-      document.body.appendChild(gScript);
-    }
-  }, []);
+      if (!existingScript) {
+        const script = document.createElement("script");
+        script.src = "https://cdn.gtranslate.net/widgets/latest/float.js";
+        script.defer = true;
+        document.body.appendChild(script);
+      } else {
+        // If script already exists, force re-render
+        const wrapper = document.querySelector(".gtranslate_wrapper");
+        if (wrapper) {
+          wrapper.innerHTML = "";
+        }
+
+        const script = document.createElement("script");
+        script.src = "https://cdn.gtranslate.net/widgets/latest/float.js";
+        script.defer = true;
+        document.body.appendChild(script);
+      }
+    };
+
+    loadTranslate();
+  }, [pathname]); // 👈 re-run when route changes
 
   return (
     <div className="fixed bottom-6 left-5 z-50 bg-[#3c4654] border border-gray-600 rounded-md shadow-md p-2">
