@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   return (
     <aside
       className={`
-        fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-100 flex flex-col py-6
+        fixed inset-y-0 left-0 z-500 bg-white border-r border-gray-100 flex flex-col py-6
         transform transition-transform duration-300 ease-in-out
         overflow-y-auto overscroll-contain
         w-full sm:w-80
@@ -59,7 +59,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       {/* User profile */}
       <div className="flex flex-col items-center mb-8 px-4">
-        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2 border-2 border-[#76EAD7]">
+        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2 border-2 border-[#1D429A]">
           <User className="w-12 h-12 text-gray-300" />
         </div>
         <h2 className="font-bold text-gray-800 text-lg">Evelyn W</h2>

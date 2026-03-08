@@ -12,22 +12,46 @@ import {
 } from "lucide-react";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
+import Navbar from "@/components/user-dashboard/nav";
 
 const SnowTradeDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const summaryItems = [
-    { label: "Account balance", value: "$0.00", icon: <Wallet className="w-5 h-5 text-white" /> },
-    { label: "Bonus", value: "$0.00", icon: <History className="w-5 h-5 text-white" /> },
-    { label: "Profit", value: "$0.00", icon: <History className="w-5 h-5 text-white" /> },
-    { label: "Referral Bonus", value: "$0.00", icon: <Users className="w-5 h-5 text-white" /> },
-    { label: "Total Deposit", value: "$0.00", icon: <Download className="w-5 h-5 text-white" /> },
-    { label: "Total Withdrawal", value: "$0.00", icon: <ArrowUpCircle className="w-5 h-5 text-white" /> },
+    {
+      label: "Account balance",
+      value: "$0.00",
+      icon: <Wallet className="w-5 h-5 text-white" />,
+    },
+    {
+      label: "Welcome Bonus",
+      value: "$0.00",
+      icon: <History className="w-5 h-5 text-white" />,
+    },
+    {
+      label: "Total Profit",
+      value: "$0.00",
+      icon: <History className="w-5 h-5 text-white" />,
+    },
+    {
+      label: "Referral Bonus",
+      value: "$0.00",
+      icon: <Users className="w-5 h-5 text-white" />,
+    },
+    {
+      label: "Total Deposit",
+      value: "$0.00",
+      icon: <Download className="w-5 h-5 text-white" />,
+    },
+    {
+      label: "Total Withdrawal",
+      value: "$0.00",
+      icon: <ArrowUpCircle className="w-5 h-5 text-white" />,
+    },
   ];
 
   return (
     <div className="flex min-h-screen bg-[#F9F9FB] font-sans relative overflow-x-hidden">
-
       {/* Overlay */}
       {isSidebarOpen && (
         <div
@@ -40,8 +64,7 @@ const SnowTradeDashboard = () => {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       {/* Main Content */}
-      <main className="flex-1 w-full flex flex-col min-w-0">
-
+      <main className="flex-1 w-full flex flex-col min-w-0 mb-30 md:mb-0">
         {/* Header */}
         <Header onMenuClick={() => setIsSidebarOpen(true)} />
 
@@ -52,23 +75,37 @@ const SnowTradeDashboard = () => {
           </h2>
 
           {/* Account Summary */}
-          <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-8 w-full">
-            <div className="flex items-center gap-2 mb-6">
+          <section className="w-full mb-8 md:bg-white md:rounded-xl md:shadow-sm md:border md:border-gray-100 md:p-6">
+            <div className="flex items-center gap-2 mb-6 px-1 md:px-0">
               <div className="w-1 h-4 bg-[#76EAD7] rounded-full"></div>
-              <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">Account Summary</h3>
+              <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">
+                Account Summary
+              </h3>
             </div>
+
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
               {summaryItems.map((item) => (
                 <div
                   key={item.label}
-                  className="cursor-pointer flex flex-col md:flex-row justify-between items-start md:items-center p-3 md:p-4 border border-gray-50 rounded-xl hover:border-[#76EAD7]/40 hover:bg-blue-50/30 transition-all duration-300 group"
+                  className="cursor-pointer flex flex-col md:flex-row items-center md:items-center justify-between
+        p-3 md:p-4 border border-gray-50 rounded-xl
+        shadow-md hover:shadow-lg
+        hover:border-[#76EAD7]/40 hover:bg-blue-50/30
+        transition-all duration-300 group"
                 >
-                  <div className="mb-2 md:mb-0">
-                    <p className="text-gray-400 text-[9px] font-bold uppercase tracking-wider mb-1">{item.label}</p>
-                    <p className="text-lg md:text-xl font-bold text-[#1D429A]">{item.value}</p>
-                  </div>
-                  <div className="bg-[#1D429A] p-2 rounded-full shadow-sm group-hover:scale-110 transition-transform">
+                  {/* Icon */}
+                  <div className="bg-[#1D429A] p-3 rounded-lg shadow-sm mb-2 md:mb-0 md:order-2 group-hover:scale-110 transition-transform">
                     {item.icon}
+                  </div>
+
+                  {/* Text */}
+                  <div className="text-center md:text-left md:order-1">
+                    <p className="text-gray-400 text-[9px] font-bold uppercase tracking-wider mb-1">
+                      {item.label}
+                    </p>
+                    <p className="text-lg md:text-xl font-bold text-[#1D429A]">
+                      {item.value}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -79,7 +116,9 @@ const SnowTradeDashboard = () => {
           <section className="mb-8 w-full">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-1 h-4 bg-[#76EAD7] rounded-full"></div>
-              <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">Active Plan(s) (0)</h3>
+              <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">
+                Active Plan(s) (0)
+              </h3>
             </div>
             <div className="bg-white rounded-xl border border-gray-100 p-10 md:p-16 flex flex-col items-center justify-center shadow-sm w-full">
               <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
@@ -99,7 +138,9 @@ const SnowTradeDashboard = () => {
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-1 h-4 bg-[#76EAD7] rounded-full"></div>
-                <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">Recent transactions (0)</h3>
+                <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">
+                  Recent transactions (0)
+                </h3>
               </div>
               <button className="cursor-pointer text-[#1D429A] text-[10px] font-bold flex items-center gap-1 hover:underline underline-offset-4">
                 <History className="w-3 h-3" /> View all
@@ -118,7 +159,10 @@ const SnowTradeDashboard = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-50">
                     <tr>
-                      <td colSpan={4} className="px-6 py-12 text-center text-gray-300 text-xs italic">
+                      <td
+                        colSpan={4}
+                        className="px-6 py-12 text-center text-gray-300 text-xs italic"
+                      >
                         No transactions found in your history
                       </td>
                     </tr>
@@ -129,6 +173,10 @@ const SnowTradeDashboard = () => {
           </section>
         </div>
       </main>
+
+
+      <Navbar />
+      
     </div>
   );
 };
