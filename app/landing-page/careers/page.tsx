@@ -216,7 +216,7 @@ export default function Home() {
       <section className="bg-white py-40 px-6 md:px-12 lg:px-24">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
-          <h2 className="text-5xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
+          <h2 className="text-3xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
             Discover Careers by Role
           </h2>
           <p className="text-lg text-[#4a4a4a] max-w-xs md:mt-4">
@@ -296,7 +296,7 @@ export default function Home() {
           {/* Blue Header Section */}
           <div className="max-w-7xl mx-auto px-6 py-10 lg:px-16 flex flex-col md:flex-row justify-between items-start md:items-end">
             <div className="max-w-md">
-              <h2 className="text-5xl md:text-5xl font-normal leading-tight tracking-tight mb-8">
+              <h2 className="text-3xl md:text-5xl font-normal leading-tight tracking-tight mb-8">
                 Work with
                 <br />
                 Extraordinary
@@ -390,7 +390,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
             {/* Left Column: Heading & CTA */}
             <div className="lg:col-span-5 space-y-8">
-              <h2 className="text-5xl md:text-4xl font-normal text-[#1a1a1a] leading-[1.1] tracking-tight">
+              <h2 className="text-3xl md:text-4xl font-normal text-[#1a1a1a] leading-[1.1] tracking-tight">
                 Shape Bold
                 <br />
                 Solutions to
@@ -404,11 +404,12 @@ export default function Home() {
                 responsibility. We’ll ensure you have the resources to do great
                 work.
               </p>
-            <Link href="/auth-page/register">
-              <button className="bg-[#1e40af] hover:bg-[#1a368a] cursor-pointer transition-all text-white px-8 py-4 rounded-full font-medium text-sm flex items-center justify-center group shadow-lg hover:shadow-xl">
-                Register For full Access 
-              </button>
-              </Link>
+
+              <Link href="/auth-page/register" className="block w-full md:w-auto">
+  <button className="w-full md:w-auto bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
+    Register For full Access 
+  </button>
+</Link>
             </div>
 
             {/* Right Column: Quote & Image */}
@@ -457,7 +458,7 @@ export default function Home() {
       <section className="bg-white py-10 px-6 md:px-12 lg:px-24">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
-          <h2 className="text-5xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
+          <h2 className="text-3xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
             Explore Career Perspectives
           </h2>
           <p className="text-lg text-[#4a4a4a] max-w-xs md:mt-4">
@@ -533,7 +534,7 @@ export default function Home() {
           {/* Left Side: Content */}
           <div className="flex flex-col justify-center px-8 py-20 md:px-16 lg:px-24 bg-white">
             <div className="max-w-md">
-              <h2 className="text-5xl md:text-5xl font-normal text-[#1a1a1a] leading-[1.1] tracking-tight mb-8">
+              <h2 className="text-3xl md:text-5xl font-normal text-[#1a1a1a] leading-[1.1] tracking-tight mb-8">
                 Make Your Next
                 <br />
                 Career Move
@@ -547,11 +548,11 @@ export default function Home() {
                 </p>
               </div>
 
-            <Link href="/auth-page/login">
-              <button className="bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
-                Follow Our Top Investors 
-              </button>
-            </Link>
+            <Link href="/auth-page/login" className="block w-full md:w-auto">
+  <button className="w-full md:w-auto bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
+    Follow Our Top Investors
+  </button>
+</Link>
             </div>
           </div>
 

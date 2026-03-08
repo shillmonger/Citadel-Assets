@@ -428,279 +428,272 @@ export default function Home() {
             </div>
           </Carousel>
         </div>
-
       </section>
 
-      {/* Section 4 */}
-      <section className="bg-[#f8f8f8] py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
+      {/* Section 4 - Policy Positions - UPGRADED */}
+      <section className="bg-gradient-to-br from-[#f8f9fa] to-[#f1f3f5] py-28 px-6 md:px-12 lg:px-24 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative">
           {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-8">
-            <h2 className="text-3xl md:text-5xl font-normal text-[#1a1a1a] tracking-tight">
-              Policy Positions
-            </h2>
-            <p className="max-w-md text-[#4a4a4a] text-lg leading-relaxed md:pt-4">
-              We promote policy efforts to foster efficiency, transparency and
-              resilience in a range of global markets.
+          <div className="flex flex-col md:flex-row justify-between items-start mb-10 gap-10">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-normal text-[#1a1a1a] tracking-tighter leading-[1.05]">
+                Policy Positions
+              </h2>
+            </div>
+
+            <p className="max-w-md text-lg leading-relaxed text-[#374151] md:pt-3">
+              We actively promote policy efforts that foster efficiency,
+              transparency, and resilience across global financial markets.
             </p>
           </div>
 
-          {/* Tabs Component */}
-          <div className="bg-white p-8 md:p-12 shadow-sm border border-gray-100">
+          {/* Main Card */}
+          <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
             <Tabs defaultValue="equities" className="w-full">
-              <TabsList className="flex flex-wrap justify-start gap-x-8 gap-y-4 bg-transparent border-b border-gray-200 rounded-none h-auto p-0 mb-12">
-                {[
-                  { id: "equities", label: "Equities & Options" },
-                  { id: "otc-us", label: "OTC Derivatives Reform—US" },
-                  { id: "otc-eu", label: "OTC Derivatives Reform—Europe" },
-                  { id: "otc-apac", label: "OTC Derivatives Reform—APAC" },
-                  { id: "treasuries", label: "U.S. Treasuries" },
-                  { id: "futures", label: "Commodity Ft" },
-                ].map((tab) => (
-                  <TabsTrigger
-                    key={tab.id}
-                    value={tab.id}
-                    className="data-[state=active]:border-b-2 cursor-pointer data-[state=active]:border-cyan-400 data-[state=active]:text-blue-600 rounded-none bg-transparent px-2 py-5 text-sm font-medium text-gray-600 transition-all hover:text-blue-500 shadow-none border-b-2 border-transparent"
-                  >
-                    {tab.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-
-              <TabsContent value="equities" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
-                  {/* Left Column: Text */}
-                  <div>
-                    <h3 className="text-3xl font-normal text-[#1a1a1a] mb-8">
-                      Equities & Options
-                    </h3>
-                    <p className="text-[15px] leading-relaxed text-[#4a4a4a]">
-                      The U.S. equity markets are the fairest, most transparent,
-                      resilient, and competitive markets in the world. Citadel
-                      Securities believes that competition and innovation have
-                      markedly improved conditions for all investors, who
-                      benefit from dramatically lower trading costs, improved
-                      market transparency and liquidity, and increased
-                      competition. We support regulatory efforts to ensure that
-                      U.S. equity markets continue to best serve the interests
-                      of all investors.
-                    </p>
-                  </div>
-
-                  {/* Right Column: Links */}
-                  <div className="border-l border-gray-200 pl-12 space-y-4">
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      CAT Limitation of Liability
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      CAT Data Security
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      IEX D-Limit
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      AIM Auctions for SPX
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      AIM Auctions for SPX
-                    </div>
-                  </div>
+              {/* Tabs Header */}
+              <div className="border-b border-gray-100 bg-white px-8 md:px-12 pt-8">
+                <div className="overflow-x-auto -mx-2 pb-2 scrollbar-hide">
+                  <TabsList className="flex flex-nowrap md:flex-wrap gap-x-10 gap-y-6 bg-transparent h-auto p-0 min-w-max md:min-w-0 w-max md:w-full">
+                    {[
+                      { id: "equities", label: "Equities & Options" },
+                      { id: "otc-us", label: "OTC Derivatives Reform—US" },
+                      { id: "otc-eu", label: "OTC Derivatives Reform—Europe" },
+                      { id: "otc-apac", label: "OTC Derivatives Reform—APAC" },
+                      { id: "treasuries", label: "U.S. Treasuries" },
+                      { id: "futures", label: "Commodity Futures" },
+                    ].map((tab) => (
+                      <TabsTrigger
+                        key={tab.id}
+                        value={tab.id}
+                        className="group relative cursor-pointer px-1 pb-6 text-base font-medium text-gray-600 data-[state=active]:text-[#0a0a0a] transition-all duration-300 whitespace-nowrap
+                             after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-gradient-to-r after:from-cyan-400 after:to-blue-600 
+                             data-[state=active]:after:scale-x-100 after:transition-transform after:duration-300
+                             hover:text-blue-700"
+                      >
+                        {tab.label}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
                 </div>
-              </TabsContent>
+              </div>
 
-              <TabsContent value="otc-us" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
-                  <div>
-                    <h3 className="text-3xl font-normal text-[#1a1a1a] mb-8">
-                      OTC Derivatives Reform—US
-                    </h3>
-                    <p className="text-[15px] leading-relaxed text-[#4a4a4a]">
-                      Citadel Securities is a firm supporter of the G-20 reforms
-                      to the OTC derivatives markets, including the central
-                      clearing and trading requirements. These reforms have
-                      already begun and will continue to reduce
-                      interconnectedness and systemic risk, improve pre- and
-                      post-trade transparency and foster an open, level,
-                      competitive playing field.
-                    </p>
+              {/* Tab Contents */}
+              <div className="p-8 md:p-12 lg:p-16">
+                {/* Equities & Options */}
+                <TabsContent
+                  value="equities"
+                  className="mt-0 focus-visible:outline-none"
+                >
+                  <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
+                    <div>
+                      <h3 className="text-3xl font-semibold text-[#0a0a0a] tracking-tight mb-8">
+                        Equities & Options
+                      </h3>
+                      <p className="text-[15.5px] leading-relaxed text-[#374151]">
+                        The U.S. equity markets are the fairest, most
+                        transparent, resilient, and competitive markets in the
+                        world. Citadel Securities believes that competition and
+                        innovation have markedly improved conditions for all
+                        investors.
+                      </p>
+                    </div>
+                    <div className="space-y-5">
+                      {[
+                        "CAT Limitation of Liability",
+                        "CAT Data Security",
+                        "IEX D-Limit",
+                        "AIM Auctions for SPX",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="group flex items-center gap-4 text-lg text-[#111827] hover:text-blue-600 transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  {/* Right Column: Links */}
-                  <div className="border-l border-gray-200 pl-12 space-y-4">
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to CFTC on Clearing Agency Governance
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to SEC on Clearing Agency Governance
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to CFTC on Amending the Swap Clearing
-                      Requirement To Account for the Transition From LIBOR to
-                      RFRs
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to SEC on Rules Relating to Security-Based
-                      Swap Execution and Registration and Regulation of SBSEFs
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
 
-              <TabsContent value="otc-eu" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
-                  <div>
-                    <h3 className="text-3xl font-normal text-[#1a1a1a] mb-8">
-                      OTC Derivatives Reform—Europe
-                    </h3>
-                    <p className="text-[15px] leading-relaxed text-[#4a4a4a]">
-                      Citadel Securities is a firm supporter of the G-20 reforms
-                      to the OTC derivatives markets, including the central
-                      clearing and trading requirements. These reforms have
-                      already begun and are expected to reduce
-                      interconnectedness and systemic risk, improve pre- and
-                      post-trade transparency and foster an open, level,
-                      competitive playing field.
-                    </p>
-                  </div>
-                  {/* Right Column: Links */}
-                  <div className="border-l border-gray-200 pl-12 space-y-4">
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Response to ESMA Consultation on Updating the Clearing
-                      Obligation & Trading Obligation to Reflect RFRs
+                {/* OTC US */}
+                <TabsContent
+                  value="otc-us"
+                  className="mt-0 focus-visible:outline-none"
+                >
+                  <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
+                    <div>
+                      <h3 className="text-3xl font-semibold text-[#0a0a0a] tracking-tight mb-8">
+                        OTC Derivatives Reform—US
+                      </h3>
+                      <p className="text-[15.5px] leading-relaxed text-[#374151]">
+                        Citadel Securities is a firm supporter of the G-20
+                        reforms to the OTC derivatives markets, including
+                        central clearing and trading requirements.
+                      </p>
                     </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Response to BoE Consultation on Modifying the Clearing
-                      Obligation to Reflect RFR
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Feedback on ESMA Market Data Guidelines{" "}
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      ESMA Transaction Reporting and Reference Data{" "}
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      ESMA Post-trade Risk Reduction Services{" "}
+                    <div className="space-y-5">
+                      {[
+                        "Comment Letter to CFTC on Clearing Agency Governance",
+                        "Comment Letter to SEC on Clearing Agency Governance",
+                        "Comment Letter to CFTC on Amending the Swap Clearing Requirement To Account for the Transition From LIBOR to RFRs",
+                        "Comment Letter to SEC on Rules Relating to Security-Based Swap Execution and Registration and Regulation of SBSEFs",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="group flex items-center gap-4 text-lg text-[#111827] hover:text-blue-600 transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform" />
+                          {item}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
 
-              <TabsContent value="otc-apac" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
-                  <div>
-                    <h3 className="text-3xl font-normal text-[#1a1a1a] mb-8">
-                      OTC Derivatives Reform—APAC
-                    </h3>
-                    <p className="text-[15px] leading-relaxed text-[#4a4a4a]">
-                      Citadel Securities is a firm supporter of the G-20 reforms
-                      to the OTC derivatives markets, including the central
-                      clearing and trading requirements. These reforms have
-                      already begun and will continue to reduce
-                      interconnectedness and systemic risk, improve pre- and
-                      post-trade transparency and foster an open, level,
-                      competitive playing field.
-                    </p>
+                {/* OTC Europe */}
+                <TabsContent
+                  value="otc-eu"
+                  className="mt-0 focus-visible:outline-none"
+                >
+                  <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
+                    <div>
+                      <h3 className="text-3xl font-semibold text-[#0a0a0a] tracking-tight mb-8">
+                        OTC Derivatives Reform—Europe
+                      </h3>
+                      <p className="text-[15.5px] leading-relaxed text-[#374151]">
+                        Citadel Securities is a firm supporter of the G-20
+                        reforms to the OTC derivatives markets, including
+                        central clearing and trading requirements.
+                      </p>
+                    </div>
+                    <div className="space-y-5">
+                      {[
+                        "Response to ESMA Consultation on Updating the Clearing Obligation & Trading Obligation to Reflect RFRs",
+                        "Response to BoE Consultation on Modifying the Clearing Obligation to Reflect RFR",
+                        "Feedback on ESMA Market Data Guidelines",
+                        "ESMA Transaction Reporting and Reference Data",
+                        "ESMA Post-trade Risk Reduction Services",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="group flex items-center gap-4 text-lg text-[#111827] hover:text-blue-600 transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  {/* Right Column: Links */}
-                  <div className="border-l border-gray-200 pl-12 space-y-4">
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to the HKMA and HK SFC on the Clearing
-                      Obligation and Platform Trading Obligation
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Response to the Singapore MAS Consultation on Mandatory
-                      Trading of Derivatives Contracts
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to HK SFC on Client Clearing Services &
-                      Straight-Through-Processing{" "}
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
 
-              <TabsContent value="treasuries" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
-                  <div>
-                    <h3 className="text-3xl font-normal text-[#1a1a1a] mb-8">
-                      U.S. Treasuries
-                    </h3>
-                    <p className="text-[15px] leading-relaxed text-[#4a4a4a]">
-                      Citadel Securities supports efforts to modernize the
-                      regulatory framework for the U.S. Treasury markets,
-                      including the introduction of real-time public reporting,
-                      the registration of multilateral trading venues,
-                      non-discriminatory access to trading venues, and the
-                      expansion of repo clearing. Consistent with our
-                      longstanding commitment to more fair and efficient
-                      markets, we believe these changes will enhance
-                      transparency and resiliency in the U.S. Treasury market
-                      and provide Treasury market participants with greater
-                      choice among trading venues and counterparties.
-                    </p>
-                  </div>
-                  {/* Right Column: Links */}
-                  <div className="border-l border-gray-200 pl-12 space-y-4">
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to SEC on FICC Clearing Access Proposals
+                {/* OTC APAC */}
+                <TabsContent
+                  value="otc-apac"
+                  className="mt-0 focus-visible:outline-none"
+                >
+                  <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
+                    <div>
+                      <h3 className="text-3xl font-semibold text-[#0a0a0a] tracking-tight mb-8">
+                        OTC Derivatives Reform—APAC
+                      </h3>
+                      <p className="text-[15.5px] leading-relaxed text-[#374151]">
+                        Citadel Securities is a firm supporter of the G-20
+                        reforms to the OTC derivatives markets, including
+                        central clearing and trading requirements.
+                      </p>
                     </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Request for Information on Additional Transparency for
-                      Secondary Market Transactions of Treasury Securities
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to SEC on FINRA’s Proposal to Publish
-                      Aggregated Transaction Information More Frequently
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to SEC on Applying Regulation ATS & SCI for
-                      ATSs that Trade U.S. Government Securities{" "}
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      SEC Reg ATS Proposal{" "}
+                    <div className="space-y-5">
+                      {[
+                        "Comment Letter to the HKMA and HK SFC on the Clearing Obligation and Platform Trading Obligation",
+                        "Response to the Singapore MAS Consultation on Mandatory Trading of Derivatives Contracts",
+                        "Comment Letter to HK SFC on Client Clearing Services & Straight-Through-Processing",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="group flex items-center gap-4 text-lg text-[#111827] hover:text-blue-600 transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform" />
+                          {item}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
 
-              <TabsContent value="futures" className="mt-0">
-                <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
-                  <div>
-                    <h3 className="text-3xl font-normal text-[#1a1a1a] mb-8">
-                      Commodity Futures
-                    </h3>
-                    <p className="text-[15px] leading-relaxed text-[#4a4a4a]">
-                      Citadel Securities believes that investors play an
-                      essential and beneficial role in the commodities markets.
-                      Investors’ research and analysis leads to greater
-                      transparency, facilitating more efficient economic
-                      decisions by commodity producers and consumers and
-                      optimizing resource allocation across the real economy. At
-                      the same time, investors’ market activity enhances
-                      liquidity and facilitates the price discovery process for
-                      all market participants.
-                    </p>
-                  </div>
-                  {/* Right Column: Links */}
-                  <div className="border-l border-gray-200 pl-12 space-y-4">
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      CFTC Position Limits{" "}
+                {/* Treasuries */}
+                <TabsContent
+                  value="treasuries"
+                  className="mt-0 focus-visible:outline-none"
+                >
+                  <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
+                    <div>
+                      <h3 className="text-3xl font-semibold text-[#0a0a0a] tracking-tight mb-8">
+                        U.S. Treasuries
+                      </h3>
+                      <p className="text-[15.5px] leading-relaxed text-[#374151]">
+                        Citadel Securities supports efforts to modernize the
+                        regulatory framework for the U.S. Treasury markets,
+                        including real-time public reporting and expanded repo
+                        clearing.
+                      </p>
                     </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter on the ICE Asymmetric Speed Bump
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to the CFTC on Project KISS
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to the CFTC on Regulation Automated Trading
-                      (Reg AT)
-                    </div>
-                    <div className="text-lg text-[#1a1a1a] hover:text-blue-600 cursor-pointer transition-colors">
-                      Comment Letter to the CFTC on Position Limits (No. 2){" "}
+                    <div className="space-y-5">
+                      {[
+                        "Comment Letter to SEC on FICC Clearing Access Proposals",
+                        "Request for Information on Additional Transparency for Secondary Market Transactions of Treasury Securities",
+                        "Comment Letter to SEC on FINRA's Proposal to Publish Aggregated Transaction Information More Frequently",
+                        "Comment Letter to SEC on Applying Regulation ATS & SCI for ATSs that Trade U.S. Government Securities",
+                        "SEC Reg ATS Proposal",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="group flex items-center gap-4 text-lg text-[#111827] hover:text-blue-600 transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform" />
+                          {item}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
+
+                {/* Commodity Futures */}
+                <TabsContent
+                  value="futures"
+                  className="mt-0 focus-visible:outline-none"
+                >
+                  <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
+                    <div>
+                      <h3 className="text-3xl font-semibold text-[#0a0a0a] tracking-tight mb-8">
+                        Commodity Futures
+                      </h3>
+                      <p className="text-[15.5px] leading-relaxed text-[#374151]">
+                        Citadel Securities believes that investors play an
+                        essential and beneficial role in the commodities
+                        markets, enhancing liquidity and price discovery.
+                      </p>
+                    </div>
+                    <div className="space-y-5">
+                      {[
+                        "CFTC Position Limits",
+                        "Comment Letter on the ICE Asymmetric Speed Bump",
+                        "Comment Letter to the CFTC on Project KISS",
+                        "Comment Letter to the CFTC on Regulation Automated Trading (Reg AT)",
+                        "Comment Letter to the CFTC on Position Limits (No. 2)",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="group flex items-center gap-4 text-lg text-[#111827] hover:text-blue-600 transition-all duration-200 cursor-pointer"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+              </div>
             </Tabs>
           </div>
         </div>
