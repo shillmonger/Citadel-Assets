@@ -106,7 +106,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 mb-20">
             {/* Left: Big Title */}
             <div>
-              <h2 className="text-5xl md:text-5xl font-normal tracking-tighter text-white leading-[1.05]">
+              <h2 className="text-3xl md:text-5xl font-normal tracking-tighter text-white leading-[1.05]">
                 Expertise Across
                 <br /> Asset Classes
               </h2>
@@ -191,7 +191,7 @@ export default function Home() {
         {/* Top Section: Competitive Advantage */}
         <div className="max-w-7xl mx-auto px-6 py-20 lg:px-0">
           <div>
-            <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-[#1a1a1a] mb-16 leading-[1.1]">
+            <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-[#1a1a1a] mb-16 leading-[1.1]">
               Our Competitive
               <br />
               Advantage
@@ -246,7 +246,7 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-12 items-start">
               {/* Left Title */}
               <div>
-                <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-[#1a1a1a] leading-[1.1]">
+                <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-[#1a1a1a] leading-[1.1]">
                   What Is a<br />
                   Market Maker?
                 </h2>
@@ -269,8 +269,11 @@ export default function Home() {
                   </p>
                 </div>
 
-                <Link href="/auth-page/register">
-                  <button className="mt-10 bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-colors text-white text-sm font-semibold py-4 px-10 rounded-full">
+                <Link
+                  href="/auth-page/register"
+                  className="block w-full md:w-auto"
+                >
+                  <button className="mt-10 w-full md:w-auto bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-colors text-white text-sm font-semibold py-4 px-10 rounded-full">
                     Market Making Explained
                   </button>
                 </Link>

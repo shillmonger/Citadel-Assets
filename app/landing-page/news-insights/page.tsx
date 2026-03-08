@@ -205,7 +205,7 @@ export default function Home() {
       <section className="bg-white py-20 px-6 md:px-12 lg:px-24">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
-          <h2 className="text-5xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
+          <h2 className="mt-10 md:mt-0 text-4xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
             Our Firm in the Media
           </h2>
           <p className="text-lg text-[#4a4a4a] max-w-xs md:mt-4">
@@ -333,15 +333,15 @@ export default function Home() {
       </section>
 
       {/* Section 2*/}
-      <section className="bg-[#1e40af] text-white py-30 px-6 md:px-16 lg:px-24">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-baseline gap-6">
+      <section className="bg-[#1e40af] text-white py-20 md:py-30 px-6 md:px-16 lg:px-24">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between  md:items-baseline gap-6">
           {/* Left Side: Title */}
-          <h2 className="text-5xl md:text-5xl font-normal tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-normal tracking-tight">
             Media Resources
           </h2>
 
           {/* Right Side: Inquiry Text */}
-          <p className="text-sm md:text-base font-light text-blue-100">
+          <p className="text-base md:text-base font-light text-blue-100">
             For media relations inquiries, please email us at:{" "}
             <a
               href="mailto:Media@citadelsecurities.com"
@@ -358,7 +358,7 @@ export default function Home() {
       <section className="bg-white py-20 px-6 md:px-12 lg:px-30">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
-          <h2 className="text-5xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
+          <h2 className="text-3xl font-normal text-[#1a1a1a] tracking-tight max-w-md">
             Market Insights
           </h2>
           <p className="text-lg text-[#4a4a4a] max-w-xs md:mt-4">
@@ -436,7 +436,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-8">
-            <h2 className="text-5xl md:text-5xl font-normal text-[#1a1a1a] tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-normal text-[#1a1a1a] tracking-tight">
               Policy Positions
             </h2>
             <p className="max-w-md text-[#4a4a4a] text-lg leading-relaxed md:pt-4">
