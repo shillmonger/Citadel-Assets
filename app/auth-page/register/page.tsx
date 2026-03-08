@@ -17,7 +17,7 @@ const RegisterPage: React.FC = () => {
       <div className="bg-white p-8 md:p-10 rounded-2xl shadow-2xl w-full max-w-100 border border-gray-100">
         
         {/* Title */}
-        <h1 className="text-3xl font-bold text-center text-[#1e40af] mb-10">
+        <h1 className="text-2xl font-bold text-center text-[#1e40af] mb-10">
           Create an Account
         </h1>
 

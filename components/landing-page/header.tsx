@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { name: "Who We Are", href: "/landing-page/who-we-are" },
@@ -54,10 +54,16 @@ const Header: React.FC = () => {
 
           {/* Desktop Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/auth-page/login" className="text-[14px] cursor-pointer font-semibold text-[#00205B] hover:opacity-70 transition-opacity px-4 py-2">
+            <Link
+              href="/auth-page/login"
+              className="text-[14px] cursor-pointer font-semibold text-[#00205B] hover:opacity-70 transition-opacity px-4 py-2"
+            >
               Sign In
             </Link>
-            <Link href="/auth-page/register" className="bg-[#00205B] cursor-pointer text-white text-[14px] font-semibold px-6 py-2 rounded-sm hover:bg-blue-900 transition-colors">
+            <Link
+              href="/auth-page/register"
+              className="bg-[#00205B] cursor-pointer text-white text-[14px] font-semibold px-6 py-2 rounded-sm hover:bg-blue-900 transition-colors"
+            >
               Sign Up
             </Link>
           </div>
@@ -115,20 +121,20 @@ const Header: React.FC = () => {
 
           {/* Mobile Auth Buttons - Pushed to the bottom */}
           <div className="mt-auto p-8 flex flex-col gap-4 bg-gray-50/50">
-  <Link
-    href="/auth-page/login"
-    className="w-full text-center border-2 border-[#00205B] text-[#00205B] rounded-lg py-3 cursor-pointer font-bold active:bg-gray-100 transition"
-  >
-    Sign In
-  </Link>
+            <Link
+              href="/auth-page/login"
+              className="w-full text-center border-2 border-[#00205B] text-[#00205B] rounded-lg py-3 cursor-pointer font-bold active:bg-gray-100 transition"
+            >
+              Sign In
+            </Link>
 
-  <Link
-    href="/auth-page/register"
-    className="w-full text-center bg-[#00205B] text-white py-4 rounded-lg cursor-pointer font-bold active:bg-blue-900 transition shadow-lg"
-  >
-    Sign Up
-  </Link>
-</div>
+            <Link
+              href="/auth-page/register"
+              className="w-full text-center bg-[#00205B] text-white py-4 rounded-lg cursor-pointer font-bold active:bg-blue-900 transition shadow-lg"
+            >
+              Sign Up
+            </Link>
+          </div>
         </div>
       </div>
     </>
