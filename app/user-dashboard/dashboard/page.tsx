@@ -157,12 +157,17 @@ const SnowTradeDashboard = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-50">
                     <tr>
-                      <td
-                        colSpan={4}
-                        className="px-6 py-12 text-center text-gray-300 text-xs italic"
-                      >
-                        No transactions found in your history
-                      </td>
+
+<td
+  colSpan={4}
+  className="px-6 py-12 text-center text-gray-300 text-xs italic"
+>
+  <div className="flex flex-col items-center justify-center gap-2">
+    <Wallet className="w-10 h-10 text-gray-400" />
+    <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
+                No transactions found in your history.              </p>
+  </div>
+</td>
                     </tr>
                   </tbody>
                 </table>
