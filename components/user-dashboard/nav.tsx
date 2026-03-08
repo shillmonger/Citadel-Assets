@@ -28,7 +28,7 @@ export default function UserNav() {
             className={`flex items-center justify-center w-12 h-12 rounded-2xl mb-1.5 transition-all duration-300 ${
               active
                 ? "bg-[#1D429A] text-white shadow-lg shadow-blue-200"
-                : "bg-gray-50 text-gray-400"
+                : "bg-gray-100 text-gray-500"
             }`}
           >
             <Icon

@@ -122,7 +122,7 @@ const SnowTradeDashboard = () => {
             </div>
             <div className="bg-white rounded-xl border border-gray-100 p-10 md:p-16 flex flex-col items-center justify-center shadow-sm w-full">
               <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                <Sprout className="w-8 h-8 text-gray-200" />
+                <Sprout className="w-10 h-10 text-gray-400" />
               </div>
               <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
                 You do not have an active investment plan at the moment.
