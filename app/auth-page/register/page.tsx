@@ -261,6 +261,29 @@ const RegisterPage: React.FC = () => {
   const [phone, setPhone] = React.useState("");
   const [searchTerm, setSearchTerm] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [hcaptchaLoaded, setHcaptchaLoaded] = React.useState(false);
+
+  // Load hCaptcha script
+  React.useEffect(() => {
+    const loadHcaptcha = () => {
+      if (typeof window !== 'undefined' && !(window as any).hcaptcha) {
+        const script = document.createElement('script');
+        script.src = 'https://js.hcaptcha.com/1/api.js';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => setHcaptchaLoaded(true);
+        document.head.appendChild(script);
+      } else if ((window as any).hcaptcha) {
+        setHcaptchaLoaded(true);
+      }
+    };
+
+    loadHcaptcha();
+
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
 
   const togglePassword = () => setShowPassword(!showPassword);
   const toggleConfirmPassword = () =>
@@ -296,6 +319,12 @@ const RegisterPage: React.FC = () => {
       const referralId = formData.get('referral') as string;
 
       // Get hCaptcha token
+      if (!hcaptchaLoaded || !(window as any).hcaptcha) {
+        toast.error('hCaptcha is still loading. Please wait a moment and try again.');
+        setIsLoading(false);
+        return;
+      }
+
       const hcaptchaResponse = (window as any).hcaptcha.getResponse();
       if (!hcaptchaResponse) {
         toast.error('Please complete the hCaptcha verification');
@@ -333,21 +362,28 @@ const RegisterPage: React.FC = () => {
       if (data.success) {
         toast.success(data.message);
         // Reset hCaptcha
-        (window as any).hcaptcha.reset();
+        if ((window as any).hcaptcha) {
+          (window as any).hcaptcha.reset();
+        }
         // Redirect to dashboard after 2 seconds
         setTimeout(() => {
           router.push('/user-dashboard/dashboard');
         }, 2000);
       } else {
         toast.error(data.message);
+        console.error('Registration errors:', data.errors);
         // Reset hCaptcha on error
-        (window as any).hcaptcha.reset();
+        if ((window as any).hcaptcha) {
+          (window as any).hcaptcha.reset();
+        }
       }
     } catch (error) {
       console.error('Registration error:', error);
       toast.error('An unexpected error occurred. Please try again.');
       // Reset hCaptcha on error
-      (window as any).hcaptcha.reset();
+      if ((window as any).hcaptcha) {
+        (window as any).hcaptcha.reset();
+      }
     } finally {
       setIsLoading(false);
     }
@@ -620,11 +656,26 @@ const RegisterPage: React.FC = () => {
           </div>
 
           <div className="flex justify-center py-2">
-            <div
-              className="h-captcha"
-              data-sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY} // load from env
-            ></div>
-            <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+            {hcaptchaLoaded && (
+              <div
+                className="h-captcha"
+                data-sitekey="049c4e0e-82f8-4d60-acee-069406609eae"
+                data-callback={(token: string) => {
+                  console.log('hCaptcha solved successfully');
+                }}
+                data-expired-callback={() => {
+                  console.log('hCaptcha expired');
+                }}
+                data-error-callback={(error: any) => {
+                  console.error('hCaptcha error:', error);
+                }}
+              ></div>
+            )}
+            {!hcaptchaLoaded && (
+              <div className="w-full h-20 bg-gray-100 rounded-lg flex items-center justify-center">
+                <div className="text-gray-500 text-sm">Loading hCaptcha...</div>
+              </div>
+            )}
           </div>
 
           <div>

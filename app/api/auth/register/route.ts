@@ -9,7 +9,7 @@ async function verifyToken(token: string, ip?: string): Promise<[boolean, string
     const payload: Record<string, string> = {
       secret: process.env.HCAPTCHA_SECRET_KEY!,
       response: token,
-      sitekey: process.env.HCAPTCHA_SITE_KEY!,
+      sitekey: "049c4e0e-82f8-4d60-acee-069406609eae",
     };
 
     if (ip) {
@@ -24,6 +24,8 @@ async function verifyToken(token: string, ip?: string): Promise<[boolean, string
     });
 
     const j = await res.json();
+
+    console.log('hCaptcha verification response:', j);
 
     return j.success ? [true, []] : [false, j["error-codes"] || []];
   } catch (error) {
@@ -82,8 +84,18 @@ export async function POST(request: NextRequest) {
 
     if (!isHcaptchaValid) {
       console.error('hCaptcha validation failed:', hcaptchaErrors);
+      let errorMessage = 'hCaptcha verification failed. Please try again.';
+      
+      if (hcaptchaErrors.includes('invalid-input-secret')) {
+        errorMessage = 'Server configuration error. Please contact support.';
+      } else if (hcaptchaErrors.includes('invalid-input-response')) {
+        errorMessage = 'Invalid hCaptcha response. Please complete the verification again.';
+      } else if (hcaptchaErrors.includes('sitekey-secret-mismatch')) {
+        errorMessage = 'Site configuration error. Please contact support.';
+      }
+      
       return NextResponse.json(
-        { success: false, message: 'hCaptcha verification failed. Please try again.' },
+        { success: false, message: errorMessage, errors: hcaptchaErrors },
         { status: 400 }
       );
     }
