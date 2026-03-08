@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
         
         {/* Title */}
         <h1 className="text-2xl font-bold text-center text-[#1e40af] mb-10">
-          User Login
+          User Login Account
         </h1>
 
         <form className="space-y-5">
