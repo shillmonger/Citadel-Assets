@@ -88,7 +88,7 @@ export default function Home() {
           {/* Bottom Row: Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-zinc-100">
             {/* Stat 1 */}
-            <div className="py-12 border-l border-zinc-200 pl-6 first:border-l-0">
+            <div className="py-10 border-l border-zinc-200 pl-6 first:border-l-0">
               <div className="flex items-baseline gap-1">
                 <span className="text-6xl font-bold text-[#1D429A]">1,800</span>
                 <span className="text-2xl font-bold text-[#1D429A]">+</span>
@@ -99,7 +99,7 @@ export default function Home() {
             </div>
 
             {/* Stat 2 */}
-            <div className="py-12 border-l border-zinc-200 pl-6">
+            <div className="py-10 border-l border-zinc-200 pl-6">
               <div className="flex items-baseline gap-1">
                 <span className="text-2xl font-bold text-[#1D429A] self-start mt-2">
                   $
@@ -113,7 +113,7 @@ export default function Home() {
             </div>
 
             {/* Stat 3 */}
-            <div className="py-12 border-l border-zinc-200 pl-6">
+            <div className="py-10 border-l border-zinc-200 pl-6">
               <span className="text-6xl font-bold text-[#1D429A]">1,600</span>
               <p className="mt-4 text-zinc-600 text-sm">
                 Institutional clients <sup className="text-[10px]">3</sup>
@@ -121,7 +121,7 @@ export default function Home() {
             </div>
 
             {/* Stat 4 */}
-            <div className="py-12 border-l border-zinc-200 pl-6">
+            <div className="py-10 border-l border-zinc-200 pl-6">
               <span className="text-6xl font-bold text-[#1D429A]">8x</span>
               <p className="mt-4 text-zinc-600 text-sm leading-relaxed">
                 years as a Risk Awards Flow Market Maker of the Year, from 2017
@@ -204,7 +204,7 @@ export default function Home() {
             {/* Bottom Row: Stats Grid (Matching Section 1 Borders and Spacing) */}
             <div className="grid grid-cols-1 md:grid-cols-3 border-t border-zinc-100">
               {/* Stat 1 */}
-              <div className="py-12 border-l border-zinc-200 pl-6 first:border-l-0">
+              <div className="py-10 border-l border-zinc-200 pl-6 first:border-l-0">
                 <div className="flex items-baseline gap-1">
                   <span className="text-6xl font-bold text-[#1D429A]">45</span>
                   <span className="text-3xl font-bold text-[#1D429A]">%</span>
@@ -216,7 +216,7 @@ export default function Home() {
               </div>
 
               {/* Stat 2 */}
-              <div className="py-12 border-l border-zinc-200 pl-6">
+              <div className="py-10 border-l border-zinc-200 pl-6">
                 <div className="flex items-baseline gap-1">
                   <span className="text-6xl font-bold text-[#1D429A]">270</span>
                   <span className="text-3xl font-bold text-[#1D429A]">+</span>
@@ -228,7 +228,7 @@ export default function Home() {
               </div>
 
               {/* Stat 3 */}
-              <div className="py-12 border-l border-zinc-200 pl-6">
+              <div className="py-10 border-l border-zinc-200 pl-6">
                 <div className="flex items-baseline gap-1">
                   <span className="text-6xl font-bold text-[#1D429A]">~90</span>
                 </div>

@@ -115,14 +115,20 @@ const Header: React.FC = () => {
 
           {/* Mobile Auth Buttons - Pushed to the bottom */}
           <div className="mt-auto p-8 flex flex-col gap-4 bg-gray-50/50">
-            <Link href="/auth-page/login" className="w-full border-2 border-[#00205B] text-[#00205B] rounded-lg py-3 cursor-pointer font-bold active:bg-gray-100 transition">
-              Sign In
-            </Link>
+  <Link
+    href="/auth-page/login"
+    className="w-full text-center border-2 border-[#00205B] text-[#00205B] rounded-lg py-3 cursor-pointer font-bold active:bg-gray-100 transition"
+  >
+    Sign In
+  </Link>
 
-            <Link href="/auth-page/register" className="w-full bg-[#00205B] text-white py-4 rounded-lg cursor-pointer font-bold active:bg-blue-900 transition shadow-lg">
-              Sign Up
-            </Link>
-          </div>
+  <Link
+    href="/auth-page/register"
+    className="w-full text-center bg-[#00205B] text-white py-4 rounded-lg cursor-pointer font-bold active:bg-blue-900 transition shadow-lg"
+  >
+    Sign Up
+  </Link>
+</div>
         </div>
       </div>
     </>
