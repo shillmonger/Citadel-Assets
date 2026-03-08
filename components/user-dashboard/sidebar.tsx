@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { name: "Investment Plans", icon: <Sprout />, href: "/user-dashboard/investment-plans" },
     { name: "My Plans", icon: <Sprout />, href: "/user-dashboard/my-plans" },
     { name: "My Referrals", icon: <Users />, href: "/user-dashboard/referrals" },
-    { name: "Logout", icon: <LogOut />, href: "/auth/page/login" },
+    { name: "Logout", icon: <LogOut />, href: "/auth-page/login" },
   ];
 
   return (
