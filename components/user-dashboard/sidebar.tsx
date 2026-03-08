@@ -117,7 +117,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       {/* Help Card */}
       <div className="mt-10 mx-4 p-5 rounded-2xl bg-[#1D429A] text-center relative overflow-hidden flex-shrink-0 mb-4">
-        <div className="absolute top-0 right-0 w-16 h-16 bg-[#76EAD7] opacity-10 rounded-full -mr-8 -mt-8"></div>
+        <div className="absolute top-5 right-3 w-20 h-20 bg-[#76EAD7] opacity-10 rounded-full -mr-8 -mt-8"></div>
         <h3 className="font-bold text-white mb-2 relative z-10">Need Help?</h3>
         <p className="text-[10px] text-blue-100 mb-4 relative z-10">
           Contact our 24/7 customer support center
