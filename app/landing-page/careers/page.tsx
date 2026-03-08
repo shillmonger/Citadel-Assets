@@ -204,9 +204,9 @@ export default function Home() {
             </p>
 
             <Link href="/auth-page/login">
-            <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
-              View Your Account 
-            </button>
+              <button className="inline-block bg-[#70E0D8] text-[#00205B] font-bold py-3 px-10 rounded-full cursor-pointer hover:bg-white transition-all duration-300">
+                View Your Account
+              </button>
             </Link>
           </div>
         </div>
@@ -290,13 +290,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 2*/}
-      <section className="bg-[#1e40af] text-white">
+      {/* Section 2 - Extraordinary Colleagues */}
+      <section className="bg-[#1e40af] text-white overflow-hidden">
         <Carousel setApi={setColleagueApi} className="w-full">
           {/* Blue Header Section */}
           <div className="max-w-7xl mx-auto px-6 py-10 lg:px-16 flex flex-col md:flex-row justify-between items-start md:items-end">
             <div className="max-w-md">
-              <h2 className="text-3xl md:text-5xl font-normal leading-tight tracking-tight mb-8">
+              <h2 className="text-3xl md:text-5xl font-normal leading-tight tracking-tight mb-4 md:mb-8">
                 Work with
                 <br />
                 Extraordinary
@@ -305,20 +305,20 @@ export default function Home() {
               </h2>
             </div>
 
-            <div className="flex flex-col items-end gap-6 w-full md:w-auto">
+            <div className="flex flex-col items-start md:items-end gap-4 md:gap-6 w-full md:w-auto">
               <p className="text-sm md:text-base max-w-sm text-blue-100 leading-relaxed md:text-right">
                 You'll meet brilliant people at our firm. Working in a culture
-                of collaboration and mutual learning, they'll bring out the best
-                in you.
+                of collaboration, they'll bring out the best in you.
               </p>
 
               {/* Custom Navigation */}
-              <div className="flex items-center gap-4 mt-4">
-                <CarouselPrevious className="static translate-y-0 bg-transparent cursor-pointer border-white/30 hover:bg-white/10 text-white h-10 w-10" />
-                <span className="text-sm font-medium">
+              {/* Custom Navigation - Now aligned to the right on mobile */}
+              <div className="flex items-center justify-end gap-4 mt-4 w-full md:w-auto">
+                <CarouselPrevious className="static translate-y-0 bg-transparent border-white/30 hover:bg-white/10 text-white h-10 w-10 shrink-0" />
+                <span className="text-sm font-medium tabular-nums min-w-[45px] text-center">
                   {currentColleague + 1} / {colleagues.length}
                 </span>
-                <CarouselNext className="static translate-y-0 bg-transparent cursor-pointer border-white/30 hover:bg-white/10 text-white h-10 w-10" />
+                <CarouselNext className="static translate-y-0 bg-transparent border-white/30 hover:bg-white/10 text-white h-10 w-10 shrink-0" />
               </div>
             </div>
           </div>
@@ -327,21 +327,24 @@ export default function Home() {
           <CarouselContent>
             {colleagues.map((item, index) => (
               <CarouselItem key={index}>
-                <div className="relative w-full aspect-video md:aspect-[21/9] overflow-hidden group">
-                  {/* Segmented Progress Bar */}
-                  <div className="absolute top-0 left-0 w-full z-20 flex px-6 py-4 gap-2">
+                <div className="relative w-full aspect-[4/5] md:aspect-[21/9] overflow-hidden group">
+                  {/* Segmented Progress Bar - Cleaned for Mobile */}
+                  <div className="absolute top-0 left-0 w-full z-20 flex px-6 py-6 gap-2">
                     {colleagues.map((_, i) => (
                       <div
                         key={i}
-                        className="h-0.5 flex-1 bg-white/30 relative"
+                        className="h-0.5 flex-1 bg-white/20 relative"
                       >
                         <div
-                          className={`absolute inset-0 bg-[#4df3ff] transition-all duration-300 ${i === currentColleague ? "w-full" : "w-0"}`}
+                          className={`absolute inset-0 bg-[#4df3ff] transition-all duration-500 ${
+                            i === currentColleague ? "w-full" : "w-0"
+                          }`}
                         />
-                        <div className="absolute -bottom-6 left-0 text-[10px] uppercase tracking-widest font-bold">
-                          {colleagues[i].name} <br />
-                          <span className="font-normal opacity-70">
-                            {colleagues[i].role}
+                        {/* Name/Role hidden on mobile to keep video clear, shown on MD+ */}
+                        <div className="hidden md:block absolute -bottom-6 left-0 text-[10px] uppercase tracking-widest font-bold whitespace-nowrap">
+                          {colleagues[i].name}{" "}
+                          <span className="font-normal opacity-70 ml-1">
+                            | {colleagues[i].role}
                           </span>
                         </div>
                       </div>
@@ -350,24 +353,25 @@ export default function Home() {
 
                   {/* Video Player */}
                   <video
-                    className="w-full h-full object-cover brightness-75"
+                    className="w-full h-full object-cover brightness-[0.85] md:brightness-75"
                     muted
                     playsInline
                     autoPlay
                     loop
+                    key={item.video} // Forces reload on change
                   >
                     <source src={item.video} type="video/mp4" />
                   </video>
 
-                  {/* Quote Overlay */}
-                  <div className="absolute bottom-12 left-6 md:left-16 max-w-2xl z-10">
-                    <h3 className="text-3xl md:text-5xl font-normal leading-tight italic">
+                  {/* Quote Overlay - Hidden on Mobile, Visible on Desktop */}
+                  <div className="hidden md:block absolute bottom-12 left-16 max-w-2xl z-10">
+                    <h3 className="text-4xl lg:text-5xl font-normal leading-tight italic">
                       "{item.quote}"
                     </h3>
                   </div>
 
-                  {/* Bio Box */}
-                  <div className="absolute bottom-0 right-0 md:right-16 translate-y-1/2 md:translate-y-0 md:bottom-12 bg-white text-gray-800 p-8 max-w-sm shadow-2xl z-20 hidden md:block">
+                  {/* Bio Box - Desktop Only Overlay */}
+                  <div className="absolute bottom-12 right-16 bg-white text-gray-800 p-8 max-w-sm shadow-2xl z-20 hidden md:block">
                     <p className="text-sm leading-relaxed">{item.bio}</p>
                   </div>
                 </div>
@@ -376,11 +380,34 @@ export default function Home() {
           </CarouselContent>
         </Carousel>
 
-        {/* Mobile Bio - visible below video on small screens */}
-        <div className="md:hidden bg-white text-gray-800 p-8">
-          <p className="text-sm leading-relaxed">
-            {colleagues[currentColleague].bio}
-          </p>
+        {/* Mobile Bio & Info Section - Clean white area below the video */}
+        <div className="md:hidden bg-white text-gray-900 px-6 py-10">
+          <div className="mb-6">
+            <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-cyan-600 mb-1">
+              Featured Colleague
+            </h4>
+            <h3 className="text-2xl font-semibold text-[#1e40af]">
+              {colleagues[currentColleague].name}
+            </h3>
+            <p className="text-gray-500 text-sm italic">
+              {colleagues[currentColleague].role}
+            </p>
+          </div>
+
+          <div className="relative">
+            <span className="text-4xl text-blue-100 absolute -top-4 -left-2 font-serif">
+              “
+            </span>
+            <p className="text-lg leading-snug text-gray-800 italic mb-6 relative z-10">
+              {colleagues[currentColleague].quote}
+            </p>
+          </div>
+
+          <div className="pt-6 border-t border-gray-100">
+            <p className="text-sm leading-relaxed text-gray-600">
+              {colleagues[currentColleague].bio}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -405,11 +432,14 @@ export default function Home() {
                 work.
               </p>
 
-              <Link href="/auth-page/register" className="block w-full md:w-auto">
-  <button className="w-full md:w-auto bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
-    Register For full Access 
-  </button>
-</Link>
+              <Link
+                href="/auth-page/register"
+                className="block w-full md:w-auto"
+              >
+                <button className="w-full md:w-auto bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
+                  Register For full Access
+                </button>
+              </Link>
             </div>
 
             {/* Right Column: Quote & Image */}
@@ -548,11 +578,11 @@ export default function Home() {
                 </p>
               </div>
 
-            <Link href="/auth-page/login" className="block w-full md:w-auto">
-  <button className="w-full md:w-auto bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
-    Follow Our Top Investors
-  </button>
-</Link>
+              <Link href="/auth-page/login" className="block w-full md:w-auto">
+                <button className="w-full md:w-auto bg-[#1e40af] cursor-pointer hover:bg-[#1a368a] transition-all text-white px-10 py-4 rounded-full font-medium text-sm shadow-md hover:shadow-lg active:scale-95">
+                  Follow Our Top Investors
+                </button>
+              </Link>
             </div>
           </div>
 
