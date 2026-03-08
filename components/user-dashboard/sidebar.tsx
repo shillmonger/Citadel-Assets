@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Home,
   Download,
@@ -13,6 +15,7 @@ import {
   Users,
   X,
   Wallet,
+  LogOut,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -21,24 +24,27 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  const pathname = usePathname();
+
   const sidebarLinks = [
-    { name: "Home", icon: <Home />, active: true },
-    { name: "Deposit", icon: <Download /> },
-    { name: "Profit History", icon: <History /> },
-    { name: "Transactions", icon: <LayoutGrid /> },
-    { name: "Withdraw", icon: <ArrowUpCircle /> },
-    { name: "Withdraw Connect", icon: <ArrowRightLeft /> },
-    { name: "Transfer funds", icon: <ArrowRightLeft /> },
-    { name: "Profile", icon: <User /> },
-    { name: "Investment Plans", icon: <Sprout /> },
-    { name: "My Plans", icon: <Sprout /> },
-    { name: "Referrals", icon: <Users /> },
+    { name: "Home", icon: <Home />, href: "/user-dashboard/dashboard" },
+    { name: "Deposit", icon: <Download />, href: "/user-dashboard/deposit" },
+    { name: "Profit History", icon: <History />, href: "/user-dashboard/profit-history" },
+    { name: "Transactions", icon: <LayoutGrid />, href: "/user-dashboard/transactions" },
+    { name: "My Withdraw", icon: <ArrowUpCircle />, href: "/user-dashboard/withdraw" },
+    { name: "Withdraw Connect", icon: <ArrowRightLeft />, href: "/user-dashboard/withdraw-connect" },
+    { name: "Transfer funds", icon: <ArrowRightLeft />, href: "/user-dashboard/transfer" },
+    { name: "My Profile", icon: <User />, href: "/user-dashboard/profile" },
+    { name: "Investment Plans", icon: <Sprout />, href: "/user-dashboard/investment-plans" },
+    { name: "My Plans", icon: <Sprout />, href: "/user-dashboard/my-plans" },
+    { name: "My Referrals", icon: <Users />, href: "/user-dashboard/referrals" },
+    { name: "Logout", icon: <LogOut />, href: "/auth/page/login" },
   ];
 
   return (
     <aside
       className={`
-        fixed inset-y-0 left-0 z-500 bg-white border-r border-gray-100 flex flex-col py-6
+        fixed inset-y-0 left-0 z-[500] bg-white border-r border-gray-100 flex flex-col py-6
         transform transition-transform duration-300 ease-in-out
         overflow-y-auto overscroll-contain
         w-full sm:w-80
@@ -76,29 +82,37 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       {/* Nav */}
       <nav className="w-full px-4 grid grid-cols-2 gap-y-6 text-center">
-        {sidebarLinks.map((link) => (
-          <div
-            key={link.name}
-            className="flex flex-col items-center cursor-pointer group"
-          >
-            <div
-              className={`p-3 rounded-xl mb-1 transition-all duration-300 ${
-                link.active
-                  ? "bg-[#1D429A] text-white shadow-lg shadow-blue-200"
-                  : "text-gray-400 group-hover:text-[#1D429A] group-hover:bg-blue-50"
-              }`}
+        {sidebarLinks.map((link) => {
+          const isActive = pathname === link.href;
+          
+          return (
+            <Link
+              key={link.name}
+              href={link.href}
+              onClick={onClose} // Closes sidebar on mobile after clicking
+              className="flex flex-col items-center group cursor-pointer"
             >
-              {React.cloneElement(link.icon, { size: 20 })}
-            </div>
-            <span
-              className={`text-[10px] font-bold uppercase tracking-tight ${
-                link.active ? "text-[#1D429A]" : "text-gray-500"
-              }`}
-            >
-              {link.name}
-            </span>
-          </div>
-        ))}
+              <div
+                className={`p-3 rounded-xl mb-1 transition-all duration-300 ${
+                  isActive
+                    ? "bg-[#1D429A] text-white shadow-lg shadow-blue-200"
+                    : "text-gray-400 group-hover:text-[#1D429A] group-hover:bg-blue-50"
+                }`}
+              >
+                {React.isValidElement(link.icon) 
+                  ? React.cloneElement(link.icon as React.ReactElement<any>, { size: 20 }) 
+                  : link.icon}
+              </div>
+              <span
+                className={`text-[10px] font-bold uppercase tracking-tight transition-colors ${
+                  isActive ? "text-[#1D429A]" : "text-gray-500 group-hover:text-[#1D429A]"
+                }`}
+              >
+                {link.name}
+              </span>
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Help Card */}

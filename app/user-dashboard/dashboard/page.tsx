@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
-import Navbar from "@/components/user-dashboard/nav";
+import Navbar from "@/components/user-dashboard/navbar";
 
 const SnowTradeDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -88,10 +88,8 @@ const SnowTradeDashboard = () => {
                 <div
                   key={item.label}
                   className="cursor-pointer flex flex-col md:flex-row items-center md:items-center justify-between
-        p-3 md:p-4 border border-gray-50 rounded-xl
-        shadow-md hover:shadow-lg
-        hover:border-[#76EAD7]/40 hover:bg-blue-50/30
-        transition-all duration-300 group"
+                  p-3 md:p-4 border border-gray-50 rounded-xl
+                  shadow-md hover:shadow-sm"
                 >
                   {/* Icon */}
                   <div className="bg-[#1D429A] p-3 rounded-lg shadow-sm mb-2 md:mb-0 md:order-2 group-hover:scale-110 transition-transform">
