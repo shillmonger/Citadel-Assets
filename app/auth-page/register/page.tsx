@@ -659,8 +659,8 @@ const RegisterPage: React.FC = () => {
             {hcaptchaLoaded && (
               <div
                 className="h-captcha"
-                data-sitekey="049c4e0e-82f8-4d60-acee-069406609eae"
-                data-test="true"
+                data-sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "049c4e0e-82f8-4d60-acee-069406609eae"}
+                data-test="false"
                 data-callback={(token: string) => {
                   console.log('hCaptcha solved successfully');
                 }}

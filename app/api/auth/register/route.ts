@@ -9,7 +9,7 @@ async function verifyToken(token: string, ip?: string): Promise<[boolean, string
     const payload: Record<string, string> = {
       secret: process.env.HCAPTCHA_SECRET_KEY!,
       response: token,
-      sitekey: "049c4e0e-82f8-4d60-acee-069406609eae",
+      sitekey: process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "2052924e-7a20-4278-b446-702078c06440",
     };
 
     if (ip) {
