@@ -89,7 +89,7 @@ const SnowTradeDashboard = () => {
                   key={item.label}
                   className="cursor-pointer flex flex-col md:flex-row items-center md:items-center justify-between
                   p-3 md:p-4 border border-gray-50 rounded-xl
-                  shadow-md hover:shadow-sm"
+                  shadow-sm"
                 >
                   {/* Icon */}
                   <div className="bg-[#1D429A] p-3 rounded-lg shadow-sm mb-2 md:mb-0 md:order-2 group-hover:scale-110 transition-transform">
