@@ -1,8 +1,25 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { User, Mail, Phone, Lock, Globe, Users, Eye, EyeOff, Search } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"; // ShadCN DropdownMenu
+import { useRouter } from "next/navigation";
+import {
+  User,
+  Mail,
+  Phone,
+  Lock,
+  Globe,
+  Users,
+  Eye,
+  EyeOff,
+  Search,
+} from "lucide-react";
+import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"; // ShadCN DropdownMenu
 import "flag-icons/css/flag-icons.min.css"; // Flag icons
 
 const countryData = [
@@ -229,10 +246,11 @@ const countryData = [
   { code: "VI", name: "U.S. Virgin Islands", dial: "+1‑340" },
   { code: "YE", name: "Yemen", dial: "+967" },
   { code: "ZM", name: "Zambia", dial: "+260" },
-  { code: "ZW", name: "Zimbabwe", dial: "+263" }
+  { code: "ZW", name: "Zimbabwe", dial: "+263" },
 ];
 
 const RegisterPage: React.FC = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [selectedCountry, setSelectedCountry] = React.useState<{
@@ -242,31 +260,113 @@ const RegisterPage: React.FC = () => {
   } | null>(null);
   const [phone, setPhone] = React.useState("");
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const togglePassword = () => setShowPassword(!showPassword);
-  const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+  const toggleConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
-  const handleCountrySelect = (country: { code: string; name: string; dial: string }) => {
+  const handleCountrySelect = (country: {
+    code: string;
+    name: string;
+    dial: string;
+  }) => {
     setSelectedCountry(country);
-    const numericPart = phone.replace(/^\+\d*\s?/, ""); 
+    const numericPart = phone.replace(/^\+\d*\s?/, "");
     setPhone(`${country.dial} ${numericPart}`);
     setSearchTerm(""); // Clear search when country is selected
   };
 
   // Filter countries based on search term
   const filteredCountries = countryData.filter((c) =>
-    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    c.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const username = formData.get('username') as string;
+      const fullName = formData.get('fullname') as string;
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+      const confirmPassword = formData.get('confirmPassword') as string;
+      const referralId = formData.get('referral') as string;
+
+      // Get hCaptcha token
+      const hcaptchaResponse = (window as any).hcaptcha.getResponse();
+      if (!hcaptchaResponse) {
+        toast.error('Please complete the hCaptcha verification');
+        setIsLoading(false);
+        return;
+      }
+
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        toast.error('Passwords do not match');
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          fullName,
+          email,
+          password,
+          confirmPassword,
+          country: selectedCountry?.name,
+          phoneNumber: phone,
+          referralId,
+          hcaptchaToken: hcaptchaResponse
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(data.message);
+        // Reset hCaptcha
+        (window as any).hcaptcha.reset();
+        // Redirect to dashboard after 2 seconds
+        setTimeout(() => {
+          router.push('/user-dashboard/dashboard');
+        }, 2000);
+      } else {
+        toast.error(data.message);
+        // Reset hCaptcha on error
+        (window as any).hcaptcha.reset();
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast.error('An unexpected error occurred. Please try again.');
+      // Reset hCaptcha on error
+      (window as any).hcaptcha.reset();
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 font-sans text-[#1a1a1a]">
       <div className="bg-white p-8 md:p-10 rounded-2xl shadow-2xl w-full max-w-100 border border-gray-100">
-        <h1 className="text-2xl font-bold text-center text-[#1e40af] mb-10">Create an Account</h1>
+        <h1 className="text-2xl font-bold text-center text-[#1e40af] mb-10">
+          Create an Account
+        </h1>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Username */}
           <div className="text-left">
-            <label htmlFor="username" className="block text-sm font-bold text-gray-700 mb-1">
+            <label
+              htmlFor="username"
+              className="block text-sm font-bold text-gray-700 mb-1"
+            >
               Username
             </label>
             <div className="relative">
@@ -276,16 +376,21 @@ const RegisterPage: React.FC = () => {
               <input
                 type="text"
                 id="username"
+                name="username"
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af] bg-gray-50"
-                placeholder="Evelynwo19z@gmail.com"
+                placeholder="Enter username"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
 
           {/* Full Name */}
           <div className="text-left">
-            <label htmlFor="fullname" className="block text-sm font-bold text-gray-700 mb-1">
+            <label
+              htmlFor="fullname"
+              className="block text-sm font-bold text-gray-700 mb-1"
+            >
               FullName
             </label>
             <div className="relative">
@@ -295,16 +400,21 @@ const RegisterPage: React.FC = () => {
               <input
                 type="text"
                 id="fullname"
+                name="fullname"
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af]"
                 placeholder="Enter FullName"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
 
           {/* Email */}
           <div className="text-left">
-            <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-bold text-gray-700 mb-1"
+            >
               Your Email
             </label>
             <div className="relative">
@@ -314,16 +424,21 @@ const RegisterPage: React.FC = () => {
               <input
                 type="email"
                 id="email"
+                name="email"
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af]"
                 placeholder="name@example.com"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
 
           {/* Password */}
           <div className="text-left">
-            <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-bold text-gray-700 mb-1"
+            >
               Password
             </label>
             <div className="relative">
@@ -333,9 +448,11 @@ const RegisterPage: React.FC = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                name="password"
                 className="w-full pl-10 pr-12 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af] bg-gray-50"
                 placeholder="Password"
                 required
+                disabled={isLoading}
               />
               <button
                 type="button"
@@ -353,7 +470,10 @@ const RegisterPage: React.FC = () => {
 
           {/* Confirm Password */}
           <div className="text-left">
-            <label htmlFor="confirmPassword" className="block text-sm font-bold text-gray-700 mb-1">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-bold text-gray-700 mb-1"
+            >
               Confirm Password
             </label>
             <div className="relative">
@@ -363,9 +483,11 @@ const RegisterPage: React.FC = () => {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
+                name="confirmPassword"
                 className="w-full pl-10 pr-12 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af]"
                 placeholder="Confirm Password"
                 required
+                disabled={isLoading}
               />
               <button
                 type="button"
@@ -383,7 +505,9 @@ const RegisterPage: React.FC = () => {
 
           {/* Country Dropdown with Search */}
           <div className="text-left">
-            <label className="block text-sm font-bold text-gray-700 mb-1">Country</label>
+            <label className="block text-sm font-bold text-gray-700 mb-1">
+              Country
+            </label>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="w-full text-left pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af] bg-white relative outline-none">
@@ -392,11 +516,15 @@ const RegisterPage: React.FC = () => {
                   </span>
                   {selectedCountry ? (
                     <span className="flex items-center">
-                      <span className={`fi fi-${selectedCountry.code.toLowerCase()} mr-2 shrink-0`} />
+                      <span
+                        className={`fi fi-${selectedCountry.code.toLowerCase()} mr-2 shrink-0`}
+                      />
                       <span className="truncate">{selectedCountry.name}</span>
                     </span>
                   ) : (
-                    <span className="text-gray-400 font-normal">Select your country</span>
+                    <span className="text-gray-400 font-normal">
+                      Select your country
+                    </span>
                   )}
                 </button>
               </DropdownMenuTrigger>
@@ -424,9 +552,13 @@ const RegisterPage: React.FC = () => {
                         onClick={() => handleCountrySelect(c)}
                         className="flex items-center gap-2 cursor-pointer py-2"
                       >
-                        <span className={`fi fi-${c.code.toLowerCase()} shrink-0`} />
+                        <span
+                          className={`fi fi-${c.code.toLowerCase()} shrink-0`}
+                        />
                         <span className="truncate">{c.name}</span>
-                        <span className="ml-auto text-xs text-gray-400">{c.dial}</span>
+                        <span className="ml-auto text-xs text-gray-400">
+                          {c.dial}
+                        </span>
                       </DropdownMenuItem>
                     ))
                   ) : (
@@ -441,7 +573,10 @@ const RegisterPage: React.FC = () => {
 
           {/* Phone Number */}
           <div className="text-left">
-            <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-1">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-bold text-gray-700 mb-1"
+            >
               Phone Number
             </label>
             <div className="relative">
@@ -451,17 +586,22 @@ const RegisterPage: React.FC = () => {
               <input
                 type="tel"
                 id="phone"
+                name="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af]"
                 placeholder="Enter Phone number"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
 
           <div className="text-left">
-            <label htmlFor="referral" className="block text-sm font-bold text-gray-700 mb-1">
+            <label
+              htmlFor="referral"
+              className="block text-sm font-bold text-gray-700 mb-1"
+            >
               Referral ID
             </label>
             <div className="relative">
@@ -471,37 +611,39 @@ const RegisterPage: React.FC = () => {
               <input
                 type="text"
                 id="referral"
+                name="referral"
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af]"
                 placeholder="optional referral id"
+                disabled={isLoading}
               />
             </div>
           </div>
 
           <div className="flex justify-center py-2">
-            <div className="border border-gray-200 p-4 rounded bg-gray-50 flex items-center space-x-4 w-full max-w-[300px]">
-              <input type="checkbox" className="h-6 w-6 cursor-pointer" />
-              <span className="text-sm text-gray-600">I am human</span>
-              <div className="ml-auto text-[10px] text-gray-400 text-right">
-                hCaptcha
-                <br />
-                Privacy - Terms
-              </div>
-            </div>
+            <div
+              className="h-captcha"
+              data-sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY} // load from env
+            ></div>
+            <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
           </div>
 
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center cursor-pointer py-3 px-6 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-[#1e40af] hover:bg-[#1d4ed8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e40af]"
+              disabled={isLoading}
+              className="w-full flex justify-center cursor-pointer py-3 px-6 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-[#1e40af] hover:bg-[#1d4ed8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e40af] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Register
+              {isLoading ? 'Registering...' : 'Register'}
             </button>
           </div>
         </form>
 
         <div className="mt-8 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/auth-page/login" className="font-bold text-gray-900 hover:underline">
+          <Link
+            href="/auth-page/login"
+            className="font-bold text-gray-900 hover:underline"
+          >
             Login
           </Link>
         </div>
