@@ -62,7 +62,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:justify-between items-start gap-8 md:gap-12 py-16 max-w-7xl mx-auto">
             {/* Left Side: Heading */}
             <div className="md:max-w-xl">
-              <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1]">
+              <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1]">
                 Proven Innovators.
                 <br />
                 Trusted Partners.
@@ -76,10 +76,11 @@ export default function Home() {
                 scale. We leverage our strengths to provide liquidity you depend
                 on.
               </p>
-              <Link href="/landing-page/what-we-do">
-                <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
-                  Explore What We Do
-                </button>
+              <Link
+                href="/landing-page/what-we-do"
+                className="block w-full md:w-auto text-center bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm"
+              >
+                Explore What We Do
               </Link>
             </div>
           </div>
@@ -136,7 +137,7 @@ export default function Home() {
         {/* Blue Header Background */}
         <div className="bg-[#1D429A] pb-40 px-6 md:px-12 lg:px-24">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-start gap-8 md:gap-12 py-16">
-            <h2 className="text-5xl md:text-5xl text-white font-normal tracking-tight leading-[1.1] md:max-w-xl">
+            <h2 className="text-3xl md:text-5xl text-white font-normal tracking-tight leading-[1.1] md:max-w-xl">
               More Than 20 Years
               <br />
               of Trailblazing
@@ -185,7 +186,7 @@ export default function Home() {
             {/* Top Row: Title and Description */}
             <div className="flex flex-col md:flex-row md:justify-between items-start gap-8 md:gap-12 py-16">
               <div className="md:max-w-xl">
-                <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1]">
+                <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1]">
                   Extraordinary Talent.
                   <br />
                   Exceptional Teamwork.
@@ -245,7 +246,7 @@ export default function Home() {
         {/* Blue Header Background */}
         <div className="bg-[#1D429A] pb-40 px-6 md:px-12 lg:px-24">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-start gap-8 md:gap-12 py-16">
-            <h2 className="text-5xl md:text-5xl text-white font-normal tracking-tight leading-[1.1] md:max-w-xl">
+            <h2 className="text-3xl md:text-5xl text-white font-normal tracking-tight leading-[1.1] md:max-w-xl">
               Where Careers
               <br />
               Accelerate
@@ -285,7 +286,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
           {/* Left Side: Heading and Description */}
           <div className="lg:w-1/3">
-            <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1] mb-8">
+            <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1] mb-8">
               Featured News <br /> & Perspectives
             </h2>
             <p className="text-lg text-zinc-700 leading-relaxed max-w-sm">

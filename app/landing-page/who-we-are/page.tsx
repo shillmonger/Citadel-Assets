@@ -127,9 +127,9 @@ const GlobalCities = () => {
       <section className="pt-24 pb-24 px-6 md:px-12 lg:px-24 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col gap-20">
           {/* Part 1: Transformation */}
-          <div className="flex flex-col md:flex-row md:justify-between items-start gap-12">
+          <div className="flex flex-col md:flex-row md:justify-between items-start gap-10">
             <div className="md:max-w-xl">
-              <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.05]">
+              <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.05]">
                 A Force for <br /> Transformation
               </h2>
             </div>
@@ -156,7 +156,7 @@ const GlobalCities = () => {
           {/* Part 2: Culture */}
           <div className="flex flex-col md:flex-row md:justify-between items-start gap-12">
             <div className="md:max-w-xl">
-              <h2 className="text-5xl md:text-4xl font-normal tracking-tight text-zinc-900 leading-[1.05]">
+              <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-zinc-900 leading-[1.05]">
                 Empowered by Our Culture
               </h2>
             </div>
@@ -167,10 +167,10 @@ const GlobalCities = () => {
                 and support our communities.
               </p>
 
-<Link href="/auth-page/login">
-              <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
-                Discover Our Culture
-              </button>
+              <Link href="/auth-page/login" className="block w-full md:w-auto">
+                <button className="w-full md:w-auto bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
+                  Discover Our Culture
+                </button>
               </Link>
             </div>
           </div>
@@ -272,7 +272,7 @@ const GlobalCities = () => {
         <div className="py-24 px-6 md:px-12 lg:px-24">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-start gap-8">
             <div className="md:max-w-xl">
-              <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1]">
+              <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-zinc-900 leading-[1.1]">
                 Two Firms: Citadel and <br /> Citadel Securities
               </h2>
             </div>
@@ -288,10 +288,13 @@ const GlobalCities = () => {
                 preeminent public and private institutions.
               </p>
 
-              <Link href="/auth-page/register">
-              <button className="bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
-                Explore Citadel
-              </button>
+              <Link
+                href="/auth-page/register"
+                className="block w-full md:w-auto"
+              >
+                <button className="w-full md:w-auto bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
+                  Explore Citadel
+                </button>
               </Link>
             </div>
           </div>
@@ -299,7 +302,8 @@ const GlobalCities = () => {
 
         {/* Main Blue Content Section */}
         <div className="bg-[#1D429A] py-15 px-6 md:px-12 lg:px-24 text-white">
-          <div className="max-w-7xl mx-auto flex flex-col">
+          <div className="max-w-7xl mx-auto flex flex-col gap-10 md:gap-0">
+            {" "}
             {/* Inspired by Leadership Block */}
             <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24">
               <div className="w-full md:w-1/2">
@@ -312,20 +316,19 @@ const GlobalCities = () => {
                 </div>
               </div>
               <div className="w-full md:w-1/2 flex flex-col items-start">
-                <h2 className="text-5xl md:text-5xl font-normal mb-8 leading-[1.1]">
+                <h2 className="text-3xl md:text-4xl font-normal mb-5 leading-[1.1]">
                   Inspired by <br /> Our Leadership
                 </h2>
-                <p className="text-lg opacity-90 mb-10 max-w-md leading-relaxed">
+                <p className="text-lg opacity-90 mb-5 max-w-md leading-relaxed">
                   Many of our leaders have built their careers here. They are
                   committed to developing other ambitious talent in pursuit of
                   our shared goals.
                 </p>
-                <button className="bg-[#76EAD7] text-[#1D429A] cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#5fdec9] transition-all">
+                <button className="w-full md:w-auto text-center bg-[#76EAD7] text-[#1D429A] cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#5fdec9] transition-all">
                   View Leadership Team
                 </button>
               </div>
             </div>
-
             {/* Committed to Communities Block (Reversed) */}
             <div className="flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-24">
               <div className="w-full md:w-1/2">
@@ -338,16 +341,16 @@ const GlobalCities = () => {
                 </div>
               </div>
               <div className="w-full md:w-1/2 flex flex-col items-start">
-                <h2 className="text-5xl md:text-5xl font-normal mb-8 leading-[1.1]">
+                <h2 className="text-3xl md:text-4xl font-normal mb-5 leading-[1.1]">
                   Committed to <br /> Our Communities
                 </h2>
-                <p className="text-lg opacity-90 mb-10 max-w-md leading-relaxed">
+                <p className="text-lg opacity-90 mb-5 max-w-md leading-relaxed">
                   Our extraordinary colleagues apply their talents to drive
                   impact outside of the workplace. Our civic leadership focuses
                   on expanding access to education and invigorating our
                   communities.
                 </p>
-                <button className="bg-[#76EAD7] text-[#1D429A] cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#5fdec9] transition-all">
+                <button className="w-full md:w-auto text-center bg-[#76EAD7] text-[#1D429A] cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#5fdec9] transition-all">
                   Learn About Our Civic Leadership
                 </button>
               </div>
@@ -361,7 +364,7 @@ const GlobalCities = () => {
         <div className="max-w-7xl mx-auto">
           {/* Header Row */}
           <div className="flex flex-col md:flex-row md:justify-between items-start gap-8 mb-10">
-            <h2 className="text-5xl md:text-5xl font-normal tracking-tight text-zinc-900">
+            <h2 className="text-3xl md:text-5xl font-normal tracking-tight text-zinc-900">
               Working in Global Cities
             </h2>
             <div className="md:max-w-xs pt-2">
@@ -369,10 +372,14 @@ const GlobalCities = () => {
                 We pursue opportunity wherever it leads. But the cities we call
                 home are among the world's most dynamic places to live and work.
               </p>
-              <Link href="/landing-page/careers">
-              <button className="bg-[#1D429A] text-white text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all">
-                Explore Our Offices
-              </button>
+
+              <Link
+                href="/landing-page/careers"
+                className="block w-full md:w-auto"
+              >
+                <button className="w-full md:w-auto bg-[#1D429A] text-white cursor-pointer text-sm font-semibold py-4 px-10 rounded-full hover:bg-[#16357a] transition-all shadow-sm">
+                  Explore Our Offices
+                </button>
               </Link>
             </div>
           </div>
@@ -464,7 +471,7 @@ const GlobalCities = () => {
         <div className="max-w-7xl mx-auto">
           {/* Heading Area */}
           <div className="mb-20">
-            <h2 className="text-5xl md:text-4xl font-normal tracking-tight text-white leading-[1.05] max-w-3xl">
+            <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-white leading-[1.05] max-w-3xl">
               Explore Careers at <br /> Citadel Securities
             </h2>
           </div>
