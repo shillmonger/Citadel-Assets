@@ -9,16 +9,31 @@ import {
   Users,
   LayoutGrid,
   Sprout,
+  ExternalLink,
+  Clock,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import Link from "next/link";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
 
+interface Deposit {
+  _id: string;
+  paymentMethod: string;
+  amount: number;
+  proofImageUrl: string;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+}
+
 const SnowTradeDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [deposits, setDeposits] = useState<Deposit[]>([]);
+  const [depositsLoading, setDepositsLoading] = useState(true);
 
   useEffect(() => {
     // First, try to get user data from localStorage (set during registration)
@@ -35,7 +50,55 @@ const SnowTradeDashboard = () => {
     
     // Then fetch fresh data from API
     fetchUserInfo();
+    fetchDeposits();
   }, []);
+
+  const fetchDeposits = async () => {
+    try {
+      const response = await fetch('/api/user/deposits');
+      if (response.ok) {
+        const data = await response.json();
+        // Get latest 20 deposits
+        setDeposits((data.deposits || []).slice(0, 20));
+      } else {
+        console.error('Failed to fetch deposits');
+      }
+    } catch (error) {
+      console.error('Error fetching deposits:', error);
+    } finally {
+      setDepositsLoading(false);
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "approved":
+        return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case "rejected":
+        return <XCircle className="w-4 h-4 text-red-500" />;
+      default:
+        return <Clock className="w-4 h-4 text-blue-500" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "approved":
+        return "text-green-600";
+      case "rejected":
+        return "text-red-600";
+      default:
+        return "text-blue-600";
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
 
   const fetchUserInfo = async () => {
     try {
@@ -189,7 +252,7 @@ const SnowTradeDashboard = () => {
               <div className="flex items-center gap-2">
                 <div className="w-1 h-4 bg-[#76EAD7] rounded-full"></div>
                 <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">
-                  Recent transactions (0)
+                  Recent transactions ({deposits.length})
                 </h3>
               </div>
               <button className="cursor-pointer text-[#1D429A] text-[10px] font-bold flex items-center gap-1 hover:underline underline-offset-4">
@@ -202,25 +265,73 @@ const SnowTradeDashboard = () => {
                   <thead className="bg-[#F8FAFC] text-gray-400 text-[10px] uppercase tracking-tighter border-b border-gray-100">
                     <tr>
                       <th className="px-6 py-4 text-left font-bold">Date</th>
-                      <th className="px-6 py-4 text-left font-bold">Type</th>
+                      <th className="px-6 py-4 text-left font-bold">Proof</th>
                       <th className="px-6 py-4 text-left font-bold">Amount</th>
                       <th className="px-6 py-4 text-right font-bold">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    <tr>
-                      <td
-                        colSpan={4}
-                        className="px-6 py-12 text-center text-gray-300 text-xs italic"
-                      >
-                        <div className="flex flex-col items-center justify-center gap-2">
-                          <Wallet className="w-10 h-10 text-gray-400" />
-                          <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
-                            No transactions found in your history.{" "}
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
+                    {depositsLoading ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-8 text-center">
+                          <div className="flex items-center justify-center">
+                            <div className="w-4 h-4 border-2 border-[#1D429A] border-t-transparent rounded-full animate-spin"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : deposits.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={4}
+                          className="px-6 py-12 text-center text-gray-300 text-xs italic"
+                        >
+                          <div className="flex flex-col items-center justify-center gap-2">
+                            <Wallet className="w-10 h-10 text-gray-400" />
+                            <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
+                              No transactions found in your history.{" "}
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : (
+                      deposits.map((deposit) => (
+                        <tr key={deposit._id} className="hover:bg-gray-50/50 transition-colors">
+                          <td className="px-6 py-4">
+                            <span className="text-sm text-gray-600 font-medium">
+                              {formatDate(deposit.createdAt)}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            {deposit.proofImageUrl ? (
+                              <a
+                                href={deposit.proofImageUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#76EAD7] hover:text-[#1D429A] transition-colors flex items-center gap-1"
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                                <span className="text-xs">View Proof</span>
+                              </a>
+                            ) : (
+                              <span className="text-xs text-gray-400">No proof</span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="text-sm font-bold text-[#1D429A]">
+                              ${deposit.amount.toLocaleString()}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              {getStatusIcon(deposit.status)}
+                              <span className={`text-xs font-medium capitalize ${getStatusColor(deposit.status)}`}>
+                                {deposit.status}
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
