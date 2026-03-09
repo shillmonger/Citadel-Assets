@@ -21,7 +21,7 @@ const WithdrawalPage = () => {
     { id: "tron", name: "TRON", min: "$5", max: "$500,000", charge: "0.5%", duration: "Instant" },
   ];
 
-  const illustrationUrl = "https://snowtradeptylimited.com/public/dash2/img/svg/illustrations/method.svg";
+  const illustrationUrl = "https://i.postimg.cc/tJbTHjKq/transfer.png";
 
   return (
     <div className="flex min-h-screen bg-[#F9F9FB] font-sans relative overflow-x-hidden">
@@ -56,11 +56,11 @@ const WithdrawalPage = () => {
                 </div>
 
                 {/* SVG Illustration wrapper */}
-                <div className="mb-6 bg-gray-50 p-4 rounded-full border border-gray-100 group-hover:scale-110 transition-transform">
+                <div className="mb-6 cursor-pointer bg-gray-50 p-4 rounded-full border border-gray-100 group-hover:scale-110 transition-transform">
                   <img 
                     src={illustrationUrl} 
                     alt="Withdrawal illustration" 
-                    className="w-16 h-16"
+                    className="w-20 h-20"
                   />
                 </div>
 
