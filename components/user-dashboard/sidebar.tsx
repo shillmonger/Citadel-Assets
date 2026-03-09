@@ -28,6 +28,26 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const pathname = usePathname();
 
+  // Get user data from localStorage
+  const [userData, setUserData] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    try {
+      const storedUserData = localStorage.getItem('user-data');
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData));
+      }
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Check if user has admin role
+  const isAdmin = userData?.roles?.includes('admin') || false;
+
   const sidebarLinks = [
     { name: "Home", icon: <Home />, href: "/user-dashboard/dashboard" },
     { name: "Deposit", icon: <Download />, href: "/user-dashboard/deposit" },
@@ -39,7 +59,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { name: "Investment Plans", icon: <Sprout />, href: "/user-dashboard/investment-plans" },
     { name: "My Plans", icon: <LineChart />, href: "/user-dashboard/my-plans" },
     { name: "Referrals", icon: <Users />, href: "/user-dashboard/referrals" },
-    { name: "Admin Hub", icon: <Lock />, href: "/admin-dashboard/dashboard" },
+    // Only show Admin Hub if user has admin role
+    ...(isAdmin ? [{ name: "Admin Hub", icon: <Lock />, href: "/admin-dashboard/dashboard" }] : []),
     { name: "Logout", icon: <LogOut />, href: "/auth-page/login" },
   ];
 

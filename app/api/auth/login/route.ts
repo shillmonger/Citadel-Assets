@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
       referralBonus: user.referralBonus,
       totalWithdrawal: user.totalWithdrawal,
       totalDeposit: user.totalDeposit,
+      roles: user.roles,
       createdAt: user.createdAt,
     };
 
