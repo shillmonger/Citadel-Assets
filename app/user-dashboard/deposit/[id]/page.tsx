@@ -11,17 +11,24 @@ import {
   CheckCircle2, 
   Upload, 
   QrCode, 
-  ArrowLeft 
+  ArrowLeft,
+  Loader2
 } from "lucide-react";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 const MakePaymentPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [amount, setAmount] = useState("100");
   const params = useParams();
+  const { user } = useAuth();
   
   // Payment methods data
   const paymentMethods = {
@@ -37,7 +44,7 @@ const MakePaymentPage = () => {
   const paymentMethod = paymentMethods[params.id as keyof typeof paymentMethods] || paymentMethods.doge;
   const paymentDetails = {
     method: paymentMethod.name,
-    amount: "100",
+    amount: amount,
     address: paymentMethod.address,
     network: paymentMethod.network
   };
@@ -60,6 +67,56 @@ const MakePaymentPage = () => {
     navigator.clipboard.writeText(paymentDetails.address);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!selectedFile) {
+      toast.error("Please upload a payment proof image");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('paymentMethod', paymentDetails.method);
+      formData.append('amount', paymentDetails.amount);
+      formData.append('walletAddress', paymentDetails.address);
+      formData.append('network', paymentDetails.network);
+      formData.append('userId', user?.id || ''); // Use actual user ID from auth
+      formData.append('proofImage', selectedFile);
+
+      const response = await fetch('/api/user/deposits', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success('Payment submitted successfully! Your deposit is pending review.');
+        setSelectedFile(null);
+        // Reset file input
+        const fileInput = document.getElementById('proofImage') as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
+      } else {
+        toast.error(result.error || 'Failed to submit payment');
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error('An error occurred while submitting your payment');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -107,9 +164,20 @@ const MakePaymentPage = () => {
             <div className="p-6 md:p-10">
               {/* Payment Instructions */}
               <div className="text-center mb-10">
-                <p className="text-gray-500 text-lg">
+                <p className="text-gray-500 text-lg mb-4">
                   You are to make payment of <span className="text-[#1D429A] font-bold">${paymentDetails.amount}</span> using your selected payment method.
                 </p>
+                <div className="flex items-center justify-center gap-2">
+                  <label className="text-[#1D429A] font-bold text-sm">Amount ($):</label>
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D429A]"
+                    min="1"
+                    step="0.01"
+                  />
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-10 items-center">
@@ -155,12 +223,22 @@ const MakePaymentPage = () => {
                     </label>
                     <div className="relative group">
                       <input 
+                        id="proofImage"
                         type="file" 
+                        accept="image/*"
+                        onChange={handleFileSelect}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                       />
-                      <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 flex items-center justify-center gap-3 group-hover:border-[#76EAD7] transition-colors bg-white">
+                      <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center gap-3 group-hover:border-[#76EAD7] transition-colors bg-white">
                         <Upload className="w-5 h-5 text-gray-400 group-hover:text-[#1D429A]" />
-                        <span className="text-sm text-gray-500 font-medium">Choose File</span>
+                        <span className="text-sm text-gray-500 font-medium">
+                          {selectedFile ? selectedFile.name : 'Choose File'}
+                        </span>
+                        {selectedFile && (
+                          <span className="text-xs text-green-600 font-medium">
+                            ✓ File selected
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -168,11 +246,24 @@ const MakePaymentPage = () => {
               </div>
 
               {/* Final Action */}
-              <div className="mt-12 flex justify-center">
-                <button className="cursor-pointer bg-[#1D429A] text-white px-12 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all flex items-center gap-3">
-                  Submit Payment
+              <form onSubmit={handleSubmit} className="mt-12 flex justify-center">
+                <button 
+                  type="submit"
+                  disabled={isSubmitting || !selectedFile}
+                  className="cursor-pointer bg-[#1D429A] text-white px-12 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      Submit Payment
+                    </>
+                  )}
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check, X, Clock, DollarSign, Search, Filter } from "lucide-react";
+import { Check, X, Clock, DollarSign, Search, Filter, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 
 import AdminHeader from "@/components/admin-dashboard/header";
@@ -34,11 +34,11 @@ const getStatusIcon = (status: string) => {
 export default function AdminPaymentsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Mock data for front-end demonstration
+  // Mock data updated with proofUrl
   const payments = [
-    { id: "1", userName: "John Doe", user: "john@example.com", amount: 5000, plan: "Gold Plan", date: "Oct 24, 2023", status: "Pending" },
-    { id: "2", userName: "Sarah Smith", user: "sarah@design.co", amount: 1200, plan: "Starter Plan", date: "Oct 23, 2023", status: "Approved" },
-    { id: "3", userName: "Mike Ross", user: "mike@legal.com", amount: 10000, plan: "Platinum Plan", date: "Oct 22, 2023", status: "Rejected" },
+    { id: "1", userName: "John Doe", user: "john@example.com", amount: 5000, plan: "Gold Plan", date: "Oct 24, 2023", status: "Pending", proofUrl: "https://example.com/receipt1.jpg" },
+    { id: "2", userName: "Sarah Smith", user: "sarah@design.co", amount: 1200, plan: "Starter Plan", date: "Oct 23, 2023", status: "Approved", proofUrl: "https://example.com/receipt2.jpg" },
+    { id: "3", userName: "Mike Ross", user: "mike@legal.com", amount: 10000, plan: "Platinum Plan", date: "Oct 22, 2023", status: "Rejected", proofUrl: "https://example.com/receipt3.jpg" },
   ];
 
   const approvePayment = (name: string) => {
@@ -64,7 +64,6 @@ export default function AdminPaymentsPage() {
         <AdminHeader setSidebarOpen={setSidebarOpen} />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24">
-          {/* Page Header */}
           <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-2">
@@ -74,7 +73,6 @@ export default function AdminPaymentsPage() {
               <h1 className="text-2xl md:text-3xl font-bold text-[#1D429A]">Payments Review</h1>
             </div>
 
-            {/* Search/Filter Bar UI */}
             <div className="flex items-center gap-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -90,7 +88,6 @@ export default function AdminPaymentsPage() {
             </div>
           </div>
 
-          {/* Table Container */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 border-b border-gray-50 flex items-center justify-between">
               <h2 className="text-[#1D429A] font-bold text-sm uppercase tracking-wider">Transaction History</h2>
@@ -103,7 +100,8 @@ export default function AdminPaymentsPage() {
                   <tr>
                     <th className="px-6 py-4">User Details</th>
                     <th className="px-6 py-4">Amount</th>
-                    <th className="px-6 py-4">Plan Type</th>
+                    <th className="px-6 py-4">Payment Method</th>
+                    <th className="px-6 py-4">Proof</th>
                     <th className="px-6 py-4">Submission Date</th>
                     <th className="px-6 py-4">Status</th>
                     <th className="px-6 py-4 text-right">Actions</th>
@@ -125,6 +123,18 @@ export default function AdminPaymentsPage() {
                         <span className="text-xs font-medium text-gray-600 px-2 py-1 bg-gray-100 rounded-md">
                           {payment.plan}
                         </span>
+                      </td>
+                      {/* NEW PROOF COLUMN */}
+                      <td className="px-6 py-4">
+                        <a 
+                          href={payment.proofUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-[#76EAD7] hover:text-[#1D429A] text-xs font-medium underline flex items-center gap-1 transition-colors"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          {payment.proofUrl.substring(0, 15)}...
+                        </a>
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-xs text-gray-500 font-medium">{payment.date}</span>
