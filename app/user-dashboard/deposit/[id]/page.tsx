@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
 
 import { 
@@ -28,8 +28,17 @@ const MakePaymentPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [amount, setAmount] = useState("100");
   const params = useParams();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
-  
+
+  // Read amount from URL parameters on component mount
+  useEffect(() => {
+    const urlAmount = searchParams.get('amount');
+    if (urlAmount) {
+      setAmount(urlAmount);
+    }
+  }, [searchParams]);
+
   // Payment methods data
   const paymentMethods = {
     bitcoin: { name: "Bitcoin", address: "bc1qnw5qxtvsayve32042dkruqnrcwx32r8vw4yfmd", network: "BTC" },
@@ -167,17 +176,6 @@ const MakePaymentPage = () => {
                 <p className="text-gray-500 text-lg mb-4">
                   You are to make payment of <span className="text-[#1D429A] font-bold">${paymentDetails.amount}</span> using your selected payment method.
                 </p>
-                <div className="flex items-center justify-center gap-2">
-                  <label className="text-[#1D429A] font-bold text-sm">Amount ($):</label>
-                  <input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D429A]"
-                    min="1"
-                    step="0.01"
-                  />
-                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-10 items-center">

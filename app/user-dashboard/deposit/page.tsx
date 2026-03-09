@@ -101,7 +101,7 @@ const DepositPage = () => {
 
               {/* Action Button */}
               <div className="flex justify-center sm:justify-start">
-                <Link href={`/user-dashboard/deposit/${paymentMethod.toLowerCase()}`}>
+                <Link href={`/user-dashboard/deposit/${paymentMethod.toLowerCase()}?amount=${encodeURIComponent(amount)}`}>
                   <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all flex items-center gap-3">
                     <DollarSign className="w-5 h-5" />
                     Proceed to Payment
