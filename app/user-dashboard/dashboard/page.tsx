@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   Sprout,
 } from "lucide-react";
+import Link from "next/link";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
@@ -125,9 +126,11 @@ const SnowTradeDashboard = () => {
               <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
                 You do not have an active investment plan at the moment.
               </p>
+              <Link href="/user-dashboard/investment-plans">
               <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all">
                 Buy a plan
               </button>
+              </Link>
             </div>
           </section>
 

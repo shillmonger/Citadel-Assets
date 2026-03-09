@@ -17,6 +17,7 @@ import {
   Wallet,
   LineChart,
   LogOut,
+  Lock
 } from "lucide-react";
 
 interface SidebarProps {
@@ -33,12 +34,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { name: "Profit History", icon: <History />, href: "/user-dashboard/profit-history" },
     { name: "Transactions", icon: <LayoutGrid />, href: "/user-dashboard/transactions" },
     { name: "Withdraw", icon: <ArrowUpCircle />, href: "/user-dashboard/withdraw" },
-    { name: "Withdraw Connect", icon: <ArrowRightLeft />, href: "/user-dashboard/withdraw-connect" },
-    { name: "Transfer funds", icon: <ArrowRightLeft />, href: "/user-dashboard/transfer" },
+    { name: "Transfer funds", icon: <ArrowRightLeft />, href: "#" },
     { name: "Profile", icon: <User />, href: "/user-dashboard/profile" },
     { name: "Investment Plans", icon: <Sprout />, href: "/user-dashboard/investment-plans" },
     { name: "My Plans", icon: <LineChart />, href: "/user-dashboard/my-plans" },
     { name: "Referrals", icon: <Users />, href: "/user-dashboard/referrals" },
+    { name: "Admin Hub", icon: <Lock />, href: "/admin-dashboard/dashboard" },
     { name: "Logout", icon: <LogOut />, href: "/auth-page/login" },
   ];
 
