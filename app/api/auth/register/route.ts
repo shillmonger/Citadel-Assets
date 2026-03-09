@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import connectDB from '@/lib/mongodb';
 import User, { IUser } from '@/lib/models/User';
 
@@ -144,6 +145,17 @@ export async function POST(request: NextRequest) {
 
     await newUser.save();
 
+    // Generate JWT token for automatic login
+    const tokenPayload = {
+      userId: newUser._id,
+      email: newUser.email,
+      username: newUser.username,
+    };
+
+    const token = jwt.sign(tokenPayload, process.env.NEXTAUTH_SECRET!, {
+      expiresIn: '7d', // 7 days for new registrations
+    });
+
     // Remove password from response
     const userResponse = {
       id: newUser._id,
@@ -164,14 +176,31 @@ export async function POST(request: NextRequest) {
       createdAt: newUser.createdAt
     };
 
-    return NextResponse.json(
+    // Create response with token for automatic login
+    const response = NextResponse.json(
       { 
         success: true, 
         message: 'Registration successful! Welcome bonus of $10 has been added to your account.',
-        user: userResponse
+        user: userResponse,
+        token
       },
       { status: 201 }
     );
+
+    // Set HTTP-only cookie for authentication
+    const cookieOptions = {
+      name: 'auth-token',
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+      path: '/',
+    };
+
+    response.cookies.set(cookieOptions.name, cookieOptions.value, cookieOptions);
+
+    return response;
 
   } catch (error: any) {
     console.error('Registration error:', error);

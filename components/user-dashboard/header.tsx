@@ -31,6 +31,19 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // First, try to get user data from localStorage (set during registration)
+    const storedUserData = localStorage.getItem('user-data');
+    if (storedUserData) {
+      try {
+        const parsedData = JSON.parse(storedUserData);
+        setUserData(parsedData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error parsing stored user data:', error);
+      }
+    }
+    
+    // Then fetch fresh data from API
     fetchUserInfo();
   }, []);
 

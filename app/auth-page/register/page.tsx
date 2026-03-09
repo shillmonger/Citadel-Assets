@@ -361,6 +361,13 @@ const RegisterPage: React.FC = () => {
 
       if (data.success) {
         toast.success(data.message);
+        
+        // Store auth token and user data for immediate use
+        if (data.token) {
+          localStorage.setItem('auth-token', data.token);
+          localStorage.setItem('user-data', JSON.stringify(data.user));
+        }
+        
         // Reset hCaptcha
         if ((window as any).hcaptcha) {
           (window as any).hcaptcha.reset();
