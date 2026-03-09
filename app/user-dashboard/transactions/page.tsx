@@ -76,7 +76,7 @@ const TransactionPage = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex flex-col items-center justify-center py-2 md:py-3 rounded-xl transition-all cursor-pointer ${
                       activeTab === tab.id 
-                      ? "bg-[#6200EE] text-white shadow-lg shadow-[#6200EE]/20" 
+                      ? "bg-[#1D429A] text-white shadow-lg shadow-[#1D429A]/20" 
                       : "bg-white text-gray-400 border border-gray-100 hover:border-[#76EAD7]"
                     }`}
                   >

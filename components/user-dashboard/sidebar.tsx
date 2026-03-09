@@ -15,6 +15,7 @@ import {
   Users,
   X,
   Wallet,
+  LineChart,
   LogOut,
 } from "lucide-react";
 
@@ -36,7 +37,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { name: "Transfer funds", icon: <ArrowRightLeft />, href: "/user-dashboard/transfer" },
     { name: "Profile", icon: <User />, href: "/user-dashboard/profile" },
     { name: "Investment Plans", icon: <Sprout />, href: "/user-dashboard/investment-plans" },
-    { name: "My Plans", icon: <Sprout />, href: "/user-dashboard/my-plans" },
+    { name: "My Plans", icon: <LineChart />, href: "/user-dashboard/my-plans" },
     { name: "Referrals", icon: <Users />, href: "/user-dashboard/referrals" },
     { name: "Logout", icon: <LogOut />, href: "/auth-page/login" },
   ];
@@ -122,9 +123,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         <p className="text-[10px] text-blue-100 mb-4 relative z-10">
           Contact our 24/7 customer support center
         </p>
+
+        <Link href="/user-dashboard/support">
         <button className="cursor-pointer bg-[#76EAD7] text-[#1D429A] text-xs font-bold py-2.5 px-6 rounded-full w-full shadow-md relative z-10 hover:bg-white transition-colors">
           Contact Us
         </button>
+        </Link>
       </div>
     </aside>
   );
