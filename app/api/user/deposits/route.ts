@@ -2,6 +2,68 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Deposit from '@/lib/models/Deposit';
 import cloudinary from '@/lib/cloudinary';
+import jwt from 'jsonwebtoken';
+
+export async function GET(request: NextRequest) {
+  try {
+    await connectDB();
+
+    // Get token from Authorization header or cookie
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '') || 
+                 request.cookies.get('auth-token')?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'No authentication token provided' },
+        { status: 401 }
+      );
+    }
+
+    // Verify JWT token
+    const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as any;
+    
+    if (!decoded || !decoded.userId) {
+      return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      );
+    }
+
+    // Fetch user's deposits
+    const deposits = await Deposit.find({ userId: decoded.userId })
+      .sort({ createdAt: -1 });
+
+    // Calculate total approved deposits
+    const totalApproved = deposits
+      .filter(deposit => deposit.status === 'approved')
+      .reduce((sum, deposit) => sum + deposit.amount, 0);
+
+    return NextResponse.json(
+      { 
+        deposits,
+        totalApproved,
+        totalDeposits: deposits.length
+      },
+      { status: 200 }
+    );
+
+  } catch (error: any) {
+    console.error('Error fetching user deposits:', error);
+    
+    if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+      return NextResponse.json(
+        { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to fetch deposits' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {

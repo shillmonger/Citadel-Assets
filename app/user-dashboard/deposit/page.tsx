@@ -1,16 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { DollarSign, History, Wallet } from "lucide-react";
+import { DollarSign, History, Wallet, Clock, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
+import { toast } from "sonner";
+
+interface Deposit {
+  _id: string;
+  paymentMethod: string;
+  amount: number;
+  proofImageUrl: string;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+}
 
 const DepositPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [amount, setAmount] = useState("100");
   const [paymentMethod, setPaymentMethod] = useState("DOGE");
+  const [deposits, setDeposits] = useState<Deposit[]>([]);
+  const [totalApproved, setTotalApproved] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Wallet addresses included in data but not rendered in the UI
   const paymentMethods = [
@@ -22,6 +35,58 @@ const DepositPage = () => {
     { name: "Litecoin", address: "ltc1qdl05yxg8k2qwvfxyxgt8vdlwmjg9h0vulau0rm" },
     { name: "Solana", address: "Cgt3agGCp4ce5SfSuixJn3N1ByizfvLcNJeeYDWJha4D" },
   ];
+
+  // Fetch user's deposits
+  useEffect(() => {
+    const fetchDeposits = async () => {
+      try {
+        const response = await fetch('/api/user/deposits');
+        if (response.ok) {
+          const data = await response.json();
+          setDeposits(data.deposits || []);
+          setTotalApproved(data.totalApproved || 0);
+        } else {
+          console.error('Failed to fetch deposits');
+        }
+      } catch (error) {
+        console.error('Error fetching deposits:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeposits();
+  }, []);
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "approved":
+        return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case "rejected":
+        return <XCircle className="w-4 h-4 text-red-500" />;
+      default:
+        return <Clock className="w-4 h-4 text-blue-500" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "approved":
+        return "text-green-600";
+      case "rejected":
+        return "text-red-600";
+      default:
+        return "text-blue-600";
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F9F9FB] font-sans relative overflow-x-hidden">
@@ -119,7 +184,7 @@ const DepositPage = () => {
                     Total Deposit
                   </p>
                   <p className="text-xl md:text-2xl font-bold text-[#1D429A]">
-                    $0.00
+                    ${loading ? '0.00' : totalApproved.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
                 <div className="bg-[#1D429A] p-3 rounded-lg shadow-sm">
@@ -127,7 +192,7 @@ const DepositPage = () => {
                 </div>
               </div>
 
-              {/* History Card with Empty State */}
+              {/* History Card */}
               <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
                 <div className="flex items-center justify-between mb-6">
                   <p className="text-gray-400 text-[9px] font-bold uppercase tracking-wider">
@@ -138,15 +203,64 @@ const DepositPage = () => {
                   </button>
                 </div>
                 
-                {/* Empty State */}
-                <div className="flex flex-col items-center justify-center py-4 text-center">
-                  <div className="bg-gray-50 p-4 rounded-full mb-3">
-                    <Wallet className="w-8 h-8 text-gray-300" />
+                {loading ? (
+                  <div className="flex items-center justify-center py-4">
+                    <div className="w-4 h-4 border-2 border-[#1D429A] border-t-transparent rounded-full animate-spin"></div>
                   </div>
-                  <p className="text-gray-400 text-xs italic font-medium">
-                    No history yet
-                  </p>
-                </div>
+                ) : deposits.length === 0 ? (
+                  /* Empty State */
+                  <div className="flex flex-col items-center justify-center py-4 text-center">
+                    <div className="bg-gray-50 p-4 rounded-full mb-3">
+                      <Wallet className="w-8 h-8 text-gray-300" />
+                    </div>
+                    <p className="text-gray-400 text-xs italic font-medium">
+                      No history yet
+                    </p>
+                  </div>
+                ) : (
+                  /* Deposit History List */
+                  <div className="space-y-3 max-h-64 overflow-y-auto">
+                    {deposits.slice(0, 5).map((deposit) => (
+                      <div key={deposit._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            {getStatusIcon(deposit.status)}
+                            <span className="text-sm font-medium text-gray-900">
+                              {deposit.paymentMethod}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <span>${deposit.amount.toLocaleString()}</span>
+                            <span>•</span>
+                            <span>{formatDate(deposit.createdAt)}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-xs font-medium capitalize ${getStatusColor(deposit.status)}`}>
+                            {deposit.status}
+                          </span>
+                          {deposit.proofImageUrl && (
+                            <a
+                              href={deposit.proofImageUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-400 hover:text-[#1D429A] transition-colors"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {deposits.length > 5 && (
+                      <div className="text-center pt-2">
+                        <button className="text-xs text-[#1D429A] font-medium hover:underline">
+                          View all {deposits.length} deposits
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
