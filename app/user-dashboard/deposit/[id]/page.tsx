@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import QRCode from "qrcode";
 
 import { 
   ChevronRight, 
@@ -18,14 +20,41 @@ import Navbar from "@/components/user-dashboard/navbar";
 const MakePaymentPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const params = useParams();
   
-  // This would typically come from your previous page state
-  const paymentDetails = {
-    method: "Ripple",
-    amount: "100",
-    address: "rP82Krx6ivzF9UR9QNYjy3BTeYxhKq2R1",
-    network: "XRP"
+  // Payment methods data
+  const paymentMethods = {
+    bitcoin: { name: "Bitcoin", address: "bc1qnw5qxtvsayve32042dkruqnrcwx32r8vw4yfmd", network: "BTC" },
+    ethereum: { name: "Ethereum", address: "0xc28938a688215b45328068A6B5204f33e3051440", network: "ETH" },
+    "usdt trc20": { name: "USDT TRC20", address: "TBdVHRagTQvoZ1o38Q3Gn5wUHFWFdLWuGX", network: "TRC20" },
+    xrp: { name: "XRP", address: "rUABG73PfQR2616j9RjLCzv8WXsp7CkjLu", network: "XRP" },
+    doge: { name: "DOGE", address: "DGPybWe6RMp4AyiNzphenLzgWciRw9wXmP", network: "DOGE" },
+    litecoin: { name: "Litecoin", address: "ltc1qdl05yxg8k2qwvfxyxgt8vdlwmjg9h0vulau0rm", network: "LTC" },
+    solana: { name: "Solana", address: "Cgt3agGCp4ce5SfSuixJn3N1ByizfvLcNJeeYDWJha4D", network: "SOL" }
   };
+  
+  const paymentMethod = paymentMethods[params.id as keyof typeof paymentMethods] || paymentMethods.doge;
+  const paymentDetails = {
+    method: paymentMethod.name,
+    amount: "100",
+    address: paymentMethod.address,
+    network: paymentMethod.network
+  };
+
+  useEffect(() => {
+    const generateQRCode = async () => {
+      try {
+        const qrData = `${paymentDetails.address}:${paymentDetails.amount}`;
+        const url = await QRCode.toDataURL(qrData);
+        setQrCodeUrl(url);
+      } catch (err) {
+        console.error('Error generating QR code:', err);
+      }
+    };
+    
+    generateQRCode();
+  }, [paymentDetails.address, paymentDetails.amount]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(paymentDetails.address);
@@ -84,14 +113,18 @@ const MakePaymentPage = () => {
               </div>
 
               <div className="grid md:grid-cols-2 gap-10 items-center">
-                {/* QR Code Placeholder */}
+                {/* QR Code */}
                 <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                   <div className="bg-white p-4 rounded-xl shadow-sm mb-4">
+                  <div className="bg-white p-4 rounded-xl shadow-sm mb-4">
+                    {qrCodeUrl ? (
+                      <img src={qrCodeUrl} alt="QR Code" className="w-32 h-32" />
+                    ) : (
                       <QrCode className="w-32 h-32 text-[#1D429A]" />
-                   </div>
-                   <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest text-center">
-                     Scan to pay via wallet app
-                   </p>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest text-center">
+                    Scan to pay via wallet app
+                  </p>
                 </div>
 
                 {/* Address & Upload Section */}

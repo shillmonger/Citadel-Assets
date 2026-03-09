@@ -14,13 +14,13 @@ const DepositPage = () => {
 
   // Wallet addresses included in data but not rendered in the UI
   const paymentMethods = [
-    { name: "Ripple", address: "rPVMhWB...your_address" },
-    { name: "DOGE", address: "D866...your_address" },
-    { name: "BNB Smart Chain", address: "0x123...your_address" },
-    { name: "Usdt trc20", address: "TX...your_address" },
-    { name: "Litecoin", address: "L...your_address" },
-    { name: "Ethereum", address: "0xabc...your_address" },
-    { name: "Bitcoin", address: "1...your_address" },
+    { name: "Bitcoin", address: "bc1qnw5qxtvsayve32042dkruqnrcwx32r8vw4yfmd" },
+    { name: "Ethereum", address: "0xc28938a688215b45328068A6B5204f33e3051440" },
+    { name: "Usdt trc20", address: "TBdVHRagTQvoZ1o38Q3Gn5wUHFWFdLWuGX" },
+    { name: "XRP", address: "rUABG73PfQR2616j9RjLCzv8WXsp7CkjLu" },
+    { name: "Doge", address: "DGPybWe6RMp4AyiNzphenLzgWciRw9wXmP" },
+    { name: "Litecoin", address: "ltc1qdl05yxg8k2qwvfxyxgt8vdlwmjg9h0vulau0rm" },
+    { name: "Solana", address: "Cgt3agGCp4ce5SfSuixJn3N1ByizfvLcNJeeYDWJha4D" },
   ];
 
   return (
@@ -101,13 +101,13 @@ const DepositPage = () => {
 
               {/* Action Button */}
               <div className="flex justify-center sm:justify-start">
-  <Link href="/user-dashboard/deposit/id">
-    <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all flex items-center gap-3">
-      <DollarSign className="w-5 h-5" />
-      Proceed to Payment
-    </button>
-  </Link>
-</div>
+                <Link href={`/user-dashboard/deposit/${paymentMethod.toLowerCase()}`}>
+                  <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all flex items-center gap-3">
+                    <DollarSign className="w-5 h-5" />
+                    Proceed to Payment
+                  </button>
+                </Link>
+              </div>
             </div>
 
             {/* Right: Total Deposit and History (Fixed width on large screens) */}
