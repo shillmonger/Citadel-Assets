@@ -1,0 +1,198 @@
+"use client";
+
+import React, { useState } from "react";
+import { 
+  Copy, 
+  CheckCircle2, 
+  Users, 
+  Link as LinkIcon, 
+  UserPlus, 
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  InboxIcon,
+} from "lucide-react";
+import Header from "@/components/user-dashboard/header";
+import Sidebar from "@/components/user-dashboard/sidebar";
+import Navbar from "@/components/user-dashboard/navbar";
+
+const ReferralPage = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const referralLink = "https://snowtradeptylimited.com/ref/Evelyn";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(referralLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="flex min-h-screen bg-[#F9F9FB] font-sans relative overflow-x-hidden">
+      {/* Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+      <main className="flex-1 w-full flex flex-col min-w-0 mb-24 md:mb-0">
+        <Header onMenuClick={() => setIsSidebarOpen(true)} />
+
+        <div className="p-4 md:p-8 w-full max-w-full lg:max-w-[1200px] mx-auto">
+          {/* Page Title */}
+          <div className="flex items-center gap-2 mb-6 md:mb-8">
+            <div className="w-1 h-5 bg-[#76EAD7] rounded-full flex-shrink-0"></div>
+            <h2 className="text-[#1D429A] text-lg md:text-3xl font-light leading-tight">
+              Refer users to <span className="font-bold">Snow Trade Community</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+            {/* Left Column */}
+            <div className="lg:col-span-2 space-y-6">
+
+              {/* Referral Link Card */}
+              <div className="bg-white p-5 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="bg-[#1D429A]/10 p-2 rounded-lg flex-shrink-0">
+                    <LinkIcon className="w-5 h-5 text-[#1D429A]" />
+                  </div>
+                  <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">
+                    Your Referral Link
+                  </h3>
+                </div>
+
+                {/* Link + Icon-only copy button */}
+                <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+                  <p className="flex-1 text-xs md:text-sm text-gray-600 font-medium truncate">
+                    {referralLink}
+                  </p>
+                  <button
+                    onClick={handleCopy}
+                    title={copied ? "Copied!" : "Copy link"}
+                    className="cursor-pointer flex-shrink-0 bg-[#1D429A] text-white p-3 rounded-lg hover:bg-[#16357a] transition-all shadow-sm"
+                  >
+                    {copied
+                      ? <CheckCircle2 className="w-5 h-5 text-[#76EAD7]" />
+                      : <Copy className="w-5 h-5" />
+                    }
+                  </button>
+                </div>
+
+                <div className="mt-6 flex flex-col items-center justify-center border-t border-gray-100 pt-6">
+                  <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">
+                    Your Referral ID
+                  </p>
+                  <div className="bg-[#76EAD7]/30 text-[#1D429A] px-6 py-2 rounded-[10px] font-bold text-lg">
+                    Evelyn
+                  </div>
+                </div>
+              </div>
+
+              {/* Referral Table */}
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="p-5 md:p-6 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest flex-shrink-0">
+                    Your Referrals
+                  </h3>
+                  <div className="relative w-full sm:w-56 md:w-64">
+                    <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search referrals..."
+                      className="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#76EAD7] w-full"
+                    />
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left min-w-[500px]">
+                    <thead className="bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-tighter border-b border-gray-100">
+                      <tr>
+                        <th className="px-5 py-4">Client Name</th>
+                        <th className="px-5 py-4">Ref. Level</th>
+                        <th className="px-5 py-4">Parent</th>
+                        <th className="px-5 py-4">Status</th>
+                        <th className="px-5 py-4">Date Registered</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colSpan={5} className="px-6 py-12 text-center">
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center">
+                              <InboxIcon className="w-10 h-10 text-gray-300" />
+                            </div>
+                            <p className="text-gray-400 text-sm italic">No data available in table</p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination */}
+                <div className="p-4 bg-gray-50 flex items-center justify-between border-t border-gray-100">
+                  <p className="text-[10px] text-gray-400 font-bold uppercase">Showing 0 to 0 of 0 entries</p>
+                  <div className="flex gap-2">
+                    <button className="cursor-pointer p-2 rounded-lg bg-white border border-gray-200 text-gray-400 hover:border-[#1D429A]/30 transition-colors disabled:opacity-40">
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button className="cursor-pointer p-2 rounded-lg bg-white border border-gray-200 text-gray-400 hover:border-[#1D429A]/30 transition-colors disabled:opacity-40">
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-6">
+              {/* Referred By Card */}
+              <div className="bg-[#1D429A] p-6 md:p-8 rounded-2xl shadow-lg text-center relative overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full"></div>
+                <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-5 relative z-10">
+                  You were referred by
+                </p>
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10 border border-white/20">
+                  <Users className="w-8 h-8 md:w-10 md:h-10 text-[#76EAD7]" />
+                </div>
+                <h4 className="text-white font-bold text-xl md:text-2xl relative z-10">Wetzel</h4>
+              </div>
+
+              {/* Referral Stats */}
+              <div className="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-[#76EAD7]/10 p-2 rounded-lg flex-shrink-0">
+                    <UserPlus className="w-5 h-5 text-[#1D429A]" />
+                  </div>
+                  <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">
+                    Referral Stats
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+                    <span className="text-gray-500 text-xs font-medium">Total Referrals</span>
+                    <span className="text-[#1D429A] font-bold">0</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+                    <span className="text-gray-500 text-xs font-medium">Active Referrals</span>
+                    <span className="text-[#1D429A] font-bold">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Navbar />
+    </div>
+  );
+};
+
+export default ReferralPage;

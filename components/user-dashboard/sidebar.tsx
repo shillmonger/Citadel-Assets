@@ -31,13 +31,13 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { name: "Deposit", icon: <Download />, href: "/user-dashboard/deposit" },
     { name: "Profit History", icon: <History />, href: "/user-dashboard/profit-history" },
     { name: "Transactions", icon: <LayoutGrid />, href: "/user-dashboard/transactions" },
-    { name: "My Withdraw", icon: <ArrowUpCircle />, href: "/user-dashboard/withdraw" },
+    { name: "Withdraw", icon: <ArrowUpCircle />, href: "/user-dashboard/withdraw" },
     { name: "Withdraw Connect", icon: <ArrowRightLeft />, href: "/user-dashboard/withdraw-connect" },
     { name: "Transfer funds", icon: <ArrowRightLeft />, href: "/user-dashboard/transfer" },
-    { name: "My Profile", icon: <User />, href: "/user-dashboard/profile" },
+    { name: "Profile", icon: <User />, href: "/user-dashboard/profile" },
     { name: "Investment Plans", icon: <Sprout />, href: "/user-dashboard/investment-plans" },
     { name: "My Plans", icon: <Sprout />, href: "/user-dashboard/my-plans" },
-    { name: "My Referrals", icon: <Users />, href: "/user-dashboard/referrals" },
+    { name: "Referrals", icon: <Users />, href: "/user-dashboard/referrals" },
     { name: "Logout", icon: <LogOut />, href: "/auth-page/login" },
   ];
 
