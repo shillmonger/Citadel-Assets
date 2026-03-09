@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
   Menu,
@@ -27,6 +27,42 @@ interface HeaderProps {
 
 const Header = ({ onMenuClick }: HeaderProps) => {
   const pathname = usePathname();
+  const [userData, setUserData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('auth-token') || 
+                   document.cookie.split('; ').find(row => row.startsWith('auth-token='))?.split('=')[1];
+      
+      if (!token) {
+        console.error('No auth token found');
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch('/api/user/info', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data.user);
+      } else {
+        console.error('Failed to fetch user info');
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <header className="bg-[#1D429A] px-4 py-3 flex justify-between items-center text-white sticky top-0 z-30 shadow-md">
@@ -76,7 +112,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
               </div>
 
               <span className="text-[10px] font-bold uppercase hidden lg:inline">
-                Evelyn W
+                {isLoading ? 'Loading...' : (userData?.fullName?.split(' ').map((n: string) => n[0]).join('.') || 'User')}
               </span>
             </button>
           </DropdownMenuTrigger>
@@ -91,7 +127,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                 My Account
               </DropdownMenuLabel>
               <p className="text-[11px] text-slate-500 font-medium">
-                evelyn.w@citadel.com
+                {isLoading ? 'Loading...' : (userData?.email || 'user@example.com')}
               </p>
             </div>
 

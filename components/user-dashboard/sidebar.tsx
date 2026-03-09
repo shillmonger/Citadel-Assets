@@ -28,22 +28,46 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const pathname = usePathname();
 
-  // Get user data from localStorage
+  // Get user data from localStorage and API
   const [userData, setUserData] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
+  const fetchUserInfo = async () => {
     try {
+      // First try to get from localStorage
       const storedUserData = localStorage.getItem('user-data');
       if (storedUserData) {
         setUserData(JSON.parse(storedUserData));
       }
+
+      // Then try to get fresh data from API
+      const token = localStorage.getItem('auth-token') ||
+                   document.cookie.split('; ').find(row => row.startsWith('auth-token='))?.split('=')[1];
+      
+      if (token) {
+        const response = await fetch('/api/user/info', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data.user);
+          // Update localStorage with fresh data
+          localStorage.setItem('user-data', JSON.stringify(data.user));
+        }
+      }
     } catch (error) {
-      console.error('Error parsing user data:', error);
+      console.error('Error fetching user info:', error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  };
 
   // Check if user has admin role
   const isAdmin = userData?.roles?.includes('admin') || false;
@@ -91,7 +115,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2 border-2 border-[#1D429A]">
           <User className="w-12 h-12 text-gray-300" />
         </div>
-        <h2 className="font-bold text-gray-800 text-lg">Evelyn W</h2>
+        <h2 className="font-bold text-gray-800 text-lg">{isLoading ? 'Loading...' : (userData?.fullName || 'User')}</h2>
         <span className="text-xs text-[#76EAD7] flex items-center gap-1 font-semibold uppercase tracking-tighter mt-0.5">
           <span className="w-2 h-2 bg-[#76EAD7] rounded-full animate-pulse inline-block"></span> online
         </span>
@@ -99,7 +123,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <div className="bg-[#1D429A] p-1 rounded-full">
             <Wallet className="w-3 h-3 text-white" />
           </div>
-          <span className="text-sm font-bold text-[#1D429A]">$0.00</span>
+          <span className="text-sm font-bold text-[#1D429A]">${isLoading ? '0.00' : (userData?.accountBalance?.toFixed(2) || '0.00')}</span>
         </div>
       </div>
 

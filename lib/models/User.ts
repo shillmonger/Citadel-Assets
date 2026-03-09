@@ -15,6 +15,7 @@ export interface IUser extends Document {
   totalWithdrawal: number;
   totalDeposit: number;
   roles: string[];
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -97,6 +98,11 @@ const UserSchema: Schema = new Schema({
     type: [String],
     default: ['user'],
     enum: ['user', 'admin']
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+    required: true
   }
 }, {
   timestamps: true

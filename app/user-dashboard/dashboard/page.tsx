@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Wallet,
   History,
@@ -17,36 +17,72 @@ import Navbar from "@/components/user-dashboard/navbar";
 
 const SnowTradeDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('auth-token') || 
+                   document.cookie.split('; ').find(row => row.startsWith('auth-token='))?.split('=')[1];
+      
+      if (!token) {
+        console.error('No auth token found');
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch('/api/user/info', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data.user);
+      } else {
+        console.error('Failed to fetch user info');
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const summaryItems = [
     {
       label: "Account balance",
-      value: "$0.00",
+      value: userData ? `$${userData.accountBalance.toFixed(2)}` : "$0.00",
       icon: <Wallet className="w-5 h-5 text-white" />,
     },
     {
       label: "Welcome Bonus",
-      value: "$0.00",
+      value: userData ? `$${userData.welcomeBonus.toFixed(2)}` : "$0.00",
       icon: <History className="w-5 h-5 text-white" />,
     },
     {
       label: "Total Profit",
-      value: "$0.00",
+      value: userData ? `$${userData.totalProfit.toFixed(2)}` : "$0.00",
       icon: <History className="w-5 h-5 text-white" />,
     },
     {
       label: "Referral Bonus",
-      value: "$0.00",
+      value: userData ? `$${userData.referralBonus.toFixed(2)}` : "$0.00",
       icon: <Users className="w-5 h-5 text-white" />,
     },
     {
       label: "Total Deposit",
-      value: "$0.00",
+      value: userData ? `$${userData.totalDeposit.toFixed(2)}` : "$0.00",
       icon: <Download className="w-5 h-5 text-white" />,
     },
     {
       label: "Total Withdrawal",
-      value: "$0.00",
+      value: userData ? `$${userData.totalWithdrawal.toFixed(2)}` : "$0.00",
       icon: <ArrowUpCircle className="w-5 h-5 text-white" />,
     },
   ];
@@ -72,7 +108,7 @@ const SnowTradeDashboard = () => {
         {/* Page Content */}
         <div className="p-4 md:p-8 w-full max-w-full lg:max-w-[1400px] mx-auto">
           <h2 className="text-[#1D429A] text-xl md:text-3xl font-light mb-8">
-            Welcome, <span className="font-bold">Evelyn W!</span>
+            Welcome, <span className="font-bold">{isLoading ? 'Loading...' : (userData?.fullName || 'User')}</span>
           </h2>
 
           {/* Account Summary */}

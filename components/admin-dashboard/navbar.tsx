@@ -3,17 +3,27 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Wallet, Settings, User, GraduationCap } from "lucide-react";
+import {
+  LayoutGrid,
+  Wallet,
+  Settings,
+  User,
+  GraduationCap,
+} from "lucide-react";
 
 export default function UserNav() {
   const pathname = usePathname();
 
   const navItems = [
+    { name: "Dashboard", href: "/admin-dashboard/dashboard", icon: LayoutGrid },
     { name: "Payments", href: "/admin-dashboard/payments", icon: LayoutGrid },
-    { name: "Payouts", href: "/admin-dashboard/investment-payouts", icon: Wallet },
+    {
+      name: "Payouts",
+      href: "/admin-dashboard/investment-payouts",
+      icon: Wallet,
+    },
     { name: "Users", href: "/admin-dashboard/user-management", icon: User },
     { name: "Settings", href: "/admin-dashboard/settings", icon: Settings },
-    { name: "Switch", href: "/user-dashboard/dashboard", icon: GraduationCap },
   ];
 
   const isActive = (href: string) =>
@@ -24,7 +34,7 @@ export default function UserNav() {
       className="
         fixed bottom-0 left-0 right-0 z-50 
         flex justify-around items-center 
-        bg-white py-4 rounded-t-[2.5rem] 
+        bg-white py-2 rounded-t-[1rem] 
         shadow-[0_-8px_30px_rgb(0,0,0,0.06)] 
         border-t border-gray-50
         lg:hidden
@@ -60,7 +70,9 @@ export default function UserNav() {
           </div>
 
           {/* Label */}
-          <span className={`text-[9px] font-bold uppercase tracking-widest ${isActive(href) ? "opacity-100" : "opacity-60"}`}>
+          <span
+            className={`text-[9px] font-bold uppercase tracking-widest ${isActive(href) ? "opacity-100" : "opacity-60"}`}
+          >
             {name}
           </span>
         </Link>

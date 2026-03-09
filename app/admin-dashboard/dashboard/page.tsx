@@ -1,50 +1,36 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check, X, Clock, DollarSign, Search, Filter } from "lucide-react";
+import { 
+  Users, 
+  UserMinus, 
+  UserCheck, 
+  TrendingUp, 
+  Clock, 
+  ArrowUpRight, 
+  ArrowDownLeft, 
+  Layers,
+  Search,
+  Filter,
+  DollarSign
+} from "lucide-react";
 import AdminHeader from "@/components/admin-dashboard/header";
 import AdminSidebar from "@/components/admin-dashboard/sidebar";
 import AdminNav from "@/components/admin-dashboard/navbar";
 
-// Helpers using brand colors
-const getStatusClasses = (status: string) => {
-  switch (status) {
-    case "Approved":
-      return "bg-teal-50 text-teal-600 border border-teal-100";
-    case "Rejected":
-      return "bg-red-50 text-red-600 border border-red-100";
-    default:
-      return "bg-blue-50 text-[#1D429A] border border-blue-100";
-  }
-};
-
-const getStatusIcon = (status: string) => {
-  switch (status) {
-    case "Approved":
-      return <Check className="w-3 h-3 mr-1" />;
-    case "Rejected":
-      return <X className="w-3 h-3 mr-1" />;
-    default:
-      return <Clock className="w-3 h-3 mr-1" />;
-  }
-};
-
-export default function AdminPaymentsPage() {
+export default function AdminDashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Mock data for front-end demonstration
-  const payments = [
-    { id: "1", userName: "John Doe", user: "john@example.com", amount: 5000, plan: "Gold Plan", date: "Oct 24, 2023", status: "Pending" },
-    { id: "2", userName: "Sarah Smith", user: "sarah@design.co", amount: 1200, plan: "Starter Plan", date: "Oct 23, 2023", status: "Approved" },
-    { id: "3", userName: "Mike Ross", user: "mike@legal.com", amount: 10000, plan: "Platinum Plan", date: "Oct 22, 2023", status: "Rejected" },
+  const stats = [
+    { label: "Total Users", value: "12,842", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
+    { label: "Active Users", value: "8,210", icon: UserCheck, color: "text-teal-600", bg: "bg-teal-50" },
+    { label: "Blocked Users", value: "142", icon: UserMinus, color: "text-red-600", bg: "bg-red-50" },
+    { label: "Investment Plans", value: "12", icon: Layers, color: "text-purple-600", bg: "bg-purple-50" },
+    { label: "Total Deposit", value: "$420,500", icon: TrendingUp, color: "text-teal-600", bg: "bg-teal-50" },
+    { label: "Pending Deposit", value: "$12,300", icon: Clock, color: "text-orange-600", bg: "bg-orange-50" },
+    { label: "Total Withdrawal", value: "$180,200", icon: ArrowDownLeft, color: "text-[#1D429A]", bg: "bg-blue-50" },
+    { label: "Pending Withdrawal", value: "$5,400", icon: ArrowUpRight, color: "text-red-500", bg: "bg-red-50" },
   ];
-
-  const StatusPill = ({ status }: { status: string }) => (
-    <div className={`flex items-center w-fit px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${getStatusClasses(status)}`}>
-      {getStatusIcon(status)}
-      {status}
-    </div>
-  );
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#F9F9FB]">
@@ -54,89 +40,80 @@ export default function AdminPaymentsPage() {
         <AdminHeader setSidebarOpen={setSidebarOpen} />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24">
-          {/* Page Header */}
-          <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-1 h-4 bg-[#76EAD7] rounded-full"></div>
-                <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">Finance Management</h3>
-              </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#1D429A]">Payments Review</h1>
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-1 h-4 bg-[#76EAD7] rounded-full"></div>
+              <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">Platform Overview</h3>
             </div>
-
-            {/* Search/Filter Bar UI */}
-            <div className="flex items-center gap-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input 
-                  type="text" 
-                  placeholder="Search users..." 
-                  className="bg-white border border-gray-100 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#76EAD7]/50 w-full md:w-64 shadow-sm"
-                />
-              </div>
-              <button className="p-2 bg-white border border-gray-100 rounded-xl text-[#1D429A] shadow-sm hover:bg-gray-50">
-                <Filter className="w-5 h-5" />
-              </button>
-            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#1D429A]">Dashboard</h1>
           </div>
 
-          {/* Table Container */}
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`p-2 rounded-xl ${stat.bg}`}>
+                    <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                  </div>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Live</span>
+                </div>
+                <div>
+                  <h4 className="text-gray-500 text-xs font-medium mb-1">{stat.label}</h4>
+                  <p className="text-xl font-bold text-[#1D429A]">{stat.value}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Recent Transactions Section */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 border-b border-gray-50 flex items-center justify-between">
-              <h2 className="text-[#1D429A] font-bold text-sm uppercase tracking-wider">Transaction History</h2>
-              <DollarSign className="w-5 h-5 text-[#76EAD7]" />
+              <div>
+                <h2 className="text-[#1D429A] font-bold text-sm uppercase tracking-wider">Recent Transactions</h2>
+                <p className="text-xs text-gray-400 mt-1">Latest financial activities across the platform</p>
+              </div>
+              <button className="text-xs font-bold text-[#76EAD7] hover:text-[#1D429A] transition-colors">
+                View All
+              </button>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead className="bg-[#F8FAFC] text-gray-400 text-[10px] uppercase tracking-widest font-bold">
                   <tr>
-                    <th className="px-6 py-4">User Details</th>
+                    <th className="px-6 py-4">Transaction ID</th>
+                    <th className="px-6 py-4">Type</th>
                     <th className="px-6 py-4">Amount</th>
-                    <th className="px-6 py-4">Plan Type</th>
-                    <th className="px-6 py-4">Submission Date</th>
                     <th className="px-6 py-4">Status</th>
-                    <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                  {payments.map((payment) => (
-                    <tr key={payment.id} className="hover:bg-gray-50/50 transition-colors group">
+                  {[1, 2, 3, 4].map((item) => (
+                    <tr key={item} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-[#1D429A]">{payment.userName}</span>
-                          <span className="text-xs text-gray-400">{payment.user}</span>
-                        </div>
+                        <span className="text-sm font-medium text-gray-600">#TRX-9402{item}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-sm font-bold text-[#1D429A]">${payment.amount.toLocaleString()}</span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="text-xs font-medium text-gray-600 px-2 py-1 bg-gray-100 rounded-md">
-                          {payment.plan}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="text-xs text-gray-500 font-medium">{payment.date}</span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <StatusPill status={payment.status} />
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          {payment.status === "Pending" ? (
-                            <>
-                              <button className="p-2 bg-teal-50 text-teal-600 rounded-lg hover:bg-teal-600 hover:text-white transition-all shadow-sm">
-                                <Check className="w-4 h-4" />
-                              </button>
-                              <button className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm">
-                                <X className="w-4 h-4" />
-                              </button>
-                            </>
+                        <div className="flex items-center gap-2">
+                          {item % 2 === 0 ? (
+                            <ArrowDownLeft className="w-3 h-3 text-teal-500" />
                           ) : (
-                            <span className="text-[10px] font-bold text-gray-300 uppercase italic">Locked</span>
+                            <ArrowUpRight className="w-3 h-3 text-blue-500" />
                           )}
+                          <span className="text-sm text-[#1D429A] font-semibold">
+                            {item % 2 === 0 ? "Deposit" : "Withdrawal"}
+                          </span>
                         </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm font-bold text-[#1D429A]">
+                        ${(Math.random() * 1000).toFixed(2)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-3 py-1 text-[10px] font-bold uppercase rounded-full bg-teal-50 text-teal-600 border border-teal-100">
+                          Completed
+                        </span>
                       </td>
                     </tr>
                   ))}

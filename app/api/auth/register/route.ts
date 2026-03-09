@@ -138,7 +138,8 @@ export async function POST(request: NextRequest) {
       totalProfit: 0,
       referralBonus: 0,
       totalWithdrawal: 0,
-      totalDeposit: 0
+      totalDeposit: 0,
+      isActive: true
     });
 
     await newUser.save();
@@ -158,6 +159,8 @@ export async function POST(request: NextRequest) {
       referralBonus: newUser.referralBonus,
       totalWithdrawal: newUser.totalWithdrawal,
       totalDeposit: newUser.totalDeposit,
+      roles: newUser.roles,
+      isActive: newUser.isActive,
       createdAt: newUser.createdAt
     };
 
