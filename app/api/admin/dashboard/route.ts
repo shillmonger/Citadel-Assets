@@ -3,6 +3,7 @@ import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import InvestmentPlan from '@/lib/models/InvestmentPlan';
 import Deposit from '@/lib/models/Deposit';
+import Withdrawal from '@/lib/models/Withdrawal';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -59,11 +60,14 @@ export async function GET(request: NextRequest) {
         { $match: { status: 'pending' } },
         { $group: { _id: null, total: { $sum: '$amount' } } }
       ]),
-      User.aggregate([
-        { $group: { _id: null, total: { $sum: '$totalWithdrawal' } } }
+      Withdrawal.aggregate([
+        { $match: { status: { $in: ['approved', 'completed'] } } },
+        { $group: { _id: null, total: { $sum: '$amount' } } }
       ]),
-      // Note: pending withdrawals would need to be implemented based on your withdrawal model
-      Promise.resolve([{ total: 0 }])
+      Withdrawal.aggregate([
+        { $match: { status: 'pending' } },
+        { $group: { _id: null, total: { $sum: '$amount' } } }
+      ])
     ]);
 
     // Get recent transactions (deposits)
@@ -94,7 +98,7 @@ export async function GET(request: NextRequest) {
       { label: "Total Deposit", value: `$${(totalDeposits[0]?.total || 0).toLocaleString()}`, icon: "TrendingUp", color: "text-teal-600", bg: "bg-teal-50" },
       { label: "Pending Deposit", value: `$${(pendingDeposits[0]?.total || 0).toLocaleString()}`, icon: "Clock", color: "text-orange-600", bg: "bg-orange-50" },
       { label: "Total Withdrawal", value: `$${(totalWithdrawals[0]?.total || 0).toLocaleString()}`, icon: "ArrowDownLeft", color: "text-[#1D429A]", bg: "bg-blue-50" },
-      { label: "Pending Withdrawal", value: "$0", icon: "ArrowUpRight", color: "text-red-500", bg: "bg-red-50" }
+      { label: "Pending Withdrawal", value: `$${(pendingWithdrawals[0]?.total || 0).toLocaleString()}`, icon: "ArrowUpRight", color: "text-red-500", bg: "bg-red-50" }
     ];
 
     return NextResponse.json({

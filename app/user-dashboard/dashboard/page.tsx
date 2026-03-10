@@ -181,6 +181,9 @@ const SnowTradeDashboard = () => {
     }
   };
 
+  // Calculate total investment amount from all active plans
+  const totalInvestmentAmount = activePlans.reduce((total, plan) => total + plan.amount, 0);
+
   const summaryItems = [
     {
       label: "Account balance",
@@ -188,9 +191,14 @@ const SnowTradeDashboard = () => {
       icon: <Wallet className="w-5 h-5 text-white" />,
     },
     {
-      label: "Welcome Bonus",
-      value: userData ? `$${userData.welcomeBonus.toFixed(2)}` : "$0.00",
-      icon: <History className="w-5 h-5 text-white" />,
+      label: "Total Deposit",
+      value: userData ? `$${userData.totalDeposit.toFixed(2)}` : "$0.00",
+      icon: <Download className="w-5 h-5 text-white" />,
+    },
+    {
+      label: "Total Plan",
+      value: `$${totalInvestmentAmount.toFixed(2)}`,
+      icon: <TrendingUp className="w-5 h-5 text-white" />,
     },
     {
       label: "Total Profit",
@@ -201,11 +209,6 @@ const SnowTradeDashboard = () => {
       label: "Referral Bonus",
       value: userData ? `$${userData.referralBonus.toFixed(2)}` : "$0.00",
       icon: <Users className="w-5 h-5 text-white" />,
-    },
-    {
-      label: "Total Deposit",
-      value: userData ? `$${userData.totalDeposit.toFixed(2)}` : "$0.00",
-      icon: <Download className="w-5 h-5 text-white" />,
     },
     {
       label: "Total Withdrawal",

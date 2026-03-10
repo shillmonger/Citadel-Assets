@@ -180,7 +180,7 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json(
       { 
         success: true, 
-        message: 'Registration successful! Welcome bonus of $10 has been added to your account.',
+        message: 'Registration successful!, Welcome to Cetadel Assets.',
         user: userResponse,
         token
       },
