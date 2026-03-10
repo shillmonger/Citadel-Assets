@@ -38,6 +38,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if user account is active
+    if (!user.isActive) {
+      return NextResponse.json(
+        { success: false, message: 'Your account has been suspended. Please contact support.' },
+        { status: 403 }
+      );
+    }
+
     // Generate JWT token
     const tokenPayload = {
       userId: user._id,
