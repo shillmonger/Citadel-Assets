@@ -31,42 +31,42 @@ export default function AdminSidebar({
   const sidebarItems = [
     {
       name: "Dashboard",
-      icon: LayoutGrid, // 📊 Grid icon for overview
+      icon: LayoutGrid, 
       href: "/admin-dashboard/dashboard",
     },
     {
-      name: "User Management",
-      icon: Users, // 👥 Group icon for managing multiple users
-      href: "/admin-dashboard/user-management",
-    },
-    {
       name: "Manage Deposite",
-      icon: Wallet, // 📥 Inward arrow for incoming deposits
+      icon: Wallet, 
       href: "/admin-dashboard/manage-deposite",
     },
     {
       name: "Manage Account",
-      icon: UserCog, // ⚙️ User with gear for account-level settings
+      icon: UserCog, 
       href: "/admin-dashboard/manage-account",
     },
     {
-      name: "Investment Payouts",
-      icon: Briefcase, // 💼 Suitcase for professional/investment payouts
-      href: "/admin-dashboard/investment-payouts",
-    },
-    {
       name: "Role Settings",
-      icon: Settings, // 🛠️ Gear for system roles/permissions
+      icon: Settings, 
       href: "/admin-dashboard/role-settings",
     },
     {
       name: "KYC Verification",
-      icon: IdCard, // 🛠️ Gear for system roles/permissions
+      icon: IdCard, 
       href: "/admin-dashboard/kyc-verification",
+    },
+     {
+      name: "User Management",
+      icon: Users,
+      href: "/admin-dashboard/user-management",
+    },
+    {
+      name: "Investment Payouts",
+      icon: Briefcase, 
+      href: "/admin-dashboard/investment-payouts",
     },
     {
       name: "Switch to User",
-      icon: User, // 🎓 Cap for switching perspective/roles
+      icon: User,
       href: "/user-dashboard/dashboard",
     },
   ];

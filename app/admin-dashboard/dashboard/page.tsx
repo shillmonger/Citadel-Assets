@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Users, 
   UserMinus, 
@@ -18,19 +18,89 @@ import AdminHeader from "@/components/admin-dashboard/header";
 import AdminSidebar from "@/components/admin-dashboard/sidebar";
 import AdminNav from "@/components/admin-dashboard/navbar";
 
+interface DashboardStats {
+  label: string;
+  value: string;
+  icon: any;
+  color: string;
+  bg: string;
+}
+
+interface Transaction {
+  id: string;
+  type: string;
+  amount: number;
+  status: string;
+  user: string;
+  email: string;
+  paymentMethod: string;
+  createdAt: string;
+}
+
 export default function AdminDashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [stats, setStats] = useState<DashboardStats[]>([]);
+  const [recentTransactions, setRecentTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const stats = [
-    { label: "Total Users", value: "12,842", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
-    { label: "Active Users", value: "8,210", icon: UserCheck, color: "text-teal-600", bg: "bg-teal-50" },
-    { label: "Blocked Users", value: "142", icon: UserMinus, color: "text-red-600", bg: "bg-red-50" },
-    { label: "Investment Plans", value: "12", icon: Layers, color: "text-purple-600", bg: "bg-purple-50" },
-    { label: "Total Deposit", value: "$420,500", icon: TrendingUp, color: "text-teal-600", bg: "bg-teal-50" },
-    { label: "Pending Deposit", value: "$12,300", icon: Clock, color: "text-orange-600", bg: "bg-orange-50" },
-    { label: "Total Withdrawal", value: "$180,200", icon: ArrowDownLeft, color: "text-[#1D429A]", bg: "bg-blue-50" },
-    { label: "Pending Withdrawal", value: "$5,400", icon: ArrowUpRight, color: "text-red-500", bg: "bg-red-50" },
-  ];
+  const iconMap: { [key: string]: any } = {
+    Users,
+    UserCheck,
+    UserMinus,
+    Layers,
+    TrendingUp,
+    Clock,
+    ArrowDownLeft,
+    ArrowUpRight
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      const response = await fetch('/api/admin/dashboard', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch dashboard data');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        // Transform stats to include icon components
+        const transformedStats = data.stats.map((stat: any) => ({
+          ...stat,
+          icon: iconMap[stat.icon] || Users
+        }));
+        
+        setStats(transformedStats);
+        setRecentTransactions(data.recentTransactions || []);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      // Set fallback data
+      setStats([
+        { label: "Total Users", value: "0", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
+        { label: "Active Users", value: "0", icon: UserCheck, color: "text-teal-600", bg: "bg-teal-50" },
+        { label: "Blocked Users", value: "0", icon: UserMinus, color: "text-red-600", bg: "bg-red-50" },
+        { label: "Investment Plans", value: "0", icon: Layers, color: "text-purple-600", bg: "bg-purple-50" },
+        { label: "Total Deposit", value: "$0", icon: TrendingUp, color: "text-teal-600", bg: "bg-teal-50" },
+        { label: "Pending Deposit", value: "$0", icon: Clock, color: "text-orange-600", bg: "bg-orange-50" },
+        { label: "Total Withdrawal", value: "$0", icon: ArrowDownLeft, color: "text-[#1D429A]", bg: "bg-blue-50" },
+        { label: "Pending Withdrawal", value: "$0", icon: ArrowUpRight, color: "text-red-500", bg: "bg-red-50" },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#F9F9FB]">
@@ -51,20 +121,37 @@ export default function AdminDashboardPage() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-2 rounded-xl ${stat.bg}`}>
-                    <stat.icon className={`w-5 h-5 ${stat.color}`} />
+            {loading ? (
+              [1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                <div key={item} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-2 rounded-xl bg-gray-200 animate-pulse">
+                      <div className="w-5 h-5 bg-gray-300 rounded"></div>
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Live</span>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Live</span>
+                  <div>
+                    <div className="h-3 bg-gray-200 rounded w-20 mb-2 animate-pulse"></div>
+                    <div className="h-6 bg-gray-200 rounded w-16 animate-pulse"></div>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-gray-500 text-xs font-medium mb-1">{stat.label}</h4>
-                  <p className="text-xl font-bold text-[#1D429A]">{stat.value}</p>
+              ))
+            ) : (
+              stats.map((stat, index) => (
+                <div key={index} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`p-2 rounded-xl ${stat.bg}`}>
+                      <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Live</span>
+                  </div>
+                  <div>
+                    <h4 className="text-gray-500 text-xs font-medium mb-1">{stat.label}</h4>
+                    <p className="text-xl font-bold text-[#1D429A]">{stat.value}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           {/* Recent Transactions Section */}
@@ -90,33 +177,60 @@ export default function AdminDashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                  {[1, 2, 3, 4].map((item) => (
-                    <tr key={item} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-6 py-4">
-                        <span className="text-sm font-medium text-gray-600">#TRX-9402{item}</span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                          {item % 2 === 0 ? (
+                  {loading ? (
+                    [1, 2, 3, 4].map((item) => (
+                      <tr key={item} className="hover:bg-gray-50/50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="h-4 bg-gray-200 rounded w-24 animate-pulse"></div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="h-4 bg-gray-200 rounded w-16 animate-pulse"></div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="h-4 bg-gray-200 rounded w-20 animate-pulse"></div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="h-4 bg-gray-200 rounded w-16 animate-pulse"></div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : recentTransactions.length > 0 ? (
+                    recentTransactions.map((transaction) => (
+                      <tr key={transaction.id} className="hover:bg-gray-50/50 transition-colors">
+                        <td className="px-6 py-4">
+                          <span className="text-sm font-medium text-gray-600">#{transaction.id}</span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
                             <ArrowDownLeft className="w-3 h-3 text-teal-500" />
-                          ) : (
-                            <ArrowUpRight className="w-3 h-3 text-blue-500" />
-                          )}
-                          <span className="text-sm text-[#1D429A] font-semibold">
-                            {item % 2 === 0 ? "Deposit" : "Withdrawal"}
+                            <span className="text-sm text-[#1D429A] font-semibold">
+                              {transaction.type}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm font-bold text-[#1D429A]">
+                          ${transaction.amount.toFixed(2)}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`px-3 py-1 text-[10px] font-bold uppercase rounded-full border ${
+                            transaction.status === 'Approved' 
+                              ? 'bg-teal-50 text-teal-600 border-teal-100'
+                              : transaction.status === 'Pending'
+                              ? 'bg-orange-50 text-orange-600 border-orange-100'
+                              : 'bg-red-50 text-red-600 border-red-100'
+                          }`}>
+                            {transaction.status}
                           </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm font-bold text-[#1D429A]">
-                        ${(Math.random() * 1000).toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="px-3 py-1 text-[10px] font-bold uppercase rounded-full bg-teal-50 text-teal-600 border border-teal-100">
-                          Completed
-                        </span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-8 text-center text-gray-500 text-sm">
+                        No recent transactions found
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
