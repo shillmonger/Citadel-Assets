@@ -13,6 +13,7 @@ import {
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
+import { toast } from "sonner";
 
 // Updated with all provided plans
 const PLANS = [
@@ -87,6 +88,8 @@ const InvestmentPage = () => {
   const [selectedPlan, setSelectedPlan] = useState(PLANS[0]);
   const [amount, setAmount] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [accountBalance, setAccountBalance] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Generate 5 balanced quick amounts based on the selected plan's range
   const getQuickAmounts = (min: number, max: number) => {
@@ -104,6 +107,81 @@ const InvestmentPage = () => {
   useEffect(() => {
     setAmount(selectedPlan.minDeposit.toString());
   }, [selectedPlan]);
+
+  useEffect(() => {
+    fetchAccountBalance();
+  }, []);
+
+  const fetchAccountBalance = async () => {
+    try {
+      const response = await fetch('/api/user/balance', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setAccountBalance(data.accountBalance);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching account balance:', error);
+    }
+  };
+
+  const handleInvestment = async () => {
+    if (!isValidAmount || !amount) {
+      toast.error('Please enter a valid investment amount');
+      return;
+    }
+
+    const investmentAmount = Number(amount);
+    
+    // Check if user has sufficient balance
+    if (accountBalance < investmentAmount) {
+      toast.error('Please upgrade your balance to continue in the deposit page');
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('/api/user/investment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          selectedPlan: selectedPlan.name,
+          amount: investmentAmount,
+          duration: parseInt(selectedPlan.duration.replace(' Days', '')),
+          profit: parseFloat(selectedPlan.profit.replace('% Daily', ''))
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        toast.success('Investment plan created successfully!');
+        // Update the account balance
+        setAccountBalance(prev => prev - investmentAmount);
+        // Reset form
+        setAmount(selectedPlan.minDeposit.toString());
+      } else {
+        toast.error(data.error || 'Failed to create investment plan');
+      }
+    } catch (error) {
+      console.error('Error creating investment plan:', error);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const isValidAmount = 
     Number(amount) >= selectedPlan.minDeposit && 
@@ -216,7 +294,7 @@ const InvestmentPage = () => {
                   </div>
                   <div>
                       <p className="text-[#1D429A] font-bold text-sm">Account Balance</p>
-                      <p className="text-gray-400 text-[10px]">Balance: $0.00</p>
+                      <p className="text-gray-400 text-[10px]">Balance: ${accountBalance.toFixed(2)}</p>
                   </div>
                 </div>
                 <CheckCircle2 className="w-5 h-5 text-[#1D429A]" />
@@ -268,14 +346,15 @@ const InvestmentPage = () => {
                 </div>
 
                 <button 
-                  disabled={!isValidAmount || !amount}
+                  disabled={!isValidAmount || !amount || isLoading || accountBalance < Number(amount)}
+                  onClick={handleInvestment}
                   className={`w-full mt-8 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all shadow-lg ${
-                    isValidAmount && amount 
+                    isValidAmount && amount && !isLoading && accountBalance >= Number(amount)
                     ? "bg-[#1D429A] text-white hover:scale-[1.02] cursor-pointer" 
                     : "bg-gray-100 text-gray-400 cursor-not-allowed"
                   }`}
                 >
-                  Confirm & Invest
+                  {isLoading ? 'Processing...' : 'Confirm & Invest'}
                 </button>
               </div>
             </div>
