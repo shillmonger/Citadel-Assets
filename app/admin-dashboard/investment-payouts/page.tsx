@@ -134,13 +134,13 @@ export default function AdminPayoutsPage() {
                             <>
                               <button 
                                 onClick={() => handleAction(payout.id, 'Paid', payout.name)}
-                                className="p-2 bg-teal-50 text-teal-600 rounded-lg hover:bg-teal-600 hover:text-white transition-all shadow-sm"
+                                className="p-3 bg-teal-50 text-teal-600 cursor-pointer rounded-lg hover:bg-teal-600 hover:text-white transition-all shadow-sm"
                               >
                                 <Check className="w-4 h-4" />
                               </button>
                               <button 
                                 onClick={() => handleAction(payout.id, 'Rejected', payout.name)}
-                                className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                                className="p-3 bg-red-50 text-red-500 cursor-pointer rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm"
                               >
                                 <X className="w-4 h-4" />
                               </button>

@@ -165,26 +165,19 @@ const AccountSettings = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    {/* Bank Details */}
+                    {/* Crypto */}
                     <div>
-                      <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Bank Name</label>
+                      <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Tron</label>
                       <input type="text" placeholder="Enter bank name" className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A]" />
                     </div>
                     <div>
-                      <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Account Name</label>
-                      <input type="text" placeholder="Enter Account name" className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A]" />
-                    </div>
-
-                    <div>
-                      <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Account Number</label>
+                      <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Doge</label>
                       <input type="text" placeholder="Enter Account Number" className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A]" />
                     </div>
                     <div>
                       <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Swift Code</label>
                       <input type="text" placeholder="Enter Swift Code" className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A]" />
                     </div>
-
-                    {/* Crypto */}
                     <div>
                       <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Bitcoin</label>
                       <input type="text" placeholder="Enter Bitcoin Address" className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A]" />

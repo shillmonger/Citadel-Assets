@@ -120,14 +120,14 @@ export default function AdminUsersPage() {
                         <div className="flex justify-end gap-2">
                           <button 
                             onClick={() => toast.error(`User ${user.name} suspended`)}
-                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                            className="p-3 bg-red-100 text-red-500 cursor-pointer hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                             title="Suspend User"
                           >
                             <Ban className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => toast.error(`User ${user.name} deleted`)}
-                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            className="p-3 bg-red-100 text-red-500 cursor-pointer hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                             title="Delete User"
                           >
                             <Trash2 className="w-4 h-4" />
