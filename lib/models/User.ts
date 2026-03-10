@@ -16,6 +16,16 @@ export interface IUser extends Document {
   totalDeposit: number;
   roles: string[];
   isActive: boolean;
+  withdrawalAddresses: {
+    tron?: string;
+    doge?: string;
+    swiftCode?: string;
+    bitcoin?: string;
+    ethereum?: string;
+    litecoin?: string;
+    bnb?: string;
+    usdt?: string;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -103,6 +113,16 @@ const UserSchema: Schema = new Schema({
     type: Boolean,
     default: true,
     required: true
+  },
+  withdrawalAddresses: {
+    tron: { type: String, default: null },
+    doge: { type: String, default: null },
+    swiftCode: { type: String, default: null },
+    bitcoin: { type: String, default: null },
+    ethereum: { type: String, default: null },
+    litecoin: { type: String, default: null },
+    bnb: { type: String, default: null },
+    usdt: { type: String, default: null }
   }
 }, {
   timestamps: true
