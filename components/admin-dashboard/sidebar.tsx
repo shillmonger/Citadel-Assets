@@ -12,7 +12,7 @@ import {
   Wallet,
   X,
   LayoutGrid,
-  ArrowDownCircle,
+  IdCard,
   User,
   UserCog,
 } from "lucide-react";
@@ -58,6 +58,11 @@ export default function AdminSidebar({
       name: "Role Settings",
       icon: Settings, // 🛠️ Gear for system roles/permissions
       href: "/admin-dashboard/role-settings",
+    },
+    {
+      name: "KYC Verification",
+      icon: IdCard, // 🛠️ Gear for system roles/permissions
+      href: "/admin-dashboard/kyc-verification",
     },
     {
       name: "Switch to User",
