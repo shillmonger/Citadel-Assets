@@ -13,6 +13,9 @@ import {
   Clock,
   CheckCircle,
   XCircle,
+  TrendingUp,
+  DollarSign,
+  Calendar,
 } from "lucide-react";
 import Link from "next/link";
 import Header from "@/components/user-dashboard/header";
@@ -28,12 +31,27 @@ interface Deposit {
   createdAt: string;
 }
 
+interface InvestmentPlan {
+  _id: string;
+  selectedPlan: string;
+  amount: number;
+  duration: number;
+  profit: number;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  totalProfitEarned: number;
+  daysCompleted: number;
+}
+
 const SnowTradeDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [deposits, setDeposits] = useState<Deposit[]>([]);
   const [depositsLoading, setDepositsLoading] = useState(true);
+  const [activePlans, setActivePlans] = useState<InvestmentPlan[]>([]);
+  const [plansLoading, setPlansLoading] = useState(true);
 
   useEffect(() => {
     // First, try to get user data from localStorage (set during registration)
@@ -51,7 +69,33 @@ const SnowTradeDashboard = () => {
     // Then fetch fresh data from API
     fetchUserInfo();
     fetchDeposits();
+    fetchActivePlans();
   }, []);
+
+  const fetchActivePlans = async () => {
+    try {
+      const response = await fetch('/api/user/investment', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          // Filter only active plans
+          const active = data.investmentPlans.filter((plan: InvestmentPlan) => plan.isActive);
+          setActivePlans(active);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching active plans:', error);
+    } finally {
+      setPlansLoading(false);
+    }
+  };
 
   const fetchDeposits = async () => {
     try {
@@ -98,6 +142,13 @@ const SnowTradeDashboard = () => {
       day: 'numeric',
       year: 'numeric'
     });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
   };
 
   const fetchUserInfo = async () => {
@@ -228,22 +279,101 @@ const SnowTradeDashboard = () => {
             <div className="flex items-center gap-2 mb-4">
               <div className="w-1 h-4 bg-[#76EAD7] rounded-full"></div>
               <h3 className="text-[#1D429A] font-bold text-xs uppercase tracking-widest">
-                Active Plan(s) (0)
+                Active Plan(s) ({plansLoading ? 0 : activePlans.length})
               </h3>
             </div>
-            <div className="bg-white rounded-xl border border-gray-100 p-10 md:p-16 flex flex-col items-center justify-center shadow-sm w-full">
-              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                <Sprout className="w-10 h-10 text-gray-400" />
+            
+            {plansLoading ? (
+              <div className="bg-white rounded-xl border border-gray-100 p-10 md:p-16 flex flex-col items-center justify-center shadow-sm w-full">
+                <div className="w-8 h-8 border-2 border-[#1D429A] border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-gray-400">Loading active plans...</p>
               </div>
-              <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
-                You do not have an active investment plan at the moment.
-              </p>
-              <Link href="/user-dashboard/investment-plans">
-              <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all">
-                Buy a plan
-              </button>
-              </Link>
-            </div>
+            ) : activePlans.length === 0 ? (
+              <div className="bg-white rounded-xl border border-gray-100 p-10 md:p-16 flex flex-col items-center justify-center shadow-sm w-full">
+                <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                  <Sprout className="w-10 h-10 text-gray-400" />
+                </div>
+                <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
+                  You do not have an active investment plan at the moment.
+                </p>
+                <Link href="/user-dashboard/investment-plans">
+                  <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all">
+                    Buy a plan
+                  </button>
+                </Link>
+              </div>
+            ) : (
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {activePlans.map((plan) => (
+                  <div key={plan._id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                    {/* Plan Header */}
+                    <div className="bg-gradient-to-r from-[#1D429A] to-[#76EAD7] p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="text-white font-bold text-lg">{plan.selectedPlan}</h4>
+                          <p className="text-white/80 text-sm">Active Investment</p>
+                        </div>
+                        <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                          <span className="text-white text-xs font-medium">
+                            {plan.profit}% Daily
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Plan Details */}
+                    <div className="p-4">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div>
+                          <p className="text-gray-400 text-xs uppercase mb-1">Investment</p>
+                          <p className="text-[#1D429A] font-bold">{formatCurrency(plan.amount)}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-400 text-xs uppercase mb-1">Duration</p>
+                          <p className="text-[#1D429A] font-bold">{plan.duration} days</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-400 text-xs uppercase mb-1">Progress</p>
+                          <p className="text-[#1D429A] font-bold">{plan.daysCompleted}/{plan.duration}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-400 text-xs uppercase mb-1">Profit Earned</p>
+                          <p className="text-[#76EAD7] font-bold">{formatCurrency(plan.totalProfitEarned)}</p>
+                        </div>
+                      </div>
+                      
+                      {/* Progress Bar */}
+                      <div className="mb-4">
+                        <div className="flex justify-between text-xs text-gray-500 mb-1">
+                          <span>Completion Progress</span>
+                          <span>{Math.round((plan.daysCompleted / plan.duration) * 100)}%</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-[#76EAD7] h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${Math.min((plan.daysCompleted / plan.duration) * 100, 100)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <Link href="/user-dashboard/my-plans" className="flex-1">
+                          <button className="w-full bg-[#1D429A] cursor-pointer text-white px-4 py-2 rounded-lg text-xs font-medium hover:bg-[#16357a] transition-colors">
+                            View Details
+                          </button>
+                        </Link>
+                        <Link href="/user-dashboard/investment-plans" className="flex-1">
+                          <button className="w-full border border-[#1D429A] cursor-pointer text-[#1D429A] px-4 py-2 rounded-lg text-xs font-medium hover:bg-[#1D429A] hover:text-white transition-colors">
+                            Add New Plan
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* Recent Transactions */}
