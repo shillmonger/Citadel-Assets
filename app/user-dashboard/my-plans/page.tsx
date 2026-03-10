@@ -131,7 +131,7 @@ const SnowTradeDashboard = () => {
               </div>
             ) : (
               /* Demarcation: Space-y-6 adds gap between the cards */
-              <div className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {investmentPlans.map((plan) => (
                   <div
                     key={plan._id}
