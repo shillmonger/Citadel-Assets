@@ -181,6 +181,7 @@ export async function POST(request: NextRequest) {
       { 
         success: true, 
         message: 'Registration successful!, Welcome to Cetadel Assets.',
+        // message: 'Registration successful! Welcome bonus of $10 has been added to your account.',
         user: userResponse,
         token
       },
