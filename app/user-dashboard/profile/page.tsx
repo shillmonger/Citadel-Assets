@@ -84,24 +84,17 @@ const AccountSettings = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
                     <div>
                       <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">
                         Full Name
                       </label>
-                      <div className="grid grid-cols-2 gap-3">
-                        <input
-                          type="text"
-                          placeholder="First Name"
-                          className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A] focus:ring-1 focus:ring-[#1D429A]"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Last Name"
-                          className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A] focus:ring-1 focus:ring-[#1D429A]"
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        placeholder="Enter full name"
+                        className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-[#1D429A] placeholder-gray-300 focus:outline-none focus:border-[#1D429A] focus:ring-1 focus:ring-[#1D429A]"
+                      />
                     </div>
-
                     <div>
                       <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">
                         Username
