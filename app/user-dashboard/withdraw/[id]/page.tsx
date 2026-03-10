@@ -1,20 +1,196 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { Mail, ChevronRight, Lock } from "lucide-react";
+import { Mail, ChevronRight, Lock, Check, X, AlertCircle } from "lucide-react";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 const WithdrawalDetailsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const params = useParams();
   const methodId = params.id || "Usdt trc20"; 
+  const { user: authUser } = useAuth();
+  const [amount, setAmount] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [address, setAddress] = useState("");
+  const [amountValid, setAmountValid] = useState<boolean | null>(null);
+  const [charge, setCharge] = useState(0);
+  const [netAmount, setNetAmount] = useState(0);
 
   const displayName = typeof methodId === 'string' 
     ? methodId.charAt(0).toUpperCase() + methodId.slice(1).replace(/-/g, ' ') 
     : "Payment Method";
+
+  const withdrawalMethods = {
+    bitcoin: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
+    ethereum: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
+    'usdt-trc20': { min: 10, max: 1000000, charge: 2, chargeType: 'fixed' },
+    litecoin: { min: 10, max: 10000, charge: 2, chargeType: 'fixed' },
+    doge: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
+    bnb: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
+    tron: { min: 10, max: 500000, charge: 0.02, chargeType: 'percentage' }
+  };
+
+  useEffect(() => {
+    // Get current user using auth system
+    if (authUser?.id) {
+      fetchUser(authUser.id);
+    }
+  }, [authUser]);
+
+  useEffect(() => {
+    // Validate amount and calculate charges
+    if (amount && !isNaN(Number(amount))) {
+      const amountNum = Number(amount);
+      const method = withdrawalMethods[methodId as keyof typeof withdrawalMethods];
+      
+      if (method) {
+        const isValid = amountNum >= method.min && amountNum <= method.max;
+        setAmountValid(isValid);
+        
+        if (isValid) {
+          const calculatedCharge = method.chargeType === 'percentage' 
+            ? amountNum * method.charge 
+            : method.charge;
+          setCharge(calculatedCharge);
+          setNetAmount(amountNum - calculatedCharge);
+        } else {
+          setCharge(0);
+          setNetAmount(0);
+        }
+      }
+    } else {
+      setAmountValid(null);
+      setCharge(0);
+      setNetAmount(0);
+    }
+  }, [amount, methodId]);
+
+  useEffect(() => {
+    // Set user address if available
+    if (user && user.withdrawalAddresses) {
+      const methodIdStr = Array.isArray(methodId) ? methodId[0] : methodId;
+      const addressField = methodIdStr.replace('-trc20', '');
+      const userAddress = user.withdrawalAddresses[addressField as keyof typeof user.withdrawalAddresses];
+      if (userAddress) {
+        setAddress(userAddress);
+      }
+    }
+  }, [user, methodId]);
+
+  const fetchUser = async (userId: string) => {
+    try {
+      const response = await fetch(`/api/user?userId=${userId}`);
+      const data = await response.json();
+      if (data.user) {
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
+
+  const requestOTP = async () => {
+    if (!amountValid || !amount) {
+      toast.error('Please enter a valid amount first');
+      return;
+    }
+
+    if (!authUser?.id) {
+      toast.error('User not authenticated');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/withdrawal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: authUser.id,
+          amount: Number(amount),
+          address,
+          paymentMethod: methodId,
+          action: 'request-otp'
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setOtpSent(true);
+        toast.success(data.message);
+        if (data.otp) {
+          console.log('Development OTP:', data.otp); // Remove in production
+        }
+      } else {
+        toast.error(data.error || 'Failed to send OTP');
+      }
+    } catch (error) {
+      toast.error('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const completeWithdrawal = async () => {
+    if (!otp || otp.length !== 4) {
+      toast.error('Please enter a valid 4-digit OTP');
+      return;
+    }
+
+    if (!authUser?.id) {
+      toast.error('User not authenticated');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/withdrawal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: authUser.id,
+          amount: Number(amount),
+          address,
+          paymentMethod: methodId,
+          otp,
+          action: 'complete-withdrawal'
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        toast.success('Withdrawal request submitted successfully!');
+        // Reset form
+        setAmount("");
+        setOtp("");
+        setOtpSent(false);
+        setAddress("");
+        setAmountValid(null);
+        // Refresh user data
+        fetchUser(authUser.id);
+      } else {
+        toast.error(data.error || 'Failed to complete withdrawal');
+      }
+    } catch (error) {
+      toast.error('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F9F9FB] font-sans relative overflow-x-hidden">
@@ -57,48 +233,106 @@ const WithdrawalDetailsPage = () => {
               {/* Amount Input */}
               <div className="space-y-2">
                 <label className="text-[#1D429A] font-bold text-sm">Enter Amount to withdraw($)</label>
-                <input 
-                  type="number" 
-                  placeholder="Enter Amount"
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#76EAD7] transition-colors text-[#1D429A]"
-                />
+                <div className="relative">
+                  <input 
+                    type="number" 
+                    placeholder="Enter Amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    className={`w-full bg-gray-50 border rounded-xl px-4 py-3 focus:outline-none transition-colors text-[#1D429A] ${
+                      amountValid === true 
+                        ? 'border-green-500 bg-green-50' 
+                        : amountValid === false 
+                        ? 'border-red-500 bg-red-50'
+                        : 'border-gray-200 focus:border-[#76EAD7]'
+                    }`}
+                  />
+                  {amountValid !== null && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      {amountValid ? (
+                        <Check className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <X className="w-5 h-5 text-red-500" />
+                      )}
+                    </div>
+                  )}
+                </div>
+                {amountValid === false && (
+                  <p className="text-red-500 text-xs flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />
+                    Amount must be between ${withdrawalMethods[methodId as keyof typeof withdrawalMethods]?.min || 10} and ${withdrawalMethods[methodId as keyof typeof withdrawalMethods]?.max || 1000000}
+                  </p>
+                )}
+                {amountValid === true && charge > 0 && (
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Charge:</span>
+                      <span className="font-bold text-[#1D429A]">${charge.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mt-1">
+                      <span className="text-gray-600">You will receive:</span>
+                      <span className="font-bold text-green-600">${netAmount.toFixed(2)}</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* OTP Section */}
               <div className="space-y-2">
                 <div className="flex justify-between items-end">
                   <label className="text-[#1D429A] font-bold text-sm">Enter OTP</label>
-                  <button className="bg-[#1D429A] text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-[#16357a] transition-all cursor-pointer">
-                    <Mail className="w-3 h-3" /> Request OTP
+                  <button 
+                    onClick={requestOTP}
+                    disabled={isLoading || !amountValid}
+                    className="bg-[#1D429A] text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-[#16357a] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Mail className="w-3 h-3" /> {isLoading ? 'Sending...' : 'Request OTP'}
                   </button>
                 </div>
                 <input 
                   type="text" 
-                  placeholder="Enter OTP"
+                  placeholder="Enter 4-digit OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                  maxLength={4}
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#76EAD7] transition-colors text-[#1D429A]"
+                  disabled={!otpSent}
                 />
                 <p className="text-gray-400 text-[11px] italic">
-                  OTP will be sent to your email when you request
+                  {otpSent ? 'OTP sent to your email' : 'Request OTP to receive verification code'}
                 </p>
               </div>
 
-              {/* Wallet Address Input */}
+              {/* Wallet Address Display */}
               <div className="space-y-2">
-                <label className="text-[#1D429A] font-bold text-sm">Enter {displayName} Address</label>
-                <input 
-                  type="text" 
-                  placeholder={`Enter ${displayName} Address`}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#76EAD7] transition-colors text-[#1D429A]"
-                />
+                <label className="text-[#1D429A] font-bold text-sm">{displayName} Address</label>
+                {address ? (
+                  <div className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+                    <p className="text-[#1D429A] font-mono text-sm break-all">{address}</p>
+                  </div>
+                ) : (
+                  <div className="w-full bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                    <p className="text-red-600 text-sm">
+                      No {displayName} address found in your profile. Please add your address in settings first.
+                    </p>
+                  </div>
+                )}
                 <p className="text-gray-400 text-[11px] leading-relaxed">
-                  {displayName} is not a default withdrawal option in your account, please enter the correct wallet address to receive your funds.
+                  {address 
+                    ? `Using your saved ${displayName} address from your profile`
+                    : `${displayName} withdrawal requires a saved address in your account settings`
+                  }
                 </p>
               </div>
 
               {/* Submit Button */}
               <div className="pt-4">
-                <button className="w-full md:w-auto bg-[#1D429A] text-white px-12 py-4 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-blue-900/10 hover:bg-[#16357a] transition-all cursor-pointer flex items-center justify-center gap-2">
-                  Complete Request
+                <button 
+                  onClick={completeWithdrawal}
+                  disabled={isLoading || !amountValid || !otp || otp.length !== 4 || !address}
+                  className="w-full md:w-auto bg-[#1D429A] text-white px-12 py-4 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-blue-900/10 hover:bg-[#16357a] transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? 'Processing...' : 'Complete Request'}
                 </button>
               </div>
 

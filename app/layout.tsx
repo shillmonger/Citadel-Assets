@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Invest and watch your Capital Speak for You",
-  description: "Forging the futire and the Global capital markets",
+  description: "Forging the future of the Global capital markets",
 };
 
 export default function RootLayout({
@@ -29,7 +29,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <Toaster />
+
+        {/* Sonner Toast */}
+        <Toaster
+          position="top-right"
+          richColors
+          duration={4000}
+        />
       </body>
     </html>
   );
