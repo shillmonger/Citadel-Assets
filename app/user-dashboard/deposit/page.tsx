@@ -219,7 +219,7 @@ const DepositPage = () => {
                   </div>
                 ) : (
                   /* Deposit History List */
-                  <div className="space-y-3 max-h-64 overflow-y-auto">
+                  <div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
                     {deposits.slice(0, 5).map((deposit) => (
                       <div key={deposit._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                         <div className="flex-1">

@@ -45,6 +45,13 @@ export async function POST(request: NextRequest) {
       plan.totalProfitEarned += dailyProfit;
       plan.daysCompleted += 1;
       
+      // Add to profit history
+      plan.profitHistory.push({
+        date: new Date(),
+        amount: dailyProfit,
+        percentage: plan.profit
+      });
+      
       // Check if plan has reached its duration
       const today = new Date();
       const daysSinceStart = Math.floor((today.getTime() - plan.startDate.getTime()) / (1000 * 60 * 60 * 24));

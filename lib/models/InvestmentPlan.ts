@@ -11,6 +11,11 @@ export interface IInvestmentPlan extends Document {
   isActive: boolean;
   totalProfitEarned: number;
   daysCompleted: number;
+  profitHistory: Array<{
+    date: Date;
+    amount: number;
+    percentage: number;
+  }>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -62,7 +67,23 @@ const InvestmentPlanSchema: Schema = new Schema({
     type: Number,
     default: 0,
     min: [0, 'Days completed cannot be negative']
-  }
+  },
+  profitHistory: [{
+    date: {
+      type: Date,
+      required: true
+    },
+    amount: {
+      type: Number,
+      required: true,
+      min: [0, 'Profit amount cannot be negative']
+    },
+    percentage: {
+      type: Number,
+      required: true,
+      min: [0, 'Profit percentage cannot be negative']
+    }
+  }]
 }, {
   timestamps: true
 });
