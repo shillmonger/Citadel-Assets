@@ -56,7 +56,8 @@ export async function POST(request: NextRequest) {
   try {
     await mongoose.connect(process.env.MONGODB_URI!);
     
-    const { userId, amount, address, paymentMethod, action } = await request.json();
+    const body = await request.json();
+    const { userId, amount, address, paymentMethod, action, otp } = body;
 
     if (action === 'request-otp') {
       // Validate amount
@@ -103,8 +104,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'complete-withdrawal') {
-      const { otp } = await request.json();
-      
       // Get user
       const user = await User.findById(userId);
       if (!user) {
@@ -116,6 +115,11 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid OTP' }, { status: 400 });
       }
 
+      // Calculate charges
+      const method = withdrawalMethods[paymentMethod as keyof typeof withdrawalMethods];
+      const charge = method.chargeType === 'percentage' ? amount * method.charge : method.charge;
+      const netAmount = amount - charge;
+
       // Check withdrawal address
       const addressField = paymentMethod.replace('-trc20', '');
       const userAddress = user.withdrawalAddresses[addressField as keyof typeof user.withdrawalAddresses];
@@ -126,16 +130,6 @@ export async function POST(request: NextRequest) {
         }, { status: 400 });
       }
 
-      // Calculate charges
-      const method = withdrawalMethods[paymentMethod as keyof typeof withdrawalMethods];
-      const charge = method.chargeType === 'percentage' ? amount * method.charge : method.charge;
-      const netAmount = amount - charge;
-      
-      // Check balance again
-      if (user.accountBalance < amount) {
-        return NextResponse.json({ error: 'Insufficient balance' }, { status: 400 });
-      }
-
       // Create withdrawal record
       const withdrawal = new Withdrawal({
         userId,
@@ -143,17 +137,14 @@ export async function POST(request: NextRequest) {
         address,
         paymentMethod,
         otp,
-        otpExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+        otpExpires: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
         charge,
         netAmount
       });
 
       await withdrawal.save();
 
-      // Update user balance
-      user.accountBalance -= amount;
-      user.totalWithdrawal += amount;
-      await user.save();
+      // Note: Balance will be deducted when withdrawal is approved, not when submitted
 
       return NextResponse.json({ 
         success: true, 
