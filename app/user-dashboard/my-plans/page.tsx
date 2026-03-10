@@ -103,142 +103,144 @@ const SnowTradeDashboard = () => {
           </div>
 
           <section className="mb-8 w-full">
-            <div className="bg-[#1D429A] p-4 rounded-t-xl">
-              <h3 className="text-white text-lg font-medium">
-                My Investment plans (All)
-              </h3>
+  <div className="bg-[#1D429A] p-4 rounded-t-xl mb-4">
+    <h3 className="text-white text-lg font-medium">
+      My Investment plans (All)
+    </h3>
+  </div>
+
+  {isLoading ? (
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-12 md:p-20 flex flex-col items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1D429A] mb-4"></div>
+      <p className="text-gray-400">Loading investment plans...</p>
+    </div>
+  ) : investmentPlans.length === 0 ? (
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-12 md:p-20 flex flex-col items-center justify-center">
+      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-6">
+        <Sprout className="w-10 h-10 text-gray-300" />
+      </div>
+      <p className="text-gray-400 text-sm md:text-base mb-8 text-center max-w-md italic">
+        You do not have an investment plan at the moment or no value match your query.
+      </p>
+      <Link href="/user-dashboard/investment-plans">
+        <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all">
+          Buy a plan
+        </button>
+      </Link>
+    </div>
+  ) : (
+    /* Demarcation: Space-y-6 adds gap between the cards */
+    <div className="space-y-6">
+      {investmentPlans.map((plan) => (
+        <div 
+          key={plan._id} 
+          className="bg-white rounded-xl border-l-4 border-l-[#1D429A] border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow"
+        >
+          {/* Plan Header */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2">
+                <h4 className="text-[#1D429A] font-bold text-lg">{plan.selectedPlan}</h4>
+                {plan.isActive ? (
+                  <span className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                    <CheckCircle className="w-3 h-3" />
+                    Active
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+                    <XCircle className="w-3 h-3" />
+                    Completed
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <p className="text-gray-400 text-xs uppercase mb-1">Investment Amount</p>
+                  <p className="text-[#1D429A] font-bold">{formatCurrency(plan.amount)}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs uppercase mb-1">Daily Profit</p>
+                  <p className="text-[#76EAD7] font-bold">{plan.profit}%</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs uppercase mb-1">Duration</p>
+                  <p className="text-[#1D429A] font-bold">{plan.duration} days</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs uppercase mb-1">Progress</p>
+                  <p className="text-[#1D429A] font-bold">{plan.daysCompleted}/{plan.duration} days</p>
+                </div>
+              </div>
             </div>
-            
-            <div className="bg-white rounded-b-xl border border-gray-100 shadow-sm w-full">
-              {isLoading ? (
-                <div className="p-12 md:p-20 flex flex-col items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1D429A] mb-4"></div>
-                  <p className="text-gray-400">Loading investment plans...</p>
-                </div>
-              ) : investmentPlans.length === 0 ? (
-                <div className="p-12 md:p-20 flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                    <Sprout className="w-10 h-10 text-gray-300" />
-                  </div>
-                  <p className="text-gray-400 text-sm md:text-base mb-8 text-center max-w-md italic">
-                    You do not have an investment plan at the moment or no value match your query.
-                  </p>
-                  <Link href="/user-dashboard/investment-plans">
-                    <button className="cursor-pointer bg-[#1D429A] text-white px-10 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-[#16357a] transition-all">
-                      Buy a plan
-                    </button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="divide-y divide-gray-100">
-                  {investmentPlans.map((plan) => (
-                    <div key={plan._id} className="p-6 hover:bg-gray-50 transition-colors">
-                      {/* Plan Header */}
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h4 className="text-[#1D429A] font-bold text-lg">{plan.selectedPlan}</h4>
-                            {plan.isActive ? (
-                              <span className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                                <CheckCircle className="w-3 h-3" />
-                                Active
-                              </span>
-                            ) : (
-                              <span className="flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
-                                <XCircle className="w-3 h-3" />
-                                Completed
-                              </span>
-                            )}
-                          </div>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                            <div>
-                              <p className="text-gray-400 text-xs uppercase mb-1">Investment Amount</p>
-                              <p className="text-[#1D429A] font-bold">{formatCurrency(plan.amount)}</p>
-                            </div>
-                            <div>
-                              <p className="text-gray-400 text-xs uppercase mb-1">Daily Profit</p>
-                              <p className="text-[#76EAD7] font-bold">{plan.profit}%</p>
-                            </div>
-                            <div>
-                              <p className="text-gray-400 text-xs uppercase mb-1">Duration</p>
-                              <p className="text-[#1D429A] font-bold">{plan.duration} days</p>
-                            </div>
-                            <div>
-                              <p className="text-gray-400 text-xs uppercase mb-1">Progress</p>
-                              <p className="text-[#1D429A] font-bold">{plan.daysCompleted}/{plan.duration} days</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+          </div>
 
-                      {/* Progress Bar */}
-                      <div className="mb-4">
-                        <div className="flex justify-between text-xs text-gray-500 mb-1">
-                          <span>Progress</span>
-                          <span>{Math.round((plan.daysCompleted / plan.duration) * 100)}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div 
-                            className="bg-[#76EAD7] h-2 rounded-full transition-all duration-300"
-                            style={{ width: `${Math.min((plan.daysCompleted / plan.duration) * 100, 100)}%` }}
-                          ></div>
-                        </div>
-                      </div>
+          {/* Progress Bar */}
+          <div className="mb-6">
+            <div className="flex justify-between text-xs text-gray-500 mb-1">
+              <span>Progress Status</span>
+              <span className="font-bold">{Math.round((plan.daysCompleted / plan.duration) * 100)}%</span>
+            </div>
+            <div className="w-full bg-gray-100 rounded-full h-2.5">
+              <div 
+                className="bg-[#76EAD7] h-2.5 rounded-full transition-all duration-300"
+                style={{ width: `${Math.min((plan.daysCompleted / plan.duration) * 100, 100)}%` }}
+              ></div>
+            </div>
+          </div>
 
-                      {/* Financial Summary */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="flex items-center gap-2 mb-1">
-                            <DollarSign className="w-4 h-4 text-[#1D429A]" />
-                            <p className="text-gray-400 text-xs uppercase">Total Profit Earned</p>
-                          </div>
-                          <p className="text-[#76EAD7] font-bold text-lg">{formatCurrency(plan.totalProfitEarned)}</p>
-                        </div>
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Calendar className="w-4 h-4 text-[#1D429A]" />
-                            <p className="text-gray-400 text-xs uppercase">Start Date</p>
-                          </div>
-                          <p className="text-[#1D429A] font-bold">{formatDate(plan.startDate)}</p>
-                        </div>
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Clock className="w-4 h-4 text-[#1D429A]" />
-                            <p className="text-gray-400 text-xs uppercase">End Date</p>
-                          </div>
-                          <p className="text-[#1D429A] font-bold">{formatDate(plan.endDate)}</p>
-                        </div>
-                      </div>
+          {/* Financial Summary */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+              <div className="flex items-center gap-2 mb-1">
+                <DollarSign className="w-4 h-4 text-[#1D429A]" />
+                <p className="text-gray-400 text-xs uppercase font-semibold">Total Profit Earned</p>
+              </div>
+              <p className="text-[#76EAD7] font-bold text-lg">{formatCurrency(plan.totalProfitEarned)}</p>
+            </div>
+            <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+              <div className="flex items-center gap-2 mb-1">
+                <Calendar className="w-4 h-4 text-[#1D429A]" />
+                <p className="text-gray-400 text-xs uppercase font-semibold">Start Date</p>
+              </div>
+              <p className="text-[#1D429A] font-bold">{formatDate(plan.startDate)}</p>
+            </div>
+            <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+              <div className="flex items-center gap-2 mb-1">
+                <Clock className="w-4 h-4 text-[#1D429A]" />
+                <p className="text-gray-400 text-xs uppercase font-semibold">End Date</p>
+              </div>
+              <p className="text-[#1D429A] font-bold">{formatDate(plan.endDate)}</p>
+            </div>
+          </div>
 
-                      {/* Profit History */}
-                      {plan.profitHistory && plan.profitHistory.length > 0 && (
-                        <div className="border-t pt-4">
-                          <div className="flex items-center gap-2 mb-3">
-                            <TrendingUp className="w-4 h-4 text-[#76EAD7]" />
-                            <h5 className="text-[#1D429A] font-bold text-sm">Recent Profit History</h5>
-                            <span className="text-gray-400 text-xs">({plan.profitHistory.length} transactions)</span>
-                          </div>
-                          <div className="max-h-32 overflow-y-auto">
-                            <div className="space-y-2">
-                              {plan.profitHistory.slice(-5).reverse().map((profit, index) => (
-                                <div key={index} className="flex items-center justify-between text-xs bg-gray-50 p-2 rounded">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-gray-400">{formatDate(profit.date)}</span>
-                                    <span className="text-[#76EAD7] font-medium">{profit.percentage}%</span>
-                                  </div>
-                                  <span className="text-[#1D429A] font-bold">{formatCurrency(profit.amount)}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+          {/* Profit History */}
+          {plan.profitHistory && plan.profitHistory.length > 0 && (
+            <div className="bg-blue-50/30 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className="w-4 h-4 text-[#1D429A]" />
+                <h5 className="text-[#1D429A] font-bold text-sm">Recent Profit History</h5>
+                <span className="text-gray-400 text-xs">({plan.profitHistory.length} total)</span>
+              </div>
+              <div className="max-h-32 overflow-y-auto pr-2 custom-scrollbar">
+                <div className="space-y-2">
+                  {plan.profitHistory.slice(-5).reverse().map((profit, index) => (
+                    <div key={index} className="flex items-center justify-between text-xs bg-white p-2.5 rounded border border-gray-100 shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-500">{formatDate(profit.date)}</span>
+                        <span className="text-green-600 bg-green-50 px-1.5 py-0.5 rounded font-medium">+{profit.percentage}%</span>
+                      </div>
+                      <span className="text-[#1D429A] font-bold">{formatCurrency(profit.amount)}</span>
                     </div>
                   ))}
                 </div>
-              )}
+              </div>
             </div>
-          </section>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+</section>
 
           {/* Recent Transactions Section remains here... */}
         </div>
