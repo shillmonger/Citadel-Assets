@@ -29,13 +29,13 @@ const WithdrawalDetailsPage = () => {
     : "Payment Method";
 
   const withdrawalMethods = {
-    bitcoin: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-    ethereum: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-    'usdt-trc20': { min: 10, max: 1000000, charge: 2, chargeType: 'fixed' },
-    litecoin: { min: 10, max: 10000, charge: 2, chargeType: 'fixed' },
-    doge: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-    bnb: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-    tron: { min: 10, max: 500000, charge: 0.02, chargeType: 'percentage' }
+    bitcoin: { min: 5, max: 1000000, charge: 0, chargeType: 'percentage' },
+    ethereum: { min: 4, max: 1000000, charge: 0, chargeType: 'percentage' },
+    'usdt-trc20': { min: 4, max: 1000000, charge: 0, chargeType: 'fixed' },
+    litecoin: { min: 4, max: 10000, charge: 0, chargeType: 'fixed' },
+    doge: { min: 4, max: 1000000, charge: 0, chargeType: 'percentage' },
+    bnb: { min: 4, max: 1000000, charge: 0, chargeType: 'percentage' },
+    tron: { min: 4, max: 500000, charge: 0, chargeType: 'percentage' }
   };
 
   useEffect(() => {
