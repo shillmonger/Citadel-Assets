@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Search, 
   ChevronLeft, 
   ChevronRight, 
   Database,
-  ChevronDown
+  ChevronDown,
+  Loader2
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -17,21 +18,79 @@ import {
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ProfitItem {
   plan: string;
   amount: number;
-  type: string;
-  dateCreated: string;
+  percentage: number;
+  date: Date;
 }
 
 const ProfitHistory = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const [profits, setProfits] = useState<ProfitItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { user } = useAuth();
 
-  // Mock data - Empty for now
-  const profits: ProfitItem[] = [];
+  // Fetch profit history
+  useEffect(() => {
+    const fetchProfitHistory = async () => {
+      if (!user) return;
+      
+      try {
+        setLoading(true);
+        const response = await fetch('/api/user/profit-history');
+        
+        if (response.ok) {
+          const data = await response.json();
+          setProfits(data.profits);
+        } else {
+          const errorData = await response.json();
+          setError(errorData.error || 'Failed to fetch profit history');
+        }
+      } catch (err) {
+        console.error('Error fetching profit history:', err);
+        setError('Failed to fetch profit history');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfitHistory();
+  }, [user]);
+
+  // Filter profits based on search term
+  const filteredProfits = profits.filter(item =>
+    item.plan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.amount.toString().includes(searchTerm) ||
+    item.percentage.toString().includes(searchTerm)
+  );
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredProfits.length / entriesPerPage);
+  const startIndex = (currentPage - 1) * entriesPerPage;
+  const endIndex = startIndex + entriesPerPage;
+  const paginatedProfits = filteredProfits.slice(startIndex, endIndex);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, entriesPerPage]);
+
+  const formatDate = (dateString: Date) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F9F9FB] font-sans relative overflow-x-hidden">
@@ -104,18 +163,48 @@ const ProfitHistory = () => {
                       Amount
                     </th>
                     <th className="p-4 text-[11px] uppercase tracking-wider font-bold text-[#1D429A] border-b border-gray-100">
-                      Type
+                      Percentage
                     </th>
                     <th className="p-4 text-[11px] uppercase tracking-wider font-bold text-[#1D429A] border-b border-gray-100">
-                      Date Created
+                      Date
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {profits.length > 0 ? (
-                    profits.map((item, idx) => (
+                  {loading ? (
+                    <tr>
+                      <td colSpan={4} className="py-24 text-center">
+                        <div className="flex flex-col items-center justify-center text-gray-400">
+                          <Loader2 className="w-8 h-8 animate-spin mb-4" />
+                          <p className="text-sm font-medium">Loading profit history...</p>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : error ? (
+                    <tr>
+                      <td colSpan={4} className="py-24 text-center">
+                        <div className="flex flex-col items-center justify-center text-red-400">
+                          <Database className="w-8 h-8 mb-4" />
+                          <p className="text-sm font-medium">Error loading data</p>
+                          <p className="text-[11px] mt-1 opacity-70">{error}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : paginatedProfits.length > 0 ? (
+                    paginatedProfits.map((item, idx) => (
                       <tr key={idx} className="hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0">
-                        {/* Dynamic data mapping here */}
+                        <td className="p-4 text-sm text-gray-900 font-medium">
+                          {item.plan}
+                        </td>
+                        <td className="p-4 text-sm text-gray-900">
+                          ${item.amount.toFixed(6)}
+                        </td>
+                        <td className="p-4 text-sm text-gray-900">
+                          {item.percentage}%
+                        </td>
+                        <td className="p-4 text-sm text-gray-900">
+                          {formatDate(item.date)}
+                        </td>
                       </tr>
                     ))
                   ) : (
@@ -125,8 +214,10 @@ const ProfitHistory = () => {
                           <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                             <Database className="w-8 h-8 text-gray-300" />
                           </div>
-                          <p className="text-sm font-medium">No data available in table</p>
-                          <p className="text-[11px] mt-1 opacity-70">Your investment returns will be displayed here.</p>
+                          <p className="text-sm font-medium">No profit history available</p>
+                          <p className="text-[11px] mt-1 opacity-70">
+                            {searchTerm ? 'No results match your search criteria.' : 'Your investment returns will be displayed here.'}
+                          </p>
                         </div>
                       </td>
                     </tr>
@@ -138,13 +229,25 @@ const ProfitHistory = () => {
             {/* Pagination */}
             <div className="p-6 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="text-[11px] text-gray-400 font-medium uppercase tracking-tighter">
-                Showing 0 to 0 of 0 entries
+                Showing {startIndex + 1} to {Math.min(endIndex, filteredProfits.length)} of {filteredProfits.length} entries
+                {filteredProfits.length !== profits.length && ` (filtered from ${profits.length} total)`}
               </p>
               <div className="flex items-center gap-2">
-                <button className="p-2 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 cursor-pointer disabled:opacity-50 transition-all">
+                <button 
+                  className="p-2 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 cursor-pointer disabled:opacity-50 transition-all"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
-                <button className="p-2 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 cursor-pointer disabled:opacity-50 transition-all">
+                <span className="text-sm text-gray-600 px-3">
+                  Page {currentPage} of {totalPages || 1}
+                </span>
+                <button 
+                  className="p-2 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 cursor-pointer disabled:opacity-50 transition-all"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages || totalPages === 0}
+                >
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>

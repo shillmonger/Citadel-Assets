@@ -65,6 +65,22 @@ For production deployment:
 Ensure your `.env.local` contains:
 - `MONGODB_URI`: Your MongoDB connection string
 - `CRON_SECRET`: Your cron authentication secret
+- `CRON_INTERVAL`: Time interval in minutes (default: 1)
+
+**Examples:**
+```bash
+# Run every 1 minute
+CRON_INTERVAL=1
+
+# Run every 5 minutes
+CRON_INTERVAL=5
+
+# Run every 30 minutes
+CRON_INTERVAL=30
+
+# Run every hour (60 minutes)
+CRON_INTERVAL=60
+```
 
 ## File Structure
 

@@ -7,6 +7,9 @@ const InvestmentPlan = require('./models/InvestmentPlan');
 // Load environment variables
 dotenv.config({ path: '.env.local' });
 
+// Get cron interval from environment (default to 1 minute)
+const CRON_INTERVAL = parseInt(process.env.CRON_INTERVAL) || 1;
+
 // MongoDB connection
 const connectDB = async () => {
   try {
@@ -46,22 +49,21 @@ const distributeProfits = async () => {
         continue;
       }
 
-      // Calculate profit for 2 minutes (daily profit / 720 minutes * 2 minutes)
-      const dailyProfit = (plan.amount * plan.profit) / 100;
-      const twoMinuteProfit = dailyProfit / 720;
+      // Calculate profit for the configured interval (full percentage per interval)
+      const intervalProfit = (plan.amount * plan.profit) / 100;
       
       // Add profit to user's account balance and total profit
-      user.accountBalance += twoMinuteProfit;
-      user.totalProfit += twoMinuteProfit;
+      user.accountBalance += intervalProfit;
+      user.totalProfit += intervalProfit;
       
       // Update investment plan
-      plan.totalProfitEarned += twoMinuteProfit;
+      plan.totalProfitEarned += intervalProfit;
       plan.daysCompleted += 1; // Still increment as a cycle
       
       // Add to profit history
       plan.profitHistory.push({
         date: new Date(),
-        amount: twoMinuteProfit,
+        amount: intervalProfit,
         percentage: plan.profit
       });
       
@@ -77,7 +79,7 @@ const distributeProfits = async () => {
       await user.save();
       await plan.save();
       
-      totalProfitDistributed += twoMinuteProfit;
+      totalProfitDistributed += intervalProfit;
       plansProcessed++;
     }
 
@@ -105,19 +107,20 @@ const runManually = async () => {
 const startCronScheduler = async () => {
   await connectDB();
 
-  // Schedule job to run every 2 minutes
-  cron.schedule('*/2 * * * *', async () => {
+  // Schedule job to run based on configured interval
+  const cronPattern = CRON_INTERVAL === 1 ? '*/1 * * * *' : `*/${CRON_INTERVAL} * * * *`;
+  cron.schedule(cronPattern, async () => {
     try {
       const result = await distributeProfits();
       if (result.plansProcessed > 0) {
-        console.log(`${new Date().toISOString()}: Distributed $${result.totalProfitDistributed.toFixed(2)} to ${result.plansProcessed} plans`);
+        console.log(`${new Date().toISOString()}: Distributed $${result.totalProfitDistributed.toFixed(2)} to ${result.plansProcessed} plans (${CRON_INTERVAL}-minute interval)`);
       }
     } catch (error) {
       console.error('Scheduled profit distribution failed:', error);
     }
   });
 
-  console.log('Profit distribution scheduler started - running every 2 minutes');
+  console.log(`Profit distribution scheduler started - running every ${CRON_INTERVAL} minute(s)`);
   console.log('Press Ctrl+C to stop');
 
   // Keep the process running
