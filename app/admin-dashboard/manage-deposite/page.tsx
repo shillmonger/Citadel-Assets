@@ -143,9 +143,9 @@ export default function AdminPaymentsPage() {
 
   const filteredDeposits = deposits.filter(deposit => {
     const matchesSearch = 
-      deposit.userId.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      deposit.userId.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      deposit.userId.username.toLowerCase().includes(searchTerm.toLowerCase());
+      deposit.userId?.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      deposit.userId?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      deposit.userId?.username?.toLowerCase().includes(searchTerm.toLowerCase());
     
     return matchesSearch;
   });
@@ -243,8 +243,8 @@ export default function AdminPaymentsPage() {
                         <tr key={deposit._id} className="hover:bg-gray-50/50 transition-colors">
                           <td className="px-6 py-4">
                             <div className="flex flex-col">
-                              <span className="text-sm font-bold text-[#1D429A]">{deposit.userId.fullName}</span>
-                              <span className="text-xs text-gray-400">{deposit.userId.email}</span>
+                              <span className="text-sm font-bold text-[#1D429A]">{deposit.userId?.fullName || 'Unknown User'}</span>
+                              <span className="text-xs text-gray-400">{deposit.userId?.email || 'No email'}</span>
                             </div>
                           </td>
                           <td className="px-6 py-4">
@@ -277,7 +277,7 @@ export default function AdminPaymentsPage() {
                               {deposit.status === "pending" ? (
                                 <>
                                   <button
-                                    onClick={() => handleApprove(deposit._id, deposit.userId.fullName)}
+                                    onClick={() => handleApprove(deposit._id, deposit.userId?.fullName || 'Unknown User')}
                                     disabled={actionLoading === deposit._id}
                                     className="p-3 bg-teal-50 text-teal-600 rounded-lg cursor-pointer hover:bg-teal-600 hover:text-white transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                                   >
@@ -288,7 +288,7 @@ export default function AdminPaymentsPage() {
                                     )}
                                   </button>
                                   <button
-                                    onClick={() => handleReject(deposit._id, deposit.userId.fullName)}
+                                    onClick={() => handleReject(deposit._id, deposit.userId?.fullName || 'Unknown User')}
                                     disabled={actionLoading === deposit._id}
                                     className="p-3 bg-red-50 text-red-500 cursor-pointer rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                                   > 

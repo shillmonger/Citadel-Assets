@@ -83,10 +83,10 @@ export default function AdminKYCVerificationPage() {
   // Filter submissions
   const filteredSubmissions = kycSubmissions.filter(submission => {
     const matchesSearch = 
-      submission.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      submission.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      submission.userId.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      submission.userId.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+      submission.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      submission.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      submission.userId?.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      submission.userId?.fullName?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesFilter = filterStatus === 'all' || submission.status === filterStatus;
     
@@ -258,10 +258,10 @@ export default function AdminKYCVerificationPage() {
                     <tr key={submission._id} className="group hover:bg-gray-50/50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
-                          <span className="font-bold text-[#1D429A]">{submission.userId.fullName}</span>
-                          <span className="text-xs text-gray-400">@{submission.userId.username}</span>
+                          <span className="font-bold text-[#1D429A]">{submission.userId?.fullName || 'Unknown User'}</span>
+                          <span className="text-xs text-gray-400">@{submission.userId?.username || 'unknown'}</span>
                           <span className="text-xs text-gray-500 flex items-center gap-1">
-                            <FileText className="w-3 h-3" /> {submission.email}
+                            <FileText className="w-3 h-3" /> {submission.email || 'No email'}
                           </span>
                         </div>
                       </td>

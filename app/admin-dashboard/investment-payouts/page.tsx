@@ -116,9 +116,9 @@ export default function AdminPayoutsPage() {
 
   const filteredWithdrawals = withdrawals.filter(withdrawal => {
     const matchesSearch = searchTerm === '' || 
-      withdrawal.userId.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      withdrawal.userId.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      withdrawal.userId.username.toLowerCase().includes(searchTerm.toLowerCase());
+      withdrawal.userId?.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      withdrawal.userId?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      withdrawal.userId?.username?.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
 
@@ -224,8 +224,8 @@ export default function AdminPayoutsPage() {
                       <tr key={withdrawal._id} className="group hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex flex-col">
-                            <span className="text-sm font-bold text-[#1D429A]">{withdrawal.userId.fullName}</span>
-                            <span className="text-[11px] text-gray-400">{withdrawal.userId.email}</span>
+                            <span className="text-sm font-bold text-[#1D429A]">{withdrawal.userId?.fullName || 'Unknown User'}</span>
+                            <span className="text-[11px] text-gray-400">{withdrawal.userId?.email || 'No email'}</span>
                           </div>
                         </td>
                         <td className="px-6 py-4">
