@@ -12,8 +12,8 @@ const ReferralRedirectPage: React.FC<{ params: { referralId: string } }> = ({ pa
       localStorage.setItem('referralId', params.referralId);
     }
     
-    // Redirect to registration page with referral ID in URL
-    router.push(`/auth-page/register/ref/${params.referralId}`);
+    // Redirect directly to main registration page
+    router.push('/auth-page/register');
   }, [params.referralId, router]);
 
   return (
