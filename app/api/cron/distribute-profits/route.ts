@@ -17,6 +17,9 @@ export async function POST(request: NextRequest) {
     // Connect to database
     await connectDB();
 
+    // Get cron interval from environment (default to 1 minute)
+    const CRON_INTERVAL = parseInt(process.env.CRON_INTERVAL as string) || 1;
+
     // Get all active investment plans that haven't completed their duration
     const activePlans = await InvestmentPlan.find({
       isActive: true,
@@ -34,21 +37,21 @@ export async function POST(request: NextRequest) {
         continue;
       }
 
-      // Calculate daily profit
-      const dailyProfit = (plan.amount * plan.profit) / 100;
+      // Calculate profit for the configured interval (full percentage per interval)
+      const intervalProfit = (plan.amount * plan.profit) / 100;
       
       // Add profit to user's account balance and total profit
-      user.accountBalance += dailyProfit;
-      user.totalProfit += dailyProfit;
+      user.accountBalance += intervalProfit;
+      user.totalProfit += intervalProfit;
       
       // Update investment plan
-      plan.totalProfitEarned += dailyProfit;
+      plan.totalProfitEarned += intervalProfit;
       plan.daysCompleted += 1;
       
       // Add to profit history
       plan.profitHistory.push({
         date: new Date(),
-        amount: dailyProfit,
+        amount: intervalProfit,
         percentage: plan.profit
       });
       
@@ -65,7 +68,7 @@ export async function POST(request: NextRequest) {
       await user.save();
       await plan.save();
       
-      totalProfitDistributed += dailyProfit;
+      totalProfitDistributed += intervalProfit;
       plansProcessed++;
     }
 
@@ -75,6 +78,7 @@ export async function POST(request: NextRequest) {
       stats: {
         plansProcessed,
         totalProfitDistributed,
+        cronInterval: CRON_INTERVAL,
         timestamp: new Date()
       }
     });
