@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Deposit from '@/lib/models/Deposit';
 import User from '@/lib/models/User';
+import { sendDepositStatusEmailToUser } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   try {
@@ -63,13 +64,44 @@ export async function PATCH(request: NextRequest) {
     deposit.status = newStatus;
     await deposit.save();
 
-    // If approved, update user's total deposit
+    // Get user details for email notification
+    const user = await User.findById(deposit.userId);
+    
     if (action === 'approve') {
-      const user = await User.findById(deposit.userId);
+      // If approved, update user's total deposit and account balance
       if (user) {
         user.totalDeposit += deposit.amount;
         user.accountBalance += deposit.amount;
         await user.save();
+
+        // Send approval email to user
+        const emailResult = await sendDepositStatusEmailToUser({
+          userEmail: user.email,
+          userName: user.fullName,
+          amount: deposit.amount,
+          paymentMethod: deposit.paymentMethod,
+          status: 'approved',
+          newBalance: user.accountBalance
+        });
+
+        if (!emailResult.success) {
+          console.error('Failed to send approval email:', emailResult);
+        }
+      }
+    } else {
+      // Send rejection email to user
+      if (user) {
+        const emailResult = await sendDepositStatusEmailToUser({
+          userEmail: user.email,
+          userName: user.fullName,
+          amount: deposit.amount,
+          paymentMethod: deposit.paymentMethod,
+          status: 'rejected'
+        });
+
+        if (!emailResult.success) {
+          console.error('Failed to send rejection email:', emailResult);
+        }
       }
     }
 
