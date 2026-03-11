@@ -422,6 +422,166 @@ export const sendSupportNotificationToAdmins = async (supportData: {
   });
 };
 
+export const sendWelcomeEmailToUser = async (userData: {
+  userEmail: string;
+  userName: string;
+  fullName: string;
+}) => {
+  const subject = 'Welcome to Citadel Assets Management!';
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Welcome to Citadel Assets</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #1D429A;
+        }
+        .logo {
+          color: #1D429A;
+          font-size: 24px;
+          font-weight: bold;
+        }
+        .welcome-icon {
+          color: #1D429A;
+          font-size: 48px;
+          margin: 20px 0;
+        }
+        .content {
+          padding: 20px 0;
+        }
+        .highlight-box {
+          background-color: #f8f9fa;
+          padding: 20px;
+          border-radius: 5px;
+          margin: 20px 0;
+          border-left: 4px solid #1D429A;
+        }
+        .steps-list {
+          background-color: #e8f5e8;
+          padding: 20px;
+          border-radius: 5px;
+          margin: 20px 0;
+        }
+        .steps-list h3 {
+          color: #28a745;
+          margin-top: 0;
+        }
+        .steps-list ol {
+          margin: 0;
+          padding-left: 20px;
+        }
+        .steps-list li {
+          margin: 10px 0;
+        }
+        .cta-button {
+          display: inline-block;
+          background-color: #1D429A;
+          color: white;
+          padding: 12px 25px;
+          text-decoration: none;
+          border-radius: 5px;
+          margin: 20px 0;
+          text-align: center;
+        }
+        .cta-button:hover {
+          background-color: #16357a;
+        }
+        .footer {
+          text-align: center;
+          padding-top: 20px;
+          border-top: 1px solid #eee;
+          color: #666;
+          font-size: 12px;
+        }
+        .signature {
+          margin-top: 30px;
+          font-style: italic;
+          color: #666;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">CITADEL ASSETS</div>
+          <div class="welcome-icon">🎉</div>
+          <h2>Welcome to Citadel Assets Management!</h2>
+        </div>
+        
+        <div class="content">
+          <p>Hello <strong>${userData.fullName || userData.userName}</strong>,</p>
+          
+          <p>Welcome to Citadel Assets Management community. We are really excited to welcome you to the Citadel Assets Management community.</p>
+          
+          <p>This is just the beginning of greater things to come.</p>
+          
+          <div class="highlight-box">
+            <h3>Here is how you can get the most out of our system:</h3>
+            <p>Make a deposit, buy an investment plan, and sit back to enjoy while we make your money work for you.</p>
+          </div>
+          
+          <div class="steps-list">
+            <h3>Getting Started</h3>
+            <ol>
+              <li>Make a deposit to fund your account</li>
+              <li>Choose an investment plan that suits your goals</li>
+              <li>Watch your money grow with our expert management</li>
+            </ol>
+          </div>
+          
+          <p>We look forward to seeing you achieve your financial goals.</p>
+          
+          <p>Your experience is going to be nice and smooth. No frustrations, no trouble.</p>
+          
+          <div style="text-align: center;">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'}/user-dashboard" class="cta-button">
+              Go to Your Dashboard
+            </a>
+          </div>
+          
+          <div class="signature">
+            <p>Thanks, and welcome.</p>
+            <p><strong>Citadel Assets</strong></p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>This is an automated notification from Citadel Assets. Please do not reply to this email.</p>
+          <p>If you have any questions, please contact our support team.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: userData.userEmail,
+    subject,
+    html,
+  });
+};
+
 export const sendDepositStatusEmailToUser = async (userData: {
   userEmail: string;
   userName: string;

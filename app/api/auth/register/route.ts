@@ -3,6 +3,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import connectDB from '@/lib/mongodb';
 import User, { IUser } from '@/lib/models/User';
+import { sendWelcomeEmailToUser } from '@/lib/email';
 
 // hCaptcha verification function
 async function verifyToken(token: string, ip?: string): Promise<[boolean, string[]]> {
@@ -156,6 +157,19 @@ export async function POST(request: NextRequest) {
         referrer.totalReferrals += 1;
         await referrer.save();
       }
+    }
+
+    // Send welcome email to new user
+    try {
+      await sendWelcomeEmailToUser({
+        userEmail: newUser.email,
+        userName: newUser.username,
+        fullName: newUser.fullName,
+      });
+      console.log('Welcome email sent to:', newUser.email);
+    } catch (emailError) {
+      console.error('Failed to send welcome email:', emailError);
+      // Don't fail registration if email fails, just log the error
     }
 
     // Generate JWT token for automatic login
