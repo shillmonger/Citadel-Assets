@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     }
 
     const referralLink = user.myReferralId 
-      ? `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/ref/${user.myReferralId}`
+      ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://citadel-assets.vercel.app'}/ref/${user.myReferralId}`
       : null;
 
     return NextResponse.json({
