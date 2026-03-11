@@ -99,33 +99,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique referral ID if user doesn't have one
+    // Generate referral link if user doesn't have one
     if (!user.myReferralId) {
-      let referralId;
-      let isUnique = false;
-      let attempts = 0;
-
-      while (!isUnique && attempts < 10) {
-        referralId = user.username.toLowerCase().replace(/\s+/g, '') + Math.random().toString(36).substring(2, 6);
-        const existing = await User.findOne({ myReferralId: referralId });
-        if (!existing) {
-          isUnique = true;
-        }
-        attempts++;
-      }
-
-      if (!isUnique) {
-        return NextResponse.json(
-          { success: false, message: 'Unable to generate unique referral ID' },
-          { status: 500 }
-        );
-      }
-
-      user.myReferralId = referralId;
+      user.myReferralId = user.username.toLowerCase().replace(/\s+/g, '') + '-cetadel';
       await user.save();
     }
 
-    const referralLink = `${process.env.NEXT_PUBLIC_APP_URL || 'https://snowtradeptylimited.com'}/ref/${user.myReferralId}`;
+    const referralLink = user.myReferralId 
+      ? `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/ref/${user.myReferralId}`
+      : null;
 
     return NextResponse.json({
       success: true,

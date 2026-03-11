@@ -24,6 +24,8 @@ interface Referral {
   status: string;
   dateRegistered: string;
   totalDeposit: number;
+  referralLevel: string;
+  parent: string;
 }
 
 interface UserData {

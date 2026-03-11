@@ -125,26 +125,8 @@ export async function POST(request: NextRequest) {
     const salt = await bcryptjs.genSalt(12);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
-    // Generate unique referral ID for the new user
-    let myReferralId;
-    let isUnique = false;
-    let attempts = 0;
-
-    while (!isUnique && attempts < 10) {
-      myReferralId = username.toLowerCase().replace(/\s+/g, '') + Math.random().toString(36).substring(2, 6);
-      const existing = await User.findOne({ myReferralId });
-      if (!existing) {
-        isUnique = true;
-      }
-      attempts++;
-    }
-
-    if (!isUnique) {
-      return NextResponse.json(
-        { success: false, message: 'Unable to generate unique referral ID' },
-        { status: 500 }
-      );
-    }
+    // Generate unique referral ID for the new user (username-cetadel)
+    const myReferralId = username.toLowerCase().replace(/\s+/g, '') + '-cetadel';
 
     // Create new user
     const newUser: IUser = new User({
@@ -155,7 +137,7 @@ export async function POST(request: NextRequest) {
       country: country.trim(),
       phoneNumber: phoneNumber.trim(),
       referralId: referralId?.trim() || null,
-      myReferralId,
+      myReferralId: myReferralId,
       accountBalance: 0,
       welcomeBonus: 10,
       totalProfit: 0,
