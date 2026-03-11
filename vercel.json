@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/cron/distribute-profits",
-      "schedule": "*/20 * * * * *"
-    }
-  ]
-}
