@@ -223,6 +223,205 @@ export const sendDepositNotificationToAdmins = async (depositData: {
   });
 };
 
+export const sendSupportNotificationToAdmins = async (supportData: {
+  userName: string;
+  userEmail: string;
+  userPhone: string;
+  message: string;
+  userId: string;
+}) => {
+  const adminEmails = await getAllAdminEmails();
+  
+  if (adminEmails.length === 0) {
+    console.log('No admin emails found to notify');
+    return { success: true, message: 'No admins to notify' };
+  }
+
+  const subject = '🎟️ New Support Ticket - Customer Inquiry';
+  
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>New Support Ticket</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #1D429A;
+        }
+        .logo {
+          color: #1D429A;
+          font-size: 24px;
+          font-weight: bold;
+        }
+        .ticket-icon {
+          color: #1D429A;
+          font-size: 48px;
+          margin: 20px 0;
+        }
+        .content {
+          padding: 20px 0;
+        }
+        .user-info {
+          background-color: #f8f9fa;
+          padding: 15px;
+          border-radius: 5px;
+          margin: 15px 0;
+        }
+        .user-info h3 {
+          color: #1D429A;
+          margin-top: 0;
+        }
+        .info-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 5px 0;
+          border-bottom: 1px solid #eee;
+        }
+        .info-row:last-child {
+          border-bottom: none;
+        }
+        .label {
+          font-weight: bold;
+          color: #666;
+        }
+        .value {
+          color: #333;
+        }
+        .message-box {
+          background-color: #fff3cd;
+          border: 1px solid #ffeaa7;
+          padding: 20px;
+          border-radius: 5px;
+          margin: 15px 0;
+        }
+        .message-box h4 {
+          color: #856404;
+          margin-top: 0;
+        }
+        .message-content {
+          background-color: white;
+          padding: 15px;
+          border-radius: 5px;
+          border-left: 4px solid #1D429A;
+          margin: 10px 0;
+          white-space: pre-wrap;
+          font-style: italic;
+        }
+        .cta-button {
+          display: inline-block;
+          background-color: #1D429A;
+          color: white;
+          padding: 12px 25px;
+          text-decoration: none;
+          border-radius: 5px;
+          margin: 20px 0;
+          text-align: center;
+        }
+        .cta-button:hover {
+          background-color: #16357a;
+        }
+        .footer {
+          text-align: center;
+          padding-top: 20px;
+          border-top: 1px solid #eee;
+          color: #666;
+          font-size: 12px;
+        }
+        .priority-badge {
+          background-color: #dc3545;
+          color: white;
+          padding: 4px 8px;
+          border-radius: 3px;
+          font-size: 11px;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">CITADEL ASSETS</div>
+          <div class="ticket-icon">🎟️</div>
+          <h2>New Support Ticket</h2>
+        </div>
+        
+        <div class="content">
+          <p>A new support ticket has been submitted by a customer. Please review the details below and respond promptly.</p>
+          
+          <div class="user-info">
+            <h3>Customer Information</h3>
+            <div class="info-row">
+              <span class="label">Name:</span>
+              <span class="value">${supportData.userName}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Email:</span>
+              <span class="value">${supportData.userEmail}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Phone:</span>
+              <span class="value">${supportData.userPhone}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">User ID:</span>
+              <span class="value" style="font-family: monospace; font-size: 12px;">${supportData.userId}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Priority:</span>
+              <span class="value"><span class="priority-badge">New</span></span>
+            </div>
+          </div>
+          
+          <div class="message-box">
+            <h4>Customer Message:</h4>
+            <div class="message-content">${supportData.message}</div>
+          </div>
+          
+          <div style="text-align: center;">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'}/admin-dashboard" class="cta-button">
+              View in Admin Dashboard
+            </a>
+          </div>
+          
+          <p><strong>Important:</strong> Please respond to this support ticket within 24 hours to maintain customer satisfaction.</p>
+        </div>
+        
+        <div class="footer">
+          <p>This is an automated notification from Citadel Assets. Please do not reply to this email.</p>
+          <p>If you believe this is a mistake, please contact your system administrator.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: adminEmails,
+    subject,
+    html,
+  });
+};
+
 export const sendDepositStatusEmailToUser = async (userData: {
   userEmail: string;
   userName: string;

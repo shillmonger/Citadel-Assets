@@ -1,22 +1,81 @@
 "use client";
 
 import React, { useState, FormEvent } from "react";
-import { Mail, MessageSquare, Send } from "lucide-react";
+import { Mail, MessageSquare, Send, Loader2 } from "lucide-react";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 const SnowTradeSupport = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
 
-  const handleSubmit = (e: FormEvent) => {
+  // Helper function to get auth token (same as in useAuth hook)
+  const getAuthToken = () => {
+    // Try to get from document.cookie first (HTTP-only cookie)
+    if (typeof document !== 'undefined') {
+      const cookies = document.cookie.split(';');
+      const authCookie = cookies.find(cookie => cookie.trim().startsWith('auth-token='));
+      if (authCookie) {
+        return authCookie.split('=')[1];
+      }
+    }
+    
+    // Fallback to localStorage
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('auth-token');
+    }
+    
+    return null;
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Message sent:", message);
-    setSent(true);
-    setMessage("");
-    setTimeout(() => setSent(false), 3000);
+    
+    if (!message.trim()) {
+      toast.error("Please enter a message");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const token = getAuthToken();
+      
+      if (!token) {
+        toast.error("Authentication required. Please log in again.");
+        return;
+      }
+
+      const response = await fetch('/api/user/support', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          message: message.trim()
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success(`Support ticket ${result.ticketId} sent successfully!`);
+        setMessage("");
+      } else {
+        toast.error(result.error || 'Failed to send support message');
+      }
+    } catch (error) {
+      console.error('Support submission error:', error);
+      toast.error('An error occurred while sending your message');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -90,10 +149,14 @@ const SnowTradeSupport = () => {
 
                 <button
                   type="submit"
-                  className="cursor-pointer w-full bg-[#1D429A] hover:bg-[#16357a] text-white font-bold py-3.5 rounded-full transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2 text-sm uppercase tracking-widest"
+                  disabled={isSubmitting}
+                  className="cursor-pointer w-full bg-[#1D429A] hover:bg-[#16357a] text-white font-bold py-3.5 rounded-full transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2 text-sm uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {sent ? (
-                    <>Message Sent ✓</>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sending...
+                    </>
                   ) : (
                     <>
                       <Send className="w-4 h-4" /> Send Message
