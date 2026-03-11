@@ -262,9 +262,18 @@ const RegisterPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [hcaptchaLoaded, setHcaptchaLoaded] = React.useState(false);
+  const [referralId, setReferralId] = React.useState("");
 
-  // Load hCaptcha script
+  // Load hCaptcha script and check for referral ID
   React.useEffect(() => {
+    // Check for stored referral ID
+    if (typeof window !== 'undefined') {
+      const storedReferralId = localStorage.getItem('referralId');
+      if (storedReferralId) {
+        setReferralId(storedReferralId);
+      }
+    }
+
     const loadHcaptcha = () => {
       if (typeof window !== 'undefined' && !(window as any).hcaptcha) {
         const script = document.createElement('script');
@@ -316,7 +325,7 @@ const RegisterPage: React.FC = () => {
       const email = formData.get('email') as string;
       const password = formData.get('password') as string;
       const confirmPassword = formData.get('confirmPassword') as string;
-      const referralId = formData.get('referral') as string;
+      const referralIdFromForm = formData.get('referral') as string;
 
       // Get hCaptcha token
       if (!hcaptchaLoaded || !(window as any).hcaptcha) {
@@ -352,7 +361,7 @@ const RegisterPage: React.FC = () => {
           confirmPassword,
           country: selectedCountry?.name,
           phoneNumber: phone,
-          referralId,
+          referralId: referralIdFromForm || referralId,
           hcaptchaToken: hcaptchaResponse
         }),
       });
@@ -655,6 +664,8 @@ const RegisterPage: React.FC = () => {
                 type="text"
                 id="referral"
                 name="referral"
+                value={referralId}
+                onChange={(e) => setReferralId(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1e40af] focus:border-[#1e40af]"
                 placeholder="optional referral id"
                 disabled={isLoading}

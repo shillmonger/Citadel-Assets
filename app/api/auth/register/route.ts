@@ -125,6 +125,27 @@ export async function POST(request: NextRequest) {
     const salt = await bcryptjs.genSalt(12);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
+    // Generate unique referral ID for the new user
+    let myReferralId;
+    let isUnique = false;
+    let attempts = 0;
+
+    while (!isUnique && attempts < 10) {
+      myReferralId = username.toLowerCase().replace(/\s+/g, '') + Math.random().toString(36).substring(2, 6);
+      const existing = await User.findOne({ myReferralId });
+      if (!existing) {
+        isUnique = true;
+      }
+      attempts++;
+    }
+
+    if (!isUnique) {
+      return NextResponse.json(
+        { success: false, message: 'Unable to generate unique referral ID' },
+        { status: 500 }
+      );
+    }
+
     // Create new user
     const newUser: IUser = new User({
       username: username.trim(),
@@ -134,6 +155,7 @@ export async function POST(request: NextRequest) {
       country: country.trim(),
       phoneNumber: phoneNumber.trim(),
       referralId: referralId?.trim() || null,
+      myReferralId,
       accountBalance: 0,
       welcomeBonus: 10,
       totalProfit: 0,
@@ -144,6 +166,15 @@ export async function POST(request: NextRequest) {
     });
 
     await newUser.save();
+
+    // Handle referral logic - update referrer's stats
+    if (referralId) {
+      const referrer = await User.findOne({ myReferralId: referralId });
+      if (referrer) {
+        referrer.totalReferrals += 1;
+        await referrer.save();
+      }
+    }
 
     // Generate JWT token for automatic login
     const tokenPayload = {
@@ -165,6 +196,9 @@ export async function POST(request: NextRequest) {
       country: newUser.country,
       phoneNumber: newUser.phoneNumber,
       referralId: newUser.referralId,
+      myReferralId: newUser.myReferralId,
+      totalReferrals: newUser.totalReferrals,
+      activeReferrals: newUser.activeReferrals,
       accountBalance: newUser.accountBalance,
       welcomeBonus: newUser.welcomeBonus,
       totalProfit: newUser.totalProfit,

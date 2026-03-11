@@ -8,6 +8,9 @@ export interface IUser extends Document {
   country: string;
   phoneNumber: string;
   referralId?: string;
+  myReferralId?: string;
+  totalReferrals: number;
+  activeReferrals: number;
   accountBalance: number;
   welcomeBonus: number;
   totalProfit: number;
@@ -73,6 +76,22 @@ const UserSchema: Schema = new Schema({
     type: String,
     trim: true,
     default: null
+  },
+  myReferralId: {
+    type: String,
+    trim: true,
+    unique: true,
+    sparse: true
+  },
+  totalReferrals: {
+    type: Number,
+    default: 0,
+    min: [0, 'Total referrals cannot be negative']
+  },
+  activeReferrals: {
+    type: Number,
+    default: 0,
+    min: [0, 'Active referrals cannot be negative']
   },
   accountBalance: {
     type: Number,

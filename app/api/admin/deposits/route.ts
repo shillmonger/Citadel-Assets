@@ -72,6 +72,23 @@ export async function PATCH(request: NextRequest) {
       if (user) {
         user.totalDeposit += deposit.amount;
         user.accountBalance += deposit.amount;
+        
+        // Check if this is the user's first deposit and they have a referrer
+        const isFirstDeposit = user.totalDeposit === deposit.amount;
+        if (isFirstDeposit && user.referralId) {
+          // Find the referrer
+          const referrer = await User.findOne({ myReferralId: user.referralId });
+          if (referrer) {
+            // Add $20 referral bonus to referrer's account
+            referrer.accountBalance += 20;
+            referrer.referralBonus += 20;
+            referrer.activeReferrals += 1;
+            await referrer.save();
+            
+            console.log(`Referral bonus of $20 added to referrer ${referrer.username} for user ${user.username}'s first deposit`);
+          }
+        }
+        
         await user.save();
 
         // Send approval email to user
