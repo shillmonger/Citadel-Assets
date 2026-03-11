@@ -5,6 +5,7 @@ import { Mail, MessageSquare, Send, Loader2 } from "lucide-react";
 import Header from "@/components/user-dashboard/header";
 import Sidebar from "@/components/user-dashboard/sidebar";
 import Navbar from "@/components/user-dashboard/navbar";
+import Translate from "@/components/landing-page/translate";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -110,7 +111,7 @@ const SnowTradeSupport = () => {
                 <MessageSquare className="w-8 h-8 text-[#76EAD7]" />
               </div>
               <h2 className="text-white text-xl md:text-3xl font-light mb-2">
-                Snow Trade Pty Limited Support
+                Citadel Pty Limited Support
               </h2>
               <p className="text-blue-200 text-sm mb-4">
                 For inquiries, suggestions or complaints — mail us
@@ -120,7 +121,7 @@ const SnowTradeSupport = () => {
                 className="cursor-pointer inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors border border-white/20 text-white text-sm font-medium px-5 py-2.5 rounded-full"
               >
                 <Mail className="w-4 h-4 text-[#76EAD7]" />
-                citadellimited@gmail.com
+                citadelasset1@gmail.com
               </a>
             </div>
 
@@ -169,7 +170,8 @@ const SnowTradeSupport = () => {
         </div>
       </main>
 
-      <Navbar />
+      {/* <Navbar /> */}
+      <Translate />
     </div>
   );
 };

@@ -52,7 +52,31 @@ export default function Translate() {
       }
     };
 
+    const loadSmartsupp = () => {
+      const existingScript = document.querySelector(
+        'script[src^="https://www.smartsuppchat.com/loader.js"]'
+      );
+
+      if (!existingScript) {
+        // Initialize Smartsupp settings
+        (window as any)._smartsupp = (window as any)._smartsupp || {};
+        (window as any)._smartsupp.key = '62fb93ac97458d2446908c0172ecb781cc1c5b8b';
+
+        // Create and load Smartsupp script
+        (window as any).smartsupp = (window as any).smartsupp || function(d: any) {
+          var s: any, c: any, o = (window as any).smartsupp = function() { (o as any)._ .push(arguments)}; (o as any)._ = [];
+          s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+          c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+          c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
+        };
+
+        // Initialize Smartsupp
+        (window as any).smartsupp(document);
+      }
+    };
+
     loadTranslate();
+    loadSmartsupp();
   }, [pathname]); // 👈 re-run when route changes
 
   return (
