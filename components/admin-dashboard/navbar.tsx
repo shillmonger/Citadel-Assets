@@ -8,7 +8,7 @@ import {
   Wallet,
   Settings,
   User,
-  GraduationCap,
+  Briefcase,
 } from "lucide-react";
 
 export default function UserNav() {
@@ -16,14 +16,14 @@ export default function UserNav() {
 
   const navItems = [
     { name: "Dashboard", href: "/admin-dashboard/dashboard", icon: LayoutGrid },
-    { name: "Payments", href: "/admin-dashboard/payments", icon: LayoutGrid },
+    { name: "Deposite", href: "/admin-dashboard/manage-deposite", icon: Wallet },
     {
       name: "Payouts",
       href: "/admin-dashboard/investment-payouts",
-      icon: Wallet,
+      icon: Briefcase,
     },
     { name: "Users", href: "/admin-dashboard/user-management", icon: User },
-    { name: "Settings", href: "/admin-dashboard/settings", icon: Settings },
+    { name: "Settings", href: "/admin-dashboard/role-settings", icon: Settings },
   ];
 
   const isActive = (href: string) =>
