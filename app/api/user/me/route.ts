@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     const referralLink = user.myReferralId 
-      ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://citadel-assets.vercel.app'}/ref/${user.myReferralId}`
+      ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://citadelassetsmanagement'}/ref/${user.myReferralId}`
       : null;
 
     return NextResponse.json({
