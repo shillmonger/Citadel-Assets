@@ -105,7 +105,7 @@ const SnowTradeDashboard = () => {
           <section className="mb-8 w-full">
             <div className="bg-[#1D429A] p-4 rounded-t-xl mb-4">
               <h3 className="text-white text-lg font-medium">
-                My Investment plans
+                My Investment plans (All)
               </h3>
             </div>
 
