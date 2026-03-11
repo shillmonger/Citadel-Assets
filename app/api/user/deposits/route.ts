@@ -3,6 +3,8 @@ import connectDB from '@/lib/mongodb';
 import Deposit from '@/lib/models/Deposit';
 import cloudinary from '@/lib/cloudinary';
 import jwt from 'jsonwebtoken';
+import User from '@/lib/models/User';
+import { sendDepositNotificationToAdmins } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   try {
@@ -118,6 +120,27 @@ export async function POST(request: NextRequest) {
     });
 
     await deposit.save();
+
+    // Fetch user details for email notification
+    const user = await User.findById(userId);
+    
+    if (user) {
+      // Send email notification to all admins
+      const emailResult = await sendDepositNotificationToAdmins({
+        userName: user.fullName,
+        userEmail: user.email,
+        amount: parseFloat(amount),
+        paymentMethod,
+        network,
+        walletAddress,
+        proofImageUrl
+      });
+
+      if (!emailResult.success) {
+        console.error('Failed to send admin notification:', emailResult);
+        // Don't fail the deposit submission if email fails
+      }
+    }
 
     return NextResponse.json(
       { 
