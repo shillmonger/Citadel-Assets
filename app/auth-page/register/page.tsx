@@ -269,8 +269,12 @@ const RegisterPage: React.FC = () => {
     // Check for stored referral ID
     if (typeof window !== 'undefined') {
       const storedReferralId = localStorage.getItem('referralId');
+      console.log('Checking localStorage for referral ID:', storedReferralId);
       if (storedReferralId) {
+        console.log('Found referral ID, setting state:', storedReferralId);
         setReferralId(storedReferralId);
+      } else {
+        console.log('No referral ID found in localStorage');
       }
     }
 
