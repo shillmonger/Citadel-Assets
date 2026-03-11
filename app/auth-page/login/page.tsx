@@ -150,7 +150,7 @@ const LoginPage: React.FC = () => {
               </label>
             </div>
 
-            <Link href="#" className="font-medium text-[#1e40af] hover:text-[#1d4ed8]">
+            <Link href="/auth-page/forgot-password" className="font-medium text-[#1e40af] hover:text-[#1d4ed8]">
               Forgot password?
             </Link>
           </div>
