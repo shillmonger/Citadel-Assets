@@ -5,30 +5,56 @@ import InvestmentPlan from '@/lib/models/InvestmentPlan';
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Cron job started at:', new Date().toISOString());
+    
     // Verify this is a cron job request (you should add authentication in production)
     const authHeader = request.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    console.log('Auth header:', authHeader ? 'Present' : 'Missing');
+    
+    if (!authHeader) {
+      console.log('No authorization header found');
+      return NextResponse.json(
+        { error: 'Missing authorization header' },
+        { status: 401 }
+      );
+    }
+    
+    const expectedAuth = `Bearer ${process.env.CRON_SECRET}`;
+    console.log('Expected auth:', expectedAuth.substring(0, 20) + '...');
+    console.log('CRON_SECRET exists:', !!process.env.CRON_SECRET);
+    
+    if (authHeader !== expectedAuth) {
+      console.log('Authorization failed');
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
+    console.log('Authorization successful, connecting to database...');
+    
     // Connect to database
     await connectDB();
+    console.log('Database connected successfully');
 
     // Get cron interval from environment (default to 1 minute)
     const CRON_INTERVAL = parseInt(process.env.CRON_INTERVAL as string) || 1;
+    console.log('Cron interval:', CRON_INTERVAL);
 
     // Get all active investment plans that haven't completed their duration
+    console.log('Fetching active investment plans...');
     const activePlans = await InvestmentPlan.find({
       isActive: true,
       endDate: { $gt: new Date() }
     }).populate('userId');
+    
+    console.log(`Found ${activePlans.length} active plans`);
 
     let totalProfitDistributed = 0;
     let plansProcessed = 0;
 
+    console.log(`Processing ${activePlans.length} plans...`);
+    
     for (const plan of activePlans) {
       const user = plan.userId as any;
       
@@ -37,8 +63,11 @@ export async function POST(request: NextRequest) {
         continue;
       }
 
+      console.log(`Processing plan ${plan._id} for user ${user.username}`);
+
       // Calculate profit for the configured interval (full percentage per interval)
       const intervalProfit = (plan.amount * plan.profit) / 100;
+      console.log(`Plan amount: ${plan.amount}, profit %: ${plan.profit}, interval profit: ${intervalProfit}`);
       
       // Add profit to user's account balance and total profit
       user.accountBalance += intervalProfit;
@@ -70,7 +99,11 @@ export async function POST(request: NextRequest) {
       
       totalProfitDistributed += intervalProfit;
       plansProcessed++;
+      
+      console.log(`Plan ${plan._id} processed successfully. Total profit distributed: ${totalProfitDistributed}`);
     }
+
+    console.log(`Cron job completed. Processed ${plansProcessed} plans, distributed ${totalProfitDistributed} profit`);
 
     return NextResponse.json({
       success: true,
@@ -85,8 +118,13 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Error distributing profits:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date()
+      },
       { status: 500 }
     );
   }
