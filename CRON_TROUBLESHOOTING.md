@@ -18,7 +18,7 @@ You need to add these environment variables in your Vercel dashboard:
 
 ```
 CRON_SECRET = run_every_12_am
-MONGODB_URI = mongodb+srv://codelab042:codelab042@chidera.2ffbe.mongodb.net/cetadel_assets
+MONGODB_URI = your_mongodb_uri_here
 ```
 
 ### 2. Deploy the Updated Code
