@@ -40,39 +40,54 @@ export async function runDailyBalanceUpdate(): Promise<CronResult> {
 
       console.log(`Processing plan ${plan._id} for user ${user.username}`);
 
-      // Calculate profit per minute (full percentage per minute)
-      const minuteProfit = (plan.amount * plan.profit) / 100;
-      console.log(`Plan amount: ${plan.amount}, profit %: ${plan.profit}, minute profit: ${minuteProfit}`);
+      // Check if profit was already distributed today
+      const today = new Date();
+      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      
+      // Check if there's already a profit entry for today
+      const profitAlreadyDistributedToday = plan.profitHistory.some((entry: { date: Date; amount: number; percentage: number }) => {
+        const entryDate = new Date(entry.date);
+        return entryDate >= todayStart && entryDate < todayEnd;
+      });
+
+      if (profitAlreadyDistributedToday) {
+        console.log(`Plan ${plan._id} already processed today. Skipping.`);
+        continue;
+      }
+
+      // Calculate daily profit (full percentage per day)
+      const dailyProfit = (plan.amount * plan.profit) / 100;
+      console.log(`Plan amount: ${plan.amount}, profit %: ${plan.profit}, daily profit: ${dailyProfit}`);
       
       // Add profit to user's account balance and total profit
-      user.accountBalance += minuteProfit;
-      user.totalProfit += minuteProfit;
+      user.accountBalance += dailyProfit;
+      user.totalProfit += dailyProfit;
       
       // Update investment plan
-      plan.totalProfitEarned += minuteProfit;
+      plan.totalProfitEarned += dailyProfit;
+      plan.daysCompleted += 1;
       
       // Add to profit history
       plan.profitHistory.push({
         date: new Date(),
-        amount: minuteProfit,
+        amount: dailyProfit,
         percentage: plan.profit
       });
       
-      // Check if plan has reached its duration in minutes
-      const now = new Date();
-      const minutesSinceStart = Math.floor((now.getTime() - plan.startDate.getTime()) / (1000 * 60));
-      const totalPlanMinutes = plan.duration * 24 * 60; // Convert days to minutes
+      // Check if plan has reached its duration
+      const daysSinceStart = Math.floor((today.getTime() - plan.startDate.getTime()) / (1000 * 60 * 60 * 24));
       
-      if (minutesSinceStart >= totalPlanMinutes) {
+      if (daysSinceStart >= plan.duration) {
         plan.isActive = false;
-        console.log(`Plan ${plan._id} completed after ${plan.duration} days (${totalPlanMinutes} minutes)`);
+        console.log(`Plan ${plan._id} completed after ${plan.duration} days`);
       }
       
       // Save changes
       await user.save();
       await plan.save();
       
-      totalProfitDistributed += minuteProfit;
+      totalProfitDistributed += dailyProfit;
       plansProcessed++;
       
       console.log(`Plan ${plan._id} processed successfully. Total profit distributed: ${totalProfitDistributed}`);
