@@ -40,39 +40,40 @@ export async function runDailyBalanceUpdate(): Promise<CronResult> {
 
       console.log(`Processing plan ${plan._id} for user ${user.username}`);
 
-      // Calculate daily profit (full percentage per day)
-      const dailyProfit = (plan.amount * plan.profit) / 100;
-      console.log(`Plan amount: ${plan.amount}, profit %: ${plan.profit}, daily profit: ${dailyProfit}`);
+      // Calculate profit per minute (full percentage per minute)
+      const minuteProfit = (plan.amount * plan.profit) / 100;
+      console.log(`Plan amount: ${plan.amount}, profit %: ${plan.profit}, minute profit: ${minuteProfit}`);
       
       // Add profit to user's account balance and total profit
-      user.accountBalance += dailyProfit;
-      user.totalProfit += dailyProfit;
+      user.accountBalance += minuteProfit;
+      user.totalProfit += minuteProfit;
       
       // Update investment plan
-      plan.totalProfitEarned += dailyProfit;
-      plan.daysCompleted += 1;
+      plan.totalProfitEarned += minuteProfit;
+      plan.minutesCompleted = (plan.minutesCompleted || 0) + 1;
       
       // Add to profit history
       plan.profitHistory.push({
         date: new Date(),
-        amount: dailyProfit,
+        amount: minuteProfit,
         percentage: plan.profit
       });
       
-      // Check if plan has reached its duration
-      const today = new Date();
-      const daysSinceStart = Math.floor((today.getTime() - plan.startDate.getTime()) / (1000 * 60 * 60 * 24));
+      // Check if plan has reached its duration in minutes
+      const now = new Date();
+      const minutesSinceStart = Math.floor((now.getTime() - plan.startDate.getTime()) / (1000 * 60));
+      const totalPlanMinutes = plan.duration * 24 * 60; // Convert days to minutes
       
-      if (daysSinceStart >= plan.duration) {
+      if (minutesSinceStart >= totalPlanMinutes) {
         plan.isActive = false;
-        console.log(`Plan ${plan._id} completed after ${plan.duration} days`);
+        console.log(`Plan ${plan._id} completed after ${plan.duration} days (${totalPlanMinutes} minutes)`);
       }
       
       // Save changes
       await user.save();
       await plan.save();
       
-      totalProfitDistributed += dailyProfit;
+      totalProfitDistributed += minuteProfit;
       plansProcessed++;
       
       console.log(`Plan ${plan._id} processed successfully. Total profit distributed: ${totalProfitDistributed}`);
