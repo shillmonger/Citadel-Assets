@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "cron:start": "node scripts/profit-distributor.js",
-    "cron:manual": "node scripts/profit-distributor.js --manual"
+    "lint": "eslint"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -29,7 +27,6 @@
     "mongoose": "^8.23.0",
     "next": "16.1.6",
     "next-auth": "^4.24.13",
-    "node-cron": "^4.2.1",
     "nodemailer": "^7.0.13",
     "qrcode": "^1.5.4",
     "radix-ui": "^1.4.3",
