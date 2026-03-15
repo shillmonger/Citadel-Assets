@@ -50,7 +50,6 @@ export async function runDailyBalanceUpdate(): Promise<CronResult> {
       
       // Update investment plan
       plan.totalProfitEarned += minuteProfit;
-      plan.minutesCompleted = (plan.minutesCompleted || 0) + 1;
       
       // Add to profit history
       plan.profitHistory.push({
