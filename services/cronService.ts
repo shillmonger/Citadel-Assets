@@ -40,21 +40,22 @@ export async function runDailyBalanceUpdate(): Promise<CronResult> {
 
       console.log(`Processing plan ${plan._id} for user ${user.username}`);
 
+      // TEMPORARILY DISABLE DAILY CHECK FOR TESTING
       // Check if profit was already distributed today
-      const today = new Date();
-      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      // const today = new Date();
+      // const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      // const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
       
-      // Check if there's already a profit entry for today
-      const profitAlreadyDistributedToday = plan.profitHistory.some((entry: { date: Date; amount: number; percentage: number }) => {
-        const entryDate = new Date(entry.date);
-        return entryDate >= todayStart && entryDate < todayEnd;
-      });
+      // // Check if there's already a profit entry for today
+      // const profitAlreadyDistributedToday = plan.profitHistory.some((entry: { date: Date; amount: number; percentage: number }) => {
+      //   const entryDate = new Date(entry.date);
+      //   return entryDate >= todayStart && entryDate < todayEnd;
+      // });
 
-      if (profitAlreadyDistributedToday) {
-        console.log(`Plan ${plan._id} already processed today. Skipping.`);
-        continue;
-      }
+      // if (profitAlreadyDistributedToday) {
+      //   console.log(`Plan ${plan._id} already processed today. Skipping.`);
+      //   continue;
+      // }
 
       // Calculate daily profit (full percentage per day)
       const dailyProfit = (plan.amount * plan.profit) / 100;
@@ -76,6 +77,7 @@ export async function runDailyBalanceUpdate(): Promise<CronResult> {
       });
       
       // Check if plan has reached its duration
+      const today = new Date();
       const daysSinceStart = Math.floor((today.getTime() - plan.startDate.getTime()) / (1000 * 60 * 60 * 24));
       
       if (daysSinceStart >= plan.duration) {
