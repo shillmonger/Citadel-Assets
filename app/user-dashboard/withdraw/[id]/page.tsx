@@ -159,7 +159,7 @@ const WithdrawalDetailsPage = () => {
           <div className="flex items-center gap-2 mb-8">
             <div className="w-1 h-5 bg-[#76EAD7] rounded-full flex-shrink-0"></div>
             <h2 className="text-[#1D429A] text-lg md:text-3xl font-light leading-tight">
-              Withdrawal<span className="font-bold"> Details</span>
+              Withdrawal<span className="font-bold"> Detail</span>
             </h2>
           </div>
 
