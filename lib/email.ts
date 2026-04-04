@@ -205,7 +205,7 @@ export const sendDepositNotificationToAdmins = async (depositData: {
           <img src="${depositData.proofImageUrl}" alt="Payment Proof" class="proof-image" />
           
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'}/admin-dashboard/manage-deposite" class="cta-button">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://citadel-assets.vercel.app/'}/admin-dashboard/manage-deposite" class="cta-button">
               Review Deposit in Admin Dashboard
             </a>
           </div>
@@ -404,7 +404,7 @@ export const sendSupportNotificationToAdmins = async (supportData: {
           </div>
           
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'}/admin-dashboard" class="cta-button">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://citadel-assets.vercel.app/'}/admin-dashboard" class="cta-button">
               View in Admin Dashboard
             </a>
           </div>
@@ -561,7 +561,7 @@ export const sendWelcomeEmailToUser = async (userData: {
           <p>Your experience is going to be nice and smooth. No frustrations, no trouble.</p>
           
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'}/user-dashboard" class="cta-button">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://citadel-assets.vercel.app/'}/user-dashboard" class="cta-button">
               Go to Your Dashboard
             </a>
           </div>
@@ -734,7 +734,7 @@ export const sendDepositStatusEmailToUser = async (userData: {
           </div>
           
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'}/user-dashboard" class="cta-button">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://citadel-assets.vercel.app/'}/user-dashboard" class="cta-button">
               View Your Dashboard
             </a>
           </div>
@@ -883,7 +883,7 @@ export const sendDepositStatusEmailToUser = async (userData: {
           </div>
           
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'}/user-dashboard/deposit" class="cta-button">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://citadel-assets.vercel.app/'}/user-dashboard/deposit" class="cta-button">
               Submit New Deposit
             </a>
           </div>

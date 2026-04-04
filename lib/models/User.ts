@@ -29,6 +29,8 @@ export interface IUser extends Document {
     bnb?: string;
     usdt?: string;
   };
+  withdrawalOTP?: string;
+  withdrawalOTPExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -142,6 +144,14 @@ const UserSchema: Schema = new Schema({
     litecoin: { type: String, default: null },
     bnb: { type: String, default: null },
     usdt: { type: String, default: null }
+  },
+  withdrawalOTP: {
+    type: String,
+    required: false
+  },
+  withdrawalOTPExpires: {
+    type: Date,
+    required: false
   }
 }, {
   timestamps: true

@@ -18,7 +18,7 @@ const WithdrawalDetailsPage = () => {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [otpDisabled, setOtpDisabled] = useState(true);
+  const [otpDisabled, setOtpDisabled] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [address, setAddress] = useState("");
   const [amountValid, setAmountValid] = useState<boolean | null>(null);
@@ -98,9 +98,9 @@ const WithdrawalDetailsPage = () => {
     }
   };
 
-  const completeWithdrawal = async () => {
-    if (!authUser?.id) {
-      toast.error('User not authenticated');
+  const requestOTP = async () => {
+    if (!authUser?.id || !amountValid || !address) {
+      toast.error('Please enter valid amount and ensure address is available');
       return;
     }
 
@@ -116,7 +116,57 @@ const WithdrawalDetailsPage = () => {
           amount: Number(amount),
           address,
           paymentMethod: methodId,
-          action: 'complete-withdrawal'
+          action: 'request-otp'
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setOtpSent(true);
+        setCharge(data.charge || 0);
+        setNetAmount(data.netAmount || Number(amount));
+        toast.success('OTP sent to your email!');
+      } else {
+        toast.error(data.error || 'Failed to send OTP');
+      }
+    } catch (error) {
+      toast.error('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const completeWithdrawal = async () => {
+    if (!authUser?.id) {
+      toast.error('User not authenticated');
+      return;
+    }
+
+    if (!otpSent) {
+      toast.error('Please request OTP first');
+      return;
+    }
+
+    if (!otp || otp.length !== 4) {
+      toast.error('Please enter valid 4-digit OTP');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/withdrawal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: authUser.id,
+          amount: Number(amount),
+          address,
+          paymentMethod: methodId,
+          action: 'complete-withdrawal',
+          otp
         })
       });
 
@@ -159,7 +209,7 @@ const WithdrawalDetailsPage = () => {
           <div className="flex items-center gap-2 mb-8">
             <div className="w-1 h-5 bg-[#76EAD7] rounded-full flex-shrink-0"></div>
             <h2 className="text-[#1D429A] text-lg md:text-3xl font-light leading-tight">
-              Withdrawal<span className="font-bold"> Detailss</span>
+              Withdrawal<span className="font-bold"> Details</span>
             </h2>
           </div>
 
@@ -227,29 +277,36 @@ const WithdrawalDetailsPage = () => {
                 )}
               </div>
 
-              {/* OTP Section - Disabled/Pending */}
-              <div className={`space-y-2 opacity-40 ${otpDisabled ? 'pointer-events-none' : ''}`}>
+              {/* OTP Section - Enabled */}
+              <div className={`space-y-2 ${otpDisabled ? 'opacity-40 pointer-events-none' : ''}`}>
                 <div className="flex justify-between items-end">
                   <label className="text-[#1D429A] font-bold text-sm">Enter OTP</label>
                   <button 
-                    onClick={() => {}}
-                    disabled={true}
-                    className="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 cursor-not-allowed"
+                    onClick={requestOTP}
+                    disabled={isLoading || !amountValid || !address || otpSent}
+                    className="bg-[#1D429A] text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-[#16357a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Mail className="w-3 h-3" /> OTP Disabled
+                    <Mail className="w-3 h-3" /> {otpSent ? 'OTP Sent' : 'Send OTP'}
                   </button>
                 </div>
                 <input 
                   type="text" 
-                  placeholder="OTP verification disabled"
+                  placeholder={otpSent ? "Enter 4-digit OTP" : "Request OTP first"}
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 4))}
                   maxLength={4}
-                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-400 cursor-not-allowed"
-                  disabled={true}
+                  className={`w-full border rounded-xl px-4 py-3 focus:outline-none transition-colors ${
+                    otpSent 
+                      ? 'bg-gray-50 border-gray-200 focus:border-[#76EAD7] text-[#1D429A]'
+                      : 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
+                  }`}
+                  disabled={!otpSent}
                 />
                 <p className="text-gray-400 text-[11px] italic">
-                  OTP verification is currently disabled - withdrawals are processed automatically
+                  {otpSent 
+                    ? 'Enter the 4-digit OTP sent to your email (expires in 10 minutes)'
+                    : 'Request OTP to verify your withdrawal'
+                  }
                 </p>
               </div>
 
@@ -279,7 +336,7 @@ const WithdrawalDetailsPage = () => {
               <div className="pt-4">
                 <button 
                   onClick={completeWithdrawal}
-                  disabled={isLoading || !amountValid || !address}
+                  disabled={isLoading || !amountValid || !address || !otpSent || !otp || otp.length !== 4}
                   className="w-full md:w-auto bg-[#1D429A] text-white px-12 py-4 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-blue-900/10 hover:bg-[#16357a] transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? 'Processing...' : 'Complete Request'}

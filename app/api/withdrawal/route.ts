@@ -91,7 +91,12 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Failed to send OTP' }, { status: 500 });
       }
 
-      // Store OTP in session/temp storage (in production, use Redis)
+      // Store OTP in user's session/temporarily (in production, use Redis)
+      // For now, we'll store it in the user record temporarily
+      user.withdrawalOTP = otp;
+      user.withdrawalOTPExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+      await user.save();
+
       return NextResponse.json({ 
         success: true, 
         message: 'OTP sent to your email',
@@ -107,8 +112,23 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'User not found' }, { status: 404 });
       }
 
-      // OTP validation disabled - withdrawals processed automatically
-      // Note: OTP validation removed for streamlined withdrawal process
+      // Validate OTP
+      if (!otp || !user.withdrawalOTP || !user.withdrawalOTPExpires) {
+        return NextResponse.json({ error: 'OTP required. Please request OTP first.' }, { status: 400 });
+      }
+
+      if (user.withdrawalOTP !== otp) {
+        return NextResponse.json({ error: 'Invalid OTP' }, { status: 400 });
+      }
+
+      if (new Date() > user.withdrawalOTPExpires) {
+        return NextResponse.json({ error: 'OTP has expired. Please request a new OTP.' }, { status: 400 });
+      }
+
+      // Clear OTP from user record
+      user.withdrawalOTP = undefined;
+      user.withdrawalOTPExpires = undefined;
+      await user.save();
 
       // Calculate charges
       const method = withdrawalMethods[paymentMethod as keyof typeof withdrawalMethods];
@@ -131,8 +151,8 @@ export async function POST(request: NextRequest) {
         amount,
         address,
         paymentMethod,
-        otp: '', // Default empty value for compatibility
-        otpExpires: null, // Default null for compatibility
+        otp: otp, // Store OTP for record keeping
+        otpExpires: new Date(), // Set current time as it's been validated
         charge,
         netAmount
       });
