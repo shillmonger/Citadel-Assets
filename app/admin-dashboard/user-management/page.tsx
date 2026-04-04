@@ -13,9 +13,24 @@ import {
   MoreVertical,
   Mail,
   Loader2,
-  DollarSign
+  DollarSign,
+  ChevronDown,
+  Calendar,
+  Phone,
+  Globe,
+  CreditCard,
+  TrendingUp,
+  ArrowDownUp,
+  FileText,
+  Shield,
+  Wallet,
+  User,
+  MapPin,
+  Building,
+  Clock
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 import AdminHeader from "@/components/admin-dashboard/header";
 import AdminSidebar from "@/components/admin-dashboard/sidebar";
@@ -37,6 +52,90 @@ interface User {
   phoneNumber: string;
   createdAt: string;
   updatedAt: string;
+  // Additional fields from database
+  fullName?: string;
+  accountBalance?: number;
+  welcomeBonus?: number;
+  totalProfit?: number;
+  referralBonus?: number;
+  totalReferrals?: number;
+  activeReferrals?: number;
+  myReferralId?: string;
+  referralId?: string;
+  withdrawalAddresses?: {
+    tron: string | null;
+    doge: string | null;
+    swiftCode: string | null;
+    bitcoin: string | null;
+    ethereum: string | null;
+    litecoin: string | null;
+    bnb: string | null;
+    usdt: string | null;
+  };
+  isActive?: boolean;
+}
+
+interface KYC {
+  _id: string;
+  userId: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  countryOfResidence: string;
+  documentType: string;
+  frontIdUrl: string;
+  backIdUrl: string;
+  status: string;
+  reviewedAt: string;
+  reviewedBy: string;
+  rejectionReason: string | null;
+  submittedAt: string;
+}
+
+interface Withdrawal {
+  _id: string;
+  userId: string;
+  amount: number;
+  address: string;
+  paymentMethod: string;
+  status: string;
+  charge: number;
+  netAmount: number;
+  createdAt: string;
+}
+
+interface InvestmentPlan {
+  _id: string;
+  userId: string;
+  selectedPlan: string;
+  amount: number;
+  duration: number;
+  profit: number;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  totalProfitEarned: number;
+  daysCompleted: number;
+}
+
+interface Deposit {
+  _id: string;
+  paymentMethod: string;
+  amount: number;
+  proofImageUrl: string;
+  status: string;
+  userId: string;
+  walletAddress: string;
+  network: string;
+  createdAt: string;
+}
+
+interface UserDetails {
+  user: User;
+  kyc?: KYC;
+  withdrawals?: Withdrawal[];
+  investmentPlans?: InvestmentPlan[];
+  deposits?: Deposit[];
 }
 
 export default function AdminUsersPage() {
@@ -45,6 +144,8 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [updatingUserId, setUpdatingUserId] = useState<string | null>(null);
+  const [selectedUserDetails, setSelectedUserDetails] = useState<UserDetails | null>(null);
+  const [loadingUserDetails, setLoadingUserDetails] = useState<string | null>(null);
   const [stats, setStats] = useState([
     { label: "Total Users", value: "0", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
     { label: "Active Users", value: "0", icon: UserCheck, color: "text-teal-600", bg: "bg-teal-50" },
@@ -192,6 +293,39 @@ export default function AdminUsersPage() {
     }
   };
 
+  // Fetch user detailed information
+  const fetchUserDetails = async (userId: string) => {
+    setLoadingUserDetails(userId);
+    
+    try {
+      const token = localStorage.getItem('auth-token') || 
+                   document.cookie.split('; ').find(row => row.startsWith('auth-token='))?.split('=')[1];
+      
+      if (!token) {
+        toast.error('Authentication required');
+        return;
+      }
+
+      // Find the user from existing users array
+      const currentUser = users.find(u => u.id === userId);
+      
+      if (currentUser) {
+        setSelectedUserDetails({
+          user: currentUser,
+          kyc: undefined,
+          withdrawals: [],
+          investmentPlans: [],
+          deposits: []
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      toast.error('Failed to fetch user details');
+    } finally {
+      setLoadingUserDetails(null);
+    }
+  };
+
   // Filter users based on search term
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -294,22 +428,210 @@ export default function AdminUsersPage() {
                     {filteredUsers.map((user) => (
                       <tr key={user.id} className="group hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-[#1D429A]/10 flex items-center justify-center text-[#1D429A] font-bold text-xs">
-                              {user.name.charAt(0)}
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="font-bold text-[#1D429A]">{user.name}</span>
-                              <span className="text-xs text-gray-400 flex items-center gap-1"><Mail className="w-3 h-3"/> {user.email}</span>
-                              <span className="text-xs text-gray-500">@{user.username}</span>
-                            </div>
-                          </div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -m-2 transition-colors">
+                                <div className="w-8 h-8 rounded-full bg-[#1D429A]/10 flex items-center justify-center text-[#1D429A] font-bold text-xs">
+                                  {user.name.charAt(0)}
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="font-bold text-[#1D429A]">{user.name}</span>
+                                  <span className="text-xs text-gray-400 flex items-center gap-1"><Mail className="w-3 h-3"/> {user.email}</span>
+                                  <span className="text-xs text-gray-500">@{user.username}</span>
+                                </div>
+                                <ChevronDown className="w-4 h-4 text-gray-400 ml-auto" />
+                              </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-96 max-h-96 overflow-y-auto p-0" align="start">
+                              {loadingUserDetails === user.id ? (
+                                <div className="flex items-center justify-center py-8">
+                                  <Loader2 className="w-6 h-6 animate-spin text-[#1D429A]" />
+                                  <span className="ml-2 text-gray-500">Loading details...</span>
+                                </div>
+                              ) : selectedUserDetails?.user.id === user.id ? (
+                                <div className="p-4 space-y-4">
+                                  {/* User Basic Info */}
+                                  <div className="space-y-2">
+                                    <h4 className="font-bold text-[#1D429A] text-sm uppercase tracking-wider flex items-center gap-2">
+                                      <User className="w-4 h-4" /> User Information
+                                    </h4>
+                                    <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Full Name:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.fullName || selectedUserDetails.user.name}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Username:</span>
+                                        <span className="font-medium text-gray-900">@{selectedUserDetails.user.username}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Email:</span>
+                                        <span className="font-medium text-gray-900 text-xs">{selectedUserDetails.user.email}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Phone:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.phoneNumber}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Country:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.country}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Roles:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.roles.join(', ')}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Status:</span>
+                                        <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
+                                          selectedUserDetails.user.status === 'Active' ? 'bg-teal-50 text-teal-600 border border-teal-100' : 'bg-red-50 text-red-600 border border-red-100'
+                                        }`}>
+                                          {selectedUserDetails.user.status}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Joined:</span>
+                                        <span className="font-medium text-gray-900">{formatDate(selectedUserDetails.user.createdAt)}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Financial Information */}
+                                  <div className="space-y-2">
+                                    <h4 className="font-bold text-[#1D429A] text-sm uppercase tracking-wider flex items-center gap-2">
+                                      <Wallet className="w-4 h-4" /> Financial Information
+                                    </h4>
+                                    <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Account Balance:</span>
+                                        <span className="font-medium text-green-600">{formatCurrency(selectedUserDetails.user.accountBalance || 0)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Total Deposits:</span>
+                                        <span className="font-medium text-green-600">{formatCurrency(selectedUserDetails.user.totalDeposit)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Total Withdrawals:</span>
+                                        <span className="font-medium text-red-600">{formatCurrency(selectedUserDetails.user.totalWithdrawal)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Total Profit:</span>
+                                        <span className="font-medium text-blue-600">{formatCurrency(selectedUserDetails.user.totalProfit || 0)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Welcome Bonus:</span>
+                                        <span className="font-medium text-purple-600">{formatCurrency(selectedUserDetails.user.welcomeBonus || 0)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Referral Bonus:</span>
+                                        <span className="font-medium text-purple-600">{formatCurrency(selectedUserDetails.user.referralBonus || 0)}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Referral Information */}
+                                  <div className="space-y-2">
+                                    <h4 className="font-bold text-[#1D429A] text-sm uppercase tracking-wider flex items-center gap-2">
+                                      <TrendingUp className="w-4 h-4" /> Referral Information
+                                    </h4>
+                                    <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">My Referral ID:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.myReferralId || 'N/A'}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Referred By:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.referralId || 'N/A'}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Total Referrals:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.totalReferrals || 0}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Active Referrals:</span>
+                                        <span className="font-medium text-gray-900">{selectedUserDetails.user.activeReferrals || 0}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* KYC Status */}
+                                  {selectedUserDetails.kyc && (
+                                    <div className="space-y-2">
+                                      <h4 className="font-bold text-[#1D429A] text-sm uppercase tracking-wider flex items-center gap-2">
+                                        <Shield className="w-4 h-4" /> KYC Status
+                                      </h4>
+                                      <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500">Status:</span>
+                                          <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
+                                            selectedUserDetails.kyc.status === 'approved' ? 'bg-green-50 text-green-600 border border-green-100' : 
+                                            selectedUserDetails.kyc.status === 'pending' ? 'bg-yellow-50 text-yellow-600 border border-yellow-100' : 
+                                            'bg-red-50 text-red-600 border border-red-100'
+                                          }`}>
+                                            {selectedUserDetails.kyc.status}
+                                          </span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500">Document Type:</span>
+                                          <span className="font-medium text-gray-900">{selectedUserDetails.kyc.documentType}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500">Submitted:</span>
+                                          <span className="font-medium text-gray-900">{formatDate(selectedUserDetails.kyc.submittedAt)}</span>
+                                        </div>
+                                        {selectedUserDetails.kyc.reviewedAt && (
+                                          <div className="flex justify-between">
+                                            <span className="text-gray-500">Reviewed:</span>
+                                            <span className="font-medium text-gray-900">{formatDate(selectedUserDetails.kyc.reviewedAt)}</span>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* Recent Activity Summary */}
+                                  <div className="space-y-2">
+                                    <h4 className="font-bold text-[#1D429A] text-sm uppercase tracking-wider flex items-center gap-2">
+                                      <Clock className="w-4 h-4" /> Recent Activity
+                                    </h4>
+                                    <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Active Investments:</span>
+                                        <span className="font-medium text-gray-900">
+                                          {selectedUserDetails.investmentPlans?.filter(plan => plan.isActive).length || 0}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Total Transactions:</span>
+                                        <span className="font-medium text-gray-900">
+                                          {(selectedUserDetails.deposits?.length || 0) + (selectedUserDetails.withdrawals?.length || 0)}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500">Pending Withdrawals:</span>
+                                        <span className="font-medium text-gray-900">
+                                          {selectedUserDetails.withdrawals?.filter(w => w.status === 'pending').length || 0}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                <DropdownMenuItem 
+                                  onClick={() => fetchUserDetails(user.id)}
+                                  className="cursor-pointer"
+                                >
+                                  <User className="w-4 h-4 mr-2" />
+                                  View Full Details
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </td>
                         <td className="px-6 py-4 hidden md:table-cell text-gray-500 font-medium">
                           {formatDate(user.createdAt)}
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
+                          <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
                             user.status === 'Active' ? 'bg-teal-50 text-teal-600 border border-teal-100' : 'bg-red-50 text-red-600 border border-red-100'
                           }`}>
                             {user.status}
