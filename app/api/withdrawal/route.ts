@@ -110,10 +110,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'User not found' }, { status: 404 });
       }
 
-      // Validate OTP (in production, verify against stored OTP)
-      if (!otp || otp.length !== 4) {
-        return NextResponse.json({ error: 'Invalid OTP' }, { status: 400 });
-      }
+      // OTP validation disabled - withdrawals processed automatically
+      // Note: OTP validation removed for streamlined withdrawal process
 
       // Calculate charges
       const method = withdrawalMethods[paymentMethod as keyof typeof withdrawalMethods];
@@ -136,8 +134,8 @@ export async function POST(request: NextRequest) {
         amount,
         address,
         paymentMethod,
-        otp,
-        otpExpires: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
+        otp: '', // Default empty value for compatibility
+        otpExpires: null, // Default null for compatibility
         charge,
         netAmount
       });

@@ -6,8 +6,8 @@ export interface IWithdrawal extends Document {
   address: string;
   paymentMethod: string;
   status: 'pending' | 'approved' | 'rejected' | 'completed';
-  otp: string;
-  otpExpires: Date;
+  otp?: string;
+  otpExpires?: Date;
   charge: number;
   netAmount: number;
   createdAt: Date;
@@ -42,11 +42,11 @@ const WithdrawalSchema: Schema = new Schema({
   },
   otp: {
     type: String,
-    required: true
+    required: false
   },
   otpExpires: {
     type: Date,
-    required: true
+    required: false
   },
   charge: {
     type: Number,
