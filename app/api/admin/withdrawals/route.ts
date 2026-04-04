@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import Withdrawal from '@/lib/models/Withdrawal';
 import User from '@/lib/models/User';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendMail } from '@/lib/email';
 
 async function sendWithdrawalNotification(email: string, fullName: string, amount: number, status: 'approved' | 'rejected', paymentMethod: string) {
   try {
@@ -12,9 +10,8 @@ async function sendWithdrawalNotification(email: string, fullName: string, amoun
     const statusColor = status === 'approved' ? '#10b981' : '#ef4444';
     const statusText = status === 'approved' ? 'Approved' : 'Rejected';
     
-    const { data, error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
-      to: [email],
+    const result = await sendMail({
+      to: email,
       subject,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -39,12 +36,12 @@ async function sendWithdrawalNotification(email: string, fullName: string, amoun
       `,
     });
 
-    if (error) {
-      console.error('Error sending withdrawal notification:', error);
+    if (!result.success) {
+      console.error('Error sending withdrawal notification:', result.error);
       return false;
     }
 
-    console.log('Withdrawal notification sent successfully:', data);
+    console.log('Withdrawal notification sent successfully:', result.data);
     return true;
   } catch (error) {
     console.error('Error sending withdrawal notification:', error);

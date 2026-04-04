@@ -1,7 +1,30 @@
-import { Resend } from 'resend';
+import nodemailer from "nodemailer";
 import User from '@/lib/models/User';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT),
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+export async function sendMail({ to, subject, html }: EmailData) {
+  try {
+    const result = await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to: Array.isArray(to) ? to.join(', ') : to,
+      subject,
+      html,
+    });
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Email sending error:', error);
+    return { success: false, error };
+  }
+}
 
 export interface EmailData {
   to: string | string[];
@@ -10,24 +33,7 @@ export interface EmailData {
 }
 
 export const sendEmail = async ({ to, subject, html }: EmailData) => {
-  try {
-    const { data, error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL!,
-      to: Array.isArray(to) ? to : [to],
-      subject,
-      html,
-    });
-
-    if (error) {
-      console.error('Email sending error:', error);
-      return { success: false, error };
-    }
-
-    return { success: true, data };
-  } catch (error) {
-    console.error('Email service error:', error);
-    return { success: false, error };
-  }
+  return await sendMail({ to, subject, html });
 };
 
 export const getAllAdminEmails = async () => {

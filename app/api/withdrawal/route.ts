@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import User from '@/lib/models/User';
 import Withdrawal from '@/lib/models/Withdrawal';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendMail } from '@/lib/email';
 
 const withdrawalMethods = {
   bitcoin: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
@@ -22,9 +20,8 @@ function generateOTP(): string {
 
 async function sendOTPEmail(email: string, otp: string) {
   try {
-    const { data, error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
-      to: [email],
+    const result = await sendMail({
+      to: email,
       subject: 'Your Withdrawal OTP',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -39,12 +36,12 @@ async function sendOTPEmail(email: string, otp: string) {
       `,
     });
 
-    if (error) {
-      console.error('Resend error:', error);
+    if (!result.success) {
+      console.error('Email sending error:', result.error);
       return false;
     }
 
-    console.log('Email sent successfully:', data);
+    console.log('Email sent successfully:', result.data);
     return true;
   } catch (error) {
     console.error('Error sending OTP email:', error);
