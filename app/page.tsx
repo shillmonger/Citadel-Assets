@@ -138,7 +138,7 @@ export default function Home() {
         <div className="bg-[#1D429A] pb-40 px-6 md:px-12 lg:px-24">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-start gap-8 md:gap-12 py-16">
             <h2 className="text-3xl md:text-5xl text-white font-normal tracking-tight leading-[1.1] md:max-w-xl">
-              More Than 20 Years
+              More Than 30 Years
               <br />
               of Trailblazing
             </h2>
