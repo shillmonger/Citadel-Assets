@@ -21,7 +21,7 @@ export async function runDailyBalanceUpdate(): Promise<CronResult> {
     const activePlans = await InvestmentPlan.find({
       isActive: true,
       endDate: { $gt: new Date() }
-    }).populate('userId');
+    });
     
     console.log(`Found ${activePlans.length} active plans`);
 
@@ -31,7 +31,8 @@ export async function runDailyBalanceUpdate(): Promise<CronResult> {
     console.log(`Processing ${activePlans.length} plans...`);
     
     for (const plan of activePlans) {
-      const user = plan.userId as any;
+      // Fetch user separately
+      const user = await User.findById(plan.userId);
       
       if (!user) {
         console.error(`User not found for plan ${plan._id}`);

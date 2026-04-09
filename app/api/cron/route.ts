@@ -1,9 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runDailyBalanceUpdate } from '@/services/cronService';
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    console.log("External cron triggered at:", new Date().toISOString());
+    // Verify CRON_SECRET for security
+    const authHeader = request.headers.get('authorization');
+    const cronSecret = process.env.CRON_SECRET;
+    
+    if (!cronSecret) {
+      console.error('CRON_SECRET environment variable not set');
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      );
+    }
+    
+    if (authHeader !== `Bearer ${cronSecret}`) {
+      console.error('Unauthorized cron job attempt');
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    console.log("Vercel cron job triggered at:", new Date().toISOString());
 
     // Call the business logic
     const result = await runDailyBalanceUpdate();
@@ -28,29 +48,5 @@ export async function POST(request: NextRequest) {
       message: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date()
     }, { status: 500 });
-  }
-}
-
-// For testing purposes - GET endpoint
-export async function GET(request: NextRequest) {
-  try {
-    console.log("External cron test endpoint called at:", new Date().toISOString());
-    
-    return NextResponse.json({
-      success: true,
-      message: "External cron endpoint is working",
-      timestamp: new Date()
-    });
-  } catch (error) {
-    console.error('Test endpoint error:', error);
-    return NextResponse.json(
-      { 
-        success: false,
-        error: "Test endpoint failed",
-        message: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date()
-      },
-      { status: 500 }
-    );
   }
 }
