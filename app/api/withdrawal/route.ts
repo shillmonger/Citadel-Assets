@@ -5,13 +5,13 @@ import Withdrawal from '@/lib/models/Withdrawal';
 import { sendMail } from '@/lib/email';
 
 const withdrawalMethods = {
-  bitcoin: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-  ethereum: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-  'usdt-trc20': { min: 10, max: 1000000, charge: 2, chargeType: 'fixed' },
-  litecoin: { min: 10, max: 10000, charge: 2, chargeType: 'fixed' },
-  doge: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-  bnb: { min: 10, max: 1000000, charge: 0.02, chargeType: 'percentage' },
-  tron: { min: 10, max: 500000, charge: 0.02, chargeType: 'percentage' }
+  bitcoin: { min: 10, max: 1000000 },
+  ethereum: { min: 10, max: 1000000 },
+  'usdt-trc20': { min: 10, max: 1000000 },
+  litecoin: { min: 10, max: 10000 },
+  doge: { min: 10, max: 1000000 },
+  bnb: { min: 10, max: 1000000 },
+  tron: { min: 10, max: 500000 }
 };
 
 function generateOTP(): string {
@@ -76,10 +76,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Check if user has sufficient balance
-      const charge = method.chargeType === 'percentage' ? amount * method.charge : method.charge;
-      const totalAmount = amount + charge;
-      
-      if (user.accountBalance < totalAmount) {
+      if (user.accountBalance < amount) {
         return NextResponse.json({ error: 'Insufficient balance' }, { status: 400 });
       }
 
@@ -100,7 +97,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ 
         success: true, 
         message: 'OTP sent to your email',
-        charge,
+        charge: 0,
         netAmount: amount
       });
     }
@@ -130,10 +127,8 @@ export async function POST(request: NextRequest) {
       user.withdrawalOTPExpires = undefined;
       await user.save();
 
-      // Calculate charges
-      const method = withdrawalMethods[paymentMethod as keyof typeof withdrawalMethods];
-      const charge = method.chargeType === 'percentage' ? amount * method.charge : method.charge;
-      const netAmount = amount - charge;
+      // No charges - user receives full amount
+      const netAmount = amount;
 
       // Check withdrawal address
       const addressField = paymentMethod.replace('-trc20', '');
@@ -153,8 +148,8 @@ export async function POST(request: NextRequest) {
         paymentMethod,
         otp: otp, // Store OTP for record keeping
         otpExpires: new Date(), // Set current time as it's been validated
-        charge,
-        netAmount
+        charge: 0,
+        netAmount: amount
       });
 
       await withdrawal.save();

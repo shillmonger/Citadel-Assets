@@ -12,7 +12,7 @@ const WithdrawalPage = () => {
 
   // Withdrawal methods configuration
   const withdrawalMethods = [
-    { id: "bitcoin", name: "Bitcoin", min: "$4", max: "$1,000,000", charge: "2%", duration: "After Block Confirmation" },
+    { id: "bitcoin", name: "Bitcoin", min: "$4", max: "$1,000,000", charge: "0%", duration: "After Block Confirmation" },
     { id: "ethereum", name: "Ethereum", min: "$4", max: "$1,000,000", charge: "0%", duration: "After Block Confirmation" },
     { id: "usdt-trc20", name: "USDT TRC20", min: "$4", max: "$1,000,000", charge: "0%", duration: "After Block Confirmation" },
     { id: "litecoin", name: "Litecoin", min: "$4", max: "$10,000", charge: "0%", duration: "Instant" },

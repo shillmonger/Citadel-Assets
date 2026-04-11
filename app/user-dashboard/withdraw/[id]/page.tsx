@@ -22,7 +22,6 @@ const WithdrawalDetailsPage = () => {
   const [user, setUser] = useState<any>(null);
   const [address, setAddress] = useState("");
   const [amountValid, setAmountValid] = useState<boolean | null>(null);
-  const [charge, setCharge] = useState(0);
   const [netAmount, setNetAmount] = useState(0);
 
   const displayName = typeof methodId === 'string' 
@@ -30,13 +29,13 @@ const WithdrawalDetailsPage = () => {
     : "Payment Method";
 
   const withdrawalMethods = {
-    bitcoin: { min: 5, max: 1000000, charge: 0, chargeType: 'percentage' },
-    ethereum: { min: 4, max: 1000000, charge: 0, chargeType: 'percentage' },
-    'usdt-trc20': { min: 4, max: 1000000, charge: 0, chargeType: 'fixed' },
-    litecoin: { min: 4, max: 10000, charge: 0, chargeType: 'fixed' },
-    doge: { min: 4, max: 1000000, charge: 0, chargeType: 'percentage' },
-    bnb: { min: 4, max: 1000000, charge: 0, chargeType: 'percentage' },
-    tron: { min: 4, max: 500000, charge: 0, chargeType: 'percentage' }
+    bitcoin: { min: 5, max: 1000000 },
+    ethereum: { min: 4, max: 1000000 },
+    'usdt-trc20': { min: 4, max: 1000000 },
+    litecoin: { min: 4, max: 10000 },
+    doge: { min: 4, max: 1000000 },
+    bnb: { min: 4, max: 1000000 },
+    tron: { min: 4, max: 500000 }
   };
 
   useEffect(() => {
@@ -47,7 +46,7 @@ const WithdrawalDetailsPage = () => {
   }, [authUser]);
 
   useEffect(() => {
-    // Validate amount and calculate charges
+    // Validate amount
     if (amount && !isNaN(Number(amount))) {
       const amountNum = Number(amount);
       const method = withdrawalMethods[methodId as keyof typeof withdrawalMethods];
@@ -55,21 +54,13 @@ const WithdrawalDetailsPage = () => {
       if (method) {
         const isValid = amountNum >= method.min && amountNum <= method.max;
         setAmountValid(isValid);
-        
-        if (isValid) {
-          const calculatedCharge = method.chargeType === 'percentage' 
-            ? amountNum * method.charge 
-            : method.charge;
-          setCharge(calculatedCharge);
-          setNetAmount(amountNum - calculatedCharge);
-        } else {
-          setCharge(0);
-          setNetAmount(0);
-        }
+        setNetAmount(amountNum);
+      } else {
+        setAmountValid(null);
+        setNetAmount(0);
       }
     } else {
       setAmountValid(null);
-      setCharge(0);
       setNetAmount(0);
     }
   }, [amount, methodId]);
@@ -124,7 +115,6 @@ const WithdrawalDetailsPage = () => {
       
       if (data.success) {
         setOtpSent(true);
-        setCharge(data.charge || 0);
         setNetAmount(data.netAmount || Number(amount));
         toast.success('OTP sent to your email!');
       } else {
@@ -263,13 +253,9 @@ const WithdrawalDetailsPage = () => {
                     Amount must be between ${withdrawalMethods[methodId as keyof typeof withdrawalMethods]?.min || 10} and ${withdrawalMethods[methodId as keyof typeof withdrawalMethods]?.max || 1000000}
                   </p>
                 )}
-                {amountValid === true && charge > 0 && (
-                  <div className="bg-gray-50 p-3 rounded-lg">
+                {amountValid === true && (
+                  <div className="bg-green-50 p-3 rounded-lg">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Charge:</span>
-                      <span className="font-bold text-[#1D429A]">${charge.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm mt-1">
                       <span className="text-gray-600">You will receive:</span>
                       <span className="font-bold text-green-600">${netAmount.toFixed(2)}</span>
                     </div>
